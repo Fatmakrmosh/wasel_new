@@ -1042,7 +1042,21 @@ class _IntercityScreenState extends State<IntercityScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    // Keep Arabic rendering reliable on web, Android, and iOS.
+    // This screen contains many explicit TextStyles, so the fallback
+    // is applied at the screen level instead of changing each widget.
+    final ThemeData screenTheme = Theme.of(context).copyWith(
+      fontFamily: 'Arial',
+      fontFamilyFallback: const [
+        'Noto Sans Arabic',
+        'Noto Sans',
+        'sans-serif',
+      ],
+    );
+
+    return Theme(
+      data: screenTheme,
+      child: Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
@@ -1082,6 +1096,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
             ],
           ),
         ),
+      ),
       ),
     );
   }
