@@ -1,4 +1,4 @@
-name: wasel_new
+﻿name: wasel_new
 description: WASEL transport and parcel platform.
 publish_to: "none"
 version: 1.0.0+1
@@ -9,12 +9,22 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
   cupertino_icons: ^1.0.8
   go_router: ^16.2.0
+
+  # Maps
   flutter_map: ^8.3.2
   latlong2: ^0.10.1
+
+  # GPS / location
   geolocator: ^14.1.1
+
+  # Backend
   supabase_flutter: ^2.18.0
+
+  # OpenStreetMap / Nominatim requests
+  http: ^1.6.0
 
 dev_dependencies:
   flutter_test:
@@ -23,6 +33,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
   assets:
     - assets/images/
     - assets/vehicles/
