@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'wasel_colors.dart';
 
 class WaselTheme {
@@ -13,7 +14,6 @@ class WaselTheme {
       surface: WaselColors.surface,
       error: WaselColors.error,
     ),
-    fontFamily: 'Cairo',
     appBarTheme: const AppBarTheme(
       backgroundColor: WaselColors.background,
       foregroundColor: WaselColors.textPrimary,
