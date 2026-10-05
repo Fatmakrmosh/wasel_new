@@ -1,0 +1,830 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../core/theme/app_theme.dart';
+
+class AccountScreen extends StatefulWidget {
+  const AccountScreen({super.key});
+
+  @override
+  State<AccountScreen> createState() => _AccountScreenState();
+}
+
+class _AccountScreenState extends State<AccountScreen> {
+  bool notificationsEnabled = true;
+  bool darkModeEnabled = true;
+
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          textAlign: TextAlign.right,
+        ),
+      ),
+    );
+  }
+
+  void _showLanguageDialog() {
+    showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: AppColors.surface,
+          title: const Text(
+            'لغة التطبيق',
+            textAlign: TextAlign.right,
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _languageOption('العربية', true),
+              _languageOption('English', false),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _languageOption(String title, bool selected) {
+    return ListTile(
+      onTap: () {
+        Navigator.pop(context);
+        if (!selected) {
+          _showMessage('اللغة الإنجليزية ستكون متاحة قريبًا');
+        }
+      },
+      title: Text(
+        title,
+        textAlign: TextAlign.right,
+        style: const TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      trailing: Icon(
+        selected
+            ? Icons.radio_button_checked_rounded
+            : Icons.radio_button_off_rounded,
+        color: selected ? AppColors.lime : Colors.white38,
+      ),
+    );
+  }
+
+  void _showLogoutDialog() {
+    showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: AppColors.surface,
+          title: const Text(
+            'تسجيل الخروج',
+            textAlign: TextAlign.right,
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: const Text(
+            'هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟',
+            textAlign: TextAlign.right,
+            style: TextStyle(
+              color: Colors.white70,
+              height: 1.5,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text(
+                'إلغاء',
+                style: TextStyle(
+                  color: Colors.white70,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                context.go('/login');
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.lime,
+                foregroundColor: Colors.black,
+              ),
+              child: const Text(
+                'تسجيل الخروج',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showEditProfile() {
+    final nameController = TextEditingController(
+      text: 'أحمد محمد',
+    );
+
+    final phoneController = TextEditingController(
+      text: '09XXXXXXXX',
+    );
+
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 30),
+            decoration: const BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(28),
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Center(
+                  child: Container(
+                    width: 45,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: Colors.white24,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 22),
+                const Text(
+                  'تعديل الملف الشخصي',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                _buildTextField(
+                  controller: nameController,
+                  label: 'الاسم',
+                  icon: Icons.person_outline_rounded,
+                ),
+                const SizedBox(height: 14),
+                _buildTextField(
+                  controller: phoneController,
+                  label: 'رقم الهاتف',
+                  icon: Icons.phone_outlined,
+                  keyboardType: TextInputType.phone,
+                ),
+                const SizedBox(height: 22),
+                SizedBox(
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      _showMessage('تم حفظ بيانات الملف الشخصي');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.lime,
+                      foregroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                    child: const Text(
+                      'حفظ التغييرات',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    TextInputType? keyboardType,
+  }) {
+    return TextField(
+      controller: controller,
+      keyboardType: keyboardType,
+      style: const TextStyle(
+        color: Colors.white,
+      ),
+      textAlign: TextAlign.right,
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: const TextStyle(
+          color: Colors.white54,
+        ),
+        prefixIcon: Icon(
+          icon,
+          color: AppColors.lime,
+        ),
+        filled: true,
+        fillColor: const Color(0xFF252525),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide.none,
+        ),
+      ),
+    );
+  }
+
+  void _showChangePassword() {
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 30),
+            decoration: const BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(28),
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Center(
+                  child: Container(
+                    width: 45,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: Colors.white24,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 22),
+                const Text(
+                  'تغيير كلمة المرور',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                _buildPasswordField('كلمة المرور الحالية'),
+                const SizedBox(height: 14),
+                _buildPasswordField('كلمة المرور الجديدة'),
+                const SizedBox(height: 14),
+                _buildPasswordField('تأكيد كلمة المرور الجديدة'),
+                const SizedBox(height: 22),
+                SizedBox(
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      _showMessage('تم تحديث كلمة المرور');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.lime,
+                      foregroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                    child: const Text(
+                      'تحديث كلمة المرور',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildPasswordField(String label) {
+    return TextField(
+      obscureText: true,
+      style: const TextStyle(
+        color: Colors.white,
+      ),
+      textAlign: TextAlign.right,
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: const TextStyle(
+          color: Colors.white54,
+        ),
+        prefixIcon: const Icon(
+          Icons.lock_outline_rounded,
+          color: AppColors.lime,
+        ),
+        filled: true,
+        fillColor: const Color(0xFF252525),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide.none,
+        ),
+      ),
+    );
+  }
+
+  void _showHelpDialog() {
+    showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: AppColors.surface,
+          title: const Text(
+            'مركز المساعدة',
+            textAlign: TextAlign.right,
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: const Text(
+            'يمكنك التواصل مع دعم واصل للحصول على المساعدة في الرحلات والطرود والحسابات.\n\nسيتم ربط مركز الدعم بخدمة العملاء لاحقًا.',
+            textAlign: TextAlign.right,
+            style: TextStyle(
+              color: Colors.white70,
+              height: 1.7,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text(
+                'إغلاق',
+                style: TextStyle(
+                  color: AppColors.lime,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showInfoDialog(String title, String message) {
+    showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: AppColors.surface,
+          title: Text(
+            title,
+            textAlign: TextAlign.right,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            message,
+            textAlign: TextAlign.right,
+            style: const TextStyle(
+              color: Colors.white70,
+              height: 1.7,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text(
+                'إغلاق',
+                style: TextStyle(
+                  color: AppColors.lime,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: AppColors.background,
+        elevation: 0,
+        centerTitle: true,
+        title: const Text(
+          'حسابي',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 21,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: Colors.white,
+            size: 20,
+          ),
+        ),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 30),
+        children: [
+          _buildProfileHeader(),
+          const SizedBox(height: 22),
+          _buildSectionTitle('الحساب'),
+          const SizedBox(height: 8),
+          _buildAccountItem(
+            icon: Icons.person_outline_rounded,
+            title: 'الملف الشخصي',
+            subtitle: 'تعديل الاسم ورقم الهاتف',
+            onTap: _showEditProfile,
+          ),
+          _buildAccountItem(
+            icon: Icons.lock_outline_rounded,
+            title: 'كلمة المرور',
+            subtitle: 'تغيير كلمة المرور',
+            onTap: _showChangePassword,
+          ),
+          _buildAccountItem(
+            icon: Icons.language_rounded,
+            title: 'اللغة',
+            subtitle: 'العربية',
+            onTap: _showLanguageDialog,
+          ),
+          const SizedBox(height: 20),
+          _buildSectionTitle('الإعدادات'),
+          const SizedBox(height: 8),
+          _buildSwitchItem(
+            icon: Icons.notifications_none_rounded,
+            title: 'الإشعارات',
+            subtitle: 'تنبيهات الرحلات والطرود',
+            value: notificationsEnabled,
+            onChanged: (value) {
+              setState(() {
+                notificationsEnabled = value;
+              });
+            },
+          ),
+          _buildSwitchItem(
+            icon: Icons.dark_mode_outlined,
+            title: 'الوضع الداكن',
+            subtitle: 'مظهر التطبيق',
+            value: darkModeEnabled,
+            onChanged: (value) {
+              setState(() {
+                darkModeEnabled = value;
+              });
+              _showMessage(
+                value
+                    ? 'تم تفعيل الوضع الداكن'
+                    : 'سيتم تطبيق الوضع الفاتح لاحقًا',
+              );
+            },
+          ),
+          const SizedBox(height: 20),
+          _buildSectionTitle('خدمات واصل'),
+          const SizedBox(height: 8),
+          _buildAccountItem(
+            icon: Icons.drive_eta_outlined,
+            title: 'التسجيل كسائق',
+            subtitle: 'انضم إلى شبكة سائقي واصل',
+            onTap: () => context.push('/driver-register'),
+          ),
+          _buildAccountItem(
+            icon: Icons.business_outlined,
+            title: 'التسجيل كشركة نقل',
+            subtitle: 'أضف شركتك وخدماتك إلى واصل',
+            onTap: () => context.push('/company-register'),
+          ),
+          const SizedBox(height: 20),
+          _buildSectionTitle('المساعدة والمعلومات'),
+          const SizedBox(height: 8),
+          _buildAccountItem(
+            icon: Icons.help_outline_rounded,
+            title: 'مركز المساعدة',
+            subtitle: 'الأسئلة والدعم',
+            onTap: _showHelpDialog,
+          ),
+          _buildAccountItem(
+            icon: Icons.privacy_tip_outlined,
+            title: 'الخصوصية',
+            subtitle: 'سياسة الخصوصية وحماية البيانات',
+            onTap: () => _showInfoDialog(
+              'الخصوصية',
+              'تحرص واصل على حماية بيانات المستخدمين وعدم استخدامها إلا لتقديم الخدمات وتحسين تجربة الاستخدام.\n\nسيتم إضافة سياسة الخصوصية الكاملة قبل الإطلاق النهائي.',
+            ),
+          ),
+          _buildAccountItem(
+            icon: Icons.description_outlined,
+            title: 'الشروط والأحكام',
+            subtitle: 'شروط استخدام خدمات واصل',
+            onTap: () => _showInfoDialog(
+              'الشروط والأحكام',
+              'تخضع جميع خدمات واصل لشروط الاستخدام وسياسات السلامة والدفع المعتمدة من إدارة المنصة.\n\nسيتم إضافة الشروط النهائية قبل الإطلاق.',
+            ),
+          ),
+          _buildAccountItem(
+            icon: Icons.info_outline_rounded,
+            title: 'عن واصل',
+            subtitle: 'إصدار التطبيق 1.0.0',
+            onTap: () => _showInfoDialog(
+              'عن واصل',
+              'واصل WASEL\n\nمنصة سودانية للنقل والرحلات وإرسال الطرود، تهدف إلى تسهيل التنقل وربط الركاب بالسائقين وشركات النقل.',
+            ),
+          ),
+          const SizedBox(height: 24),
+          SizedBox(
+            height: 52,
+            child: OutlinedButton.icon(
+              onPressed: _showLogoutDialog,
+              icon: const Icon(
+                Icons.logout_rounded,
+                color: Colors.redAccent,
+              ),
+              label: const Text(
+                'تسجيل الخروج',
+                style: TextStyle(
+                  color: Colors.redAccent,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              style: OutlinedButton.styleFrom(
+                side: BorderSide(
+                  color: Colors.redAccent.withValues(alpha: 0.35),
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 15),
+          const Text(
+            'WASEL • واصل',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white24,
+              fontSize: 12,
+              letterSpacing: 1.5,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProfileHeader() {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            AppColors.lime.withValues(alpha: 0.16),
+            AppColors.surface,
+          ],
+        ),
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(
+          color: AppColors.lime.withValues(alpha: 0.20),
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 64,
+            height: 64,
+            decoration: const BoxDecoration(
+              color: AppColors.lime,
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.person_rounded,
+              color: Colors.black,
+              size: 34,
+            ),
+          ),
+          const SizedBox(width: 15),
+          const Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  'أحمد محمد',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 19,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 5),
+                Text(
+                  '09XXXXXXXX',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                    color: Colors.white54,
+                    fontSize: 13,
+                  ),
+                ),
+                SizedBox(height: 7),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Icon(
+                      Icons.verified_rounded,
+                      color: AppColors.lime,
+                      size: 16,
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      'حساب موثوق',
+                      style: TextStyle(
+                        color: AppColors.lime,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: Text(
+        title,
+        textAlign: TextAlign.right,
+        style: const TextStyle(
+          color: AppColors.lime,
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAccountItem({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Colors.white10,
+        ),
+      ),
+      child: ListTile(
+        onTap: onTap,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 3,
+        ),
+        leading: const Icon(
+          Icons.arrow_back_ios_new_rounded,
+          color: Colors.white30,
+          size: 15,
+        ),
+        trailing: Container(
+          width: 42,
+          height: 42,
+          decoration: BoxDecoration(
+            color: AppColors.lime.withValues(alpha: 0.10),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: const Icon(
+            Icons.person_outline_rounded,
+            color: AppColors.lime,
+            size: 22,
+          ),
+        ),
+        title: Text(
+          title,
+          textAlign: TextAlign.right,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        subtitle: Text(
+          subtitle,
+          textAlign: TextAlign.right,
+          style: const TextStyle(
+            color: Colors.white54,
+            fontSize: 11,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSwitchItem({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Colors.white10,
+        ),
+      ),
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 10,
+          vertical: 3,
+        ),
+        leading: Switch(
+          value: value,
+          onChanged: onChanged,
+          activeThumbColor: AppColors.lime,
+          activeTrackColor: AppColors.lime.withValues(alpha: 0.35),
+        ),
+        trailing: Container(
+          width: 42,
+          height: 42,
+          decoration: BoxDecoration(
+            color: AppColors.lime.withValues(alpha: 0.10),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(
+            icon,
+            color: AppColors.lime,
+            size: 22,
+          ),
+        ),
+        title: Text(
+          title,
+          textAlign: TextAlign.right,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        subtitle: Text(
+          subtitle,
+          textAlign: TextAlign.right,
+          style: const TextStyle(
+            color: Colors.white54,
+            fontSize: 11,
+          ),
+        ),
+      ),
+    );
+  }
+}
