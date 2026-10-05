@@ -13,7 +13,6 @@ class _IntercityScreenState extends State<IntercityScreen> {
   String _fromCity = 'الخرطوم';
   String _toCity = 'شندي';
   int _passengers = 1;
-  String _selectedClass = 'اقتصادي';
   String? _selectedVehicleType;
 
   DateTime _selectedDate = DateTime.now().add(const Duration(days: 1));
@@ -1076,7 +1075,6 @@ class _IntercityScreenState extends State<IntercityScreen> {
               const SizedBox(height: 14),
               _buildPassengersCard(),
               const SizedBox(height: 14),
-              _buildClassCard(),
               const SizedBox(height: 20),
               _buildSearchButton(),
               const SizedBox(height: 20),
@@ -2095,97 +2093,6 @@ class _IntercityScreenState extends State<IntercityScreen> {
       ),
     );
   }
-
-  Widget _buildClassCard() {
-    const classes = [
-      'اقتصادي',
-      'مريح',
-      'خاص',
-    ];
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: Column(
-        crossAxisAlignment:
-            CrossAxisAlignment.start,
-        children: [
-          const Row(
-            children: [
-              Icon(
-                Icons.airline_seat_recline_normal,
-                color: AppColors.lime,
-                size: 22,
-              ),
-              SizedBox(width: 10),
-              Text(
-                'درجة الرحلة',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 13),
-          Row(
-            children: classes.map((item) {
-              final bool selected =
-                  item == _selectedClass;
-
-              return Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 3,
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedClass = item;
-                      });
-                    },
-                    child: AnimatedContainer(
-                      duration:
-                          const Duration(milliseconds: 160),
-                      padding:
-                          const EdgeInsets.symmetric(
-                        vertical: 12,
-                      ),
-                      decoration: BoxDecoration(
-                        color: selected
-                            ? AppColors.lime
-                            : const Color(0xFF292929),
-                        borderRadius:
-                            BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        item,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: selected
-                              ? Colors.black
-                              : Colors.white54,
-                          fontSize: 12,
-                          fontWeight: selected
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildSearchButton() {
     return SizedBox(
       height: 54,
