@@ -211,25 +211,16 @@ class WaselAuthService {
     }
 
     try {
-      await client.auth.updateUser(
-        UserAttributes(
-          data: {
-            ...user.userMetadata ?? <String, dynamic>{},
-            'requested_account_type': accountType,
-          },
-        ),
+      final result = await client.rpc(
+        'set_requested_account_type',
+        params: {'account_type': accountType},
       );
 
-      try {
-        await client
-            .from('profiles')
-            .update({
-              'requested_account_type': accountType,
-              'updated_at': DateTime.now().toUtc().toIso8601String(),
-            })
-            .eq('id', user.id);
-      } catch (_) {
-        // The profile trigger may not be installed yet.
+      if (result != true) {
+        return const AuthResult(
+          success: false,
+          message: 'تعذر حفظ نوع الحساب حالياً',
+        );
       }
 
       return const AuthResult(success: true);
