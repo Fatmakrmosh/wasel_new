@@ -26,10 +26,10 @@ class WaselAuthService {
     return '$digits@auth.wasel.internal';
   }
 
-  Future<bool> phoneAccountExists(String phone) async {
+  Future<bool?> phoneAccountExists(String phone) async {
     final client = _client;
     if (client == null) {
-      return false;
+      return null;
     }
 
     final normalized = SudanPhoneValidator.normalize(phone);
@@ -41,9 +41,7 @@ class WaselAuthService {
       );
       return result == true;
     } catch (_) {
-      // Do not block login if the optional account-existence RPC
-      // has not been installed yet.
-      return true;
+      return null;
     }
   }
 
@@ -73,10 +71,17 @@ class WaselAuthService {
 
     final exists = await phoneAccountExists(phone);
 
-    if (!exists) {
+    if (exists == false) {
       return const AuthResult(
         success: false,
         message: 'لا يوجد حساب بهذا الرقم — هل تريد إنشاء حساب؟',
+      );
+    }
+
+    if (exists == null) {
+      return const AuthResult(
+        success: false,
+        message: 'تعذر التحقق من الحساب حالياً. حاول مرة أخرى.',
       );
     }
 
@@ -87,24 +92,15 @@ class WaselAuthService {
       );
 
       return const AuthResult(success: true);
-    } on AuthException catch (error) {
-      final message = error.message.toLowerCase();
-
-      if (message.contains('invalid login credentials')) {
-        return const AuthResult(
-          success: false,
-          message: 'كلمة المرور غير صحيحة.',
-        );
-      }
-
-      return AuthResult(
+    } on AuthException catch (_) {
+      return const AuthResult(
         success: false,
-        message: error.message,
+        message: 'كلمة المرور غير صحيحة.',
       );
     } catch (_) {
       return const AuthResult(
         success: false,
-        message: 'تعذر تسجيل الدخول حالياً',
+        message: 'تعذر تسجيل الدخول حالياً. حاول مرة أخرى.',
       );
     }
   }
@@ -143,10 +139,17 @@ class WaselAuthService {
 
     final exists = await phoneAccountExists(phone);
 
-    if (exists) {
+    if (exists == true) {
       return const AuthResult(
         success: false,
         message: 'يوجد حساب بهذا الرقم بالفعل. استخدم تسجيل الدخول.',
+      );
+    }
+
+    if (exists == null) {
+      return const AuthResult(
+        success: false,
+        message: 'تعذر التحقق من الرقم حالياً. حاول مرة أخرى.',
       );
     }
 
@@ -165,7 +168,7 @@ class WaselAuthService {
       if (response.user == null) {
         return const AuthResult(
           success: false,
-          message: 'تعذر إنشاء الحساب',
+          message: 'تعذر إنشاء الحساب حالياً.',
         );
       }
 
@@ -178,14 +181,24 @@ class WaselAuthService {
 
       return const AuthResult(success: true);
     } on AuthException catch (error) {
-      return AuthResult(
+      final message = error.message.toLowerCase();
+      if (message.contains('already registered') ||
+          message.contains('already exists') ||
+          message.contains('user already')) {
+        return const AuthResult(
+          success: false,
+          message: 'يوجد حساب بهذا الرقم بالفعل. استخدم تسجيل الدخول.',
+        );
+      }
+
+      return const AuthResult(
         success: false,
-        message: error.message,
+        message: 'تعذر إنشاء الحساب حالياً. حاول مرة أخرى.',
       );
     } catch (_) {
       return const AuthResult(
         success: false,
-        message: 'تعذر إنشاء الحساب حالياً',
+        message: 'تعذر إنشاء الحساب حالياً. حاول مرة أخرى.',
       );
     }
   }
