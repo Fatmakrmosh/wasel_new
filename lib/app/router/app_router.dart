@@ -29,7 +29,7 @@ import '../../features/driver/driver_home_screen.dart';
 import '../../features/company/company_registration_screen.dart';
 import '../../features/company/company_home_screen.dart';
 
-import '../../features/admin/admin_dashboard_screen.dart';
+import '../../features/admin/admin_gate_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/splash',
@@ -183,7 +183,7 @@ final GoRouter appRouter = GoRouter(
 
     GoRoute(
       path: '/admin',
-      builder: (_, _) => const AdminDashboardScreen(),
+      builder: (_, _) => const AdminGateScreen(),
     ),
   ],
 );
