@@ -18,11 +18,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool obscurePassword = true;
   bool isLoading = false;
+  final FocusNode passwordFocusNode = FocusNode();
 
   @override
   void dispose() {
     phoneController.dispose();
     passwordController.dispose();
+    passwordFocusNode.dispose();
     super.dispose();
   }
 
@@ -124,6 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 16),
               TextField(
                 controller: passwordController,
+                focusNode: passwordFocusNode,
                 obscureText: obscurePassword,
                 textInputAction: TextInputAction.done,
                 onSubmitted: (_) => _login(),
@@ -136,6 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         obscurePassword = !obscurePassword;
                       });
                     },
+                    focusNode: FocusNode(skipTraversal: true, canRequestFocus: false),
                     icon: Icon(
                       obscurePassword
                           ? Icons.visibility_outlined
