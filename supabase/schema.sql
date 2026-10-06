@@ -7,8 +7,8 @@ create table if not exists public.profiles (
   phone text not null unique,
   requested_account_type text not null default 'passenger'
     check (requested_account_type in ('passenger', 'driver', 'company')),
-  role text not null default 'user'
-    check (role in ('user', 'driver', 'company', 'supervisor', 'admin')),
+  role text not null default 'passenger'
+    check (role in ('passenger', 'driver', 'company', 'supervisor', 'admin')),
   is_active boolean not null default true,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
