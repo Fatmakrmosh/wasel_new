@@ -120,6 +120,38 @@ as $$
     );
 $$;
 
+create or replace function public.set_requested_account_type(account_type text)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $
+begin
+  if account_type not in ('passenger', 'driver', 'company') then
+    return false;
+  end if;
+
+  update public.profiles
+  set requested_account_type = account_type,
+      updated_at = now()
+  where id = auth.uid();
+
+  update auth.users
+  set raw_user_meta_data =
+        coalesce(raw_user_meta_data, '{}'::jsonb)
+        || jsonb_build_object(
+          'requested_account_type',
+          account_type
+        )
+  where id = auth.uid();
+
+  return found;
+end;
+$;
+
+grant execute on function public.set_requested_account_type(text)
+to authenticated;
+
 create or replace function public.phone_account_exists(normalized_phone text)
 returns boolean
 language sql
