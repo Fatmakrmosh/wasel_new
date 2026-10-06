@@ -14,6 +14,31 @@ class AccountScreen extends StatefulWidget {
 class _AccountScreenState extends State<AccountScreen> {
   bool notificationsEnabled = true;
   bool darkModeEnabled = true;
+  String? _role;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadRole();
+  }
+
+  Future<void> _loadRole() async {
+    final client = SupabaseService.client;
+    final user = client?.auth.currentUser;
+    if (client == null || user == null) return;
+    try {
+      final row = await client
+          .from('profiles')
+          .select('role,is_active')
+          .eq('id', user.id)
+          .maybeSingle();
+      if (!mounted) return;
+      final active = row?['is_active'] as bool? ?? false;
+      setState(() => _role = active ? row?['role']?.toString() : null);
+    } catch (_) {}
+  }
+
+  bool get _isAdminAccount => _role == 'admin' || _role == 'supervisor';
 
   void _showMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -535,6 +560,19 @@ class _AccountScreenState extends State<AccountScreen> {
               );
             },
           ),
+          if (_isAdminAccount) ...[
+            const SizedBox(height: 20),
+            _buildSectionTitle('الإدارة'),
+            const SizedBox(height: 8),
+            _buildAccountItem(
+              icon: Icons.admin_panel_settings_outlined,
+              title: _role == 'admin' ? 'إدارة النظام' : 'لوحة المشرف',
+              subtitle: _role == 'admin'
+                  ? 'إدارة المستخدمين والمشرفين والرحلات والصلاحيات'
+                  : 'إدارة المهام حسب الصلاحيات الممنوحة',
+              onTap: () => context.push('/admin'),
+            ),
+          ],
           const SizedBox(height: 20),
           _buildSectionTitle('خدمات واصل'),
           const SizedBox(height: 8),
