@@ -117,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(
                   labelText: 'رقم الهاتف',
-                  hintText: 'مثال: 09XXXXXXXX',
+                  hintText: 'مثال: 00249110033224',
                   prefixIcon: Icon(Icons.phone_outlined),
                 ),
               ),
