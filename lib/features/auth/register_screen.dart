@@ -24,6 +24,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final FocusNode phoneFocusNode = FocusNode();
   final FocusNode passwordFocusNode = FocusNode();
   final FocusNode confirmPasswordFocusNode = FocusNode();
+  final FocusNode passwordVisibilityFocusNode = FocusNode(
+    skipTraversal: true,
+    canRequestFocus: false,
+  );
+  final FocusNode confirmVisibilityFocusNode = FocusNode(
+    skipTraversal: true,
+    canRequestFocus: false,
+  );
 
   @override
   void dispose() {
@@ -34,6 +42,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     phoneFocusNode.dispose();
     passwordFocusNode.dispose();
     confirmPasswordFocusNode.dispose();
+    passwordVisibilityFocusNode.dispose();
+    confirmVisibilityFocusNode.dispose();
     super.dispose();
   }
 
@@ -192,7 +202,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         obscurePassword = !obscurePassword;
                       });
                     },
-                    focusNode: FocusNode(skipTraversal: true, canRequestFocus: false),
+                    focusNode: passwordVisibilityFocusNode,
                     icon: Icon(
                       obscurePassword
                           ? Icons.visibility_outlined
@@ -217,7 +227,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         obscureConfirmPassword = !obscureConfirmPassword;
                       });
                     },
-                    focusNode: FocusNode(skipTraversal: true, canRequestFocus: false),
+                    focusNode: confirmVisibilityFocusNode,
                     icon: Icon(
                       obscureConfirmPassword
                           ? Icons.visibility_outlined
