@@ -21,6 +21,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
   bool isLoading = false;
+  final FocusNode phoneFocusNode = FocusNode();
+  final FocusNode passwordFocusNode = FocusNode();
+  final FocusNode confirmPasswordFocusNode = FocusNode();
 
   @override
   void dispose() {
@@ -28,6 +31,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     phoneController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
+    phoneFocusNode.dispose();
+    passwordFocusNode.dispose();
+    confirmPasswordFocusNode.dispose();
     super.dispose();
   }
 
@@ -158,6 +164,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(height: 16),
               TextField(
                 controller: phoneController,
+                focusNode: phoneFocusNode,
                 keyboardType: TextInputType.phone,
                 textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(
@@ -169,8 +176,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(height: 16),
               TextField(
                 controller: passwordController,
+                focusNode: passwordFocusNode,
                 obscureText: obscurePassword,
                 textInputAction: TextInputAction.next,
+                onEditingComplete: () {
+                  passwordFocusNode.unfocus();
+                  confirmPasswordFocusNode.requestFocus();
+                },
                 decoration: InputDecoration(
                   labelText: 'كلمة المرور',
                   prefixIcon: const Icon(Icons.lock_outline),
@@ -180,6 +192,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         obscurePassword = !obscurePassword;
                       });
                     },
+                    focusNode: FocusNode(skipTraversal: true, canRequestFocus: false),
                     icon: Icon(
                       obscurePassword
                           ? Icons.visibility_outlined
@@ -191,6 +204,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(height: 16),
               TextField(
                 controller: confirmPasswordController,
+                focusNode: confirmPasswordFocusNode,
                 obscureText: obscureConfirmPassword,
                 textInputAction: TextInputAction.done,
                 onSubmitted: (_) => _continue(),
@@ -203,6 +217,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         obscureConfirmPassword = !obscureConfirmPassword;
                       });
                     },
+                    focusNode: FocusNode(skipTraversal: true, canRequestFocus: false),
                     icon: Icon(
                       obscureConfirmPassword
                           ? Icons.visibility_outlined
