@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/network/supabase_service.dart';
 import '../../core/theme/app_theme.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -75,6 +76,22 @@ class _AccountScreenState extends State<AccountScreen> {
     );
   }
 
+  Future<void> _logout() async {
+    final client = SupabaseService.client;
+    if (client == null) {
+      if (mounted) context.go('/login');
+      return;
+    }
+
+    try {
+      await client.auth.signOut();
+    } catch (_) {
+      // Keep navigation safe even if sign-out reports a client-side error.
+    }
+
+    if (mounted) context.go('/login');
+  }
+
   void _showLogoutDialog() {
     showDialog<void>(
       context: context,
@@ -108,9 +125,9 @@ class _AccountScreenState extends State<AccountScreen> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 Navigator.pop(context);
-                context.go('/login');
+                await _logout();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.lime,
