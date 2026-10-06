@@ -34,8 +34,9 @@ class _AccountScreenState extends State<AccountScreen> {
           .eq('id', user.id)
           .maybeSingle();
       if (!mounted) return;
-      final active = row?['is_active'] as bool? ?? false;
-      setState(() => _role = active ? row?['role']?.toString() : null);
+      final active = row?['is_active'] == true;
+      final role = row?['role']?.toString();
+      setState(() => _role = active ? role : null);
     } catch (_) {}
   }
 
