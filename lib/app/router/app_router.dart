@@ -72,7 +72,11 @@ final GoRouter appRouter = GoRouter(
 
     GoRoute(
       path: '/login',
-      builder: (_, _) => const LoginScreen(),
+      builder: (_, state) => LoginScreen(
+        message: state.uri.queryParameters['reason'] == 'auth'
+            ? 'يرجى تسجيل الدخول أولاً للوصول إلى هذه الصفحة.'
+            : null,
+      ),
     ),
 
     GoRoute(
