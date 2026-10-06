@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/network/supabase_service.dart';
 import '../../core/theme/app_theme.dart';
@@ -103,18 +104,34 @@ class _AccountScreenState extends State<AccountScreen> {
 
   Future<void> _logout() async {
     final client = SupabaseService.client;
+
     if (client == null) {
       if (mounted) context.go('/login');
       return;
     }
 
     try {
-      await client.auth.signOut();
+      // Logout locally first so the browser session is definitely cleared
+      // even if the network/Supabase request fails.
+      await client.auth.signOut(scope: SignOutScope.local);
     } catch (_) {
-      // Keep navigation safe even if sign-out reports a client-side error.
+      if (mounted) {
+        _showMessage('تعذر تسجيل الخروج. حاول مرة أخرى.');
+      }
+      return;
     }
 
-    if (mounted) context.go('/login');
+    // Make sure the router no longer sees an active session.
+    if (client.auth.currentSession != null) {
+      if (mounted) {
+        _showMessage('لم يتم إنهاء الجلسة. حاول مرة أخرى.');
+      }
+      return;
+    }
+
+    if (mounted) {
+      context.go('/login');
+    }
   }
 
   void _showLogoutDialog() {
