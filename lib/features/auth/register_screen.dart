@@ -33,6 +33,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
     canRequestFocus: false,
   );
 
+  void _togglePasswordVisibility() {
+    final selection = passwordController.selection;
+    setState(() {
+      obscurePassword = !obscurePassword;
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      passwordFocusNode.requestFocus();
+      passwordController.selection = selection;
+    });
+  }
+
+  void _toggleConfirmVisibility() {
+    final selection = confirmPasswordController.selection;
+    setState(() {
+      obscureConfirmPassword = !obscureConfirmPassword;
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      confirmPasswordFocusNode.requestFocus();
+      confirmPasswordController.selection = selection;
+    });
+  }
+
   @override
   void dispose() {
     nameController.dispose();
@@ -197,11 +221,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   labelText: 'كلمة المرور',
                   prefixIcon: const Icon(Icons.lock_outline),
                   suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        obscurePassword = !obscurePassword;
-                      });
-                    },
+                    onPressed: _togglePasswordVisibility,
                     focusNode: passwordVisibilityFocusNode,
                     icon: Icon(
                       obscurePassword
@@ -222,11 +242,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   labelText: 'تأكيد كلمة المرور',
                   prefixIcon: const Icon(Icons.lock_reset_outlined),
                   suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        obscureConfirmPassword = !obscureConfirmPassword;
-                      });
-                    },
+                    onPressed: _toggleConfirmVisibility,
                     focusNode: confirmVisibilityFocusNode,
                     icon: Icon(
                       obscureConfirmPassword
