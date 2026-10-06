@@ -24,9 +24,8 @@ class WaselAuthService {
     final normalized = SudanPhoneValidator.normalize(phone);
     final digits = normalized.substring(1).replaceAll('+', '');
 
-    // The app uses Email Auth internally while the user only sees
-    // their Sudanese phone number. Use the project's real Supabase
-    // domain instead of a non-public .internal domain.
+    // Temporary development bridge: users enter only their Sudanese
+    // phone number. Native Phone Auth/SMS can replace this later.
     return 'wasel_$digits@nxmsfpccezuhvhsfwipd.supabase.co';
   }
 
@@ -174,6 +173,7 @@ class WaselAuthService {
 
       return const AuthResult(success: true);
     } on AuthException catch (error) {
+      debugPrint('WASEL signUp AuthException code: ${error.code}');
       final message = error.message.toLowerCase();
       if (error.code == 'email_address_invalid' ||
           message.contains('email address') &&
@@ -203,7 +203,10 @@ class WaselAuthService {
         success: false,
         message: 'تعذر حفظ بيانات الحساب حالياً. حاول مرة أخرى.',
       );
-    } catch (_) {
+    } catch (error) {
+      debugPrint(
+        'WASEL signUp unexpected error: ${error.runtimeType}',
+      );
       return const AuthResult(
         success: false,
         message: 'تعذر إنشاء الحساب حالياً. حاول مرة أخرى.',
