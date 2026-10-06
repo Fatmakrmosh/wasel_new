@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/auth/wasel_auth_service.dart';
+import '../../core/network/supabase_service.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/widgets/wasel_button.dart';
 
@@ -72,7 +73,46 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     if (result.success) {
-      context.go('/home');
+      final user = WaselAuthService.instance.currentUser;
+      if (user != null) {
+        try {
+          final client = SupabaseService.client;
+          final profile = await client
+              ?.from('profiles')
+              .select('role,is_active')
+              .eq('id', user.id)
+              .maybeSingle();
+          final role = profile?['role'] as String?;
+          final isActive = profile?['is_active'] as bool? ?? false;
+
+          if (!isActive) {
+            await SupabaseService.client?.auth.signOut();
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('الحساب غير نشط حالياً.')),
+              );
+            }
+            return;
+          }
+
+          if (!mounted) return;
+
+          if (role == 'admin' || role == 'supervisor') {
+            context.go('/admin');
+          } else if (role == 'driver') {
+            context.go('/driver-home');
+          } else if (role == 'company') {
+            context.go('/company-home');
+          } else {
+            context.go('/home');
+          }
+          return;
+        } catch (_) {
+          // Fall back to the normal home screen if the profile cannot be read.
+        }
+      }
+
+      if (mounted) context.go('/home');
       return;
     }
 
