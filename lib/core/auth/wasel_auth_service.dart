@@ -23,7 +23,11 @@ class WaselAuthService {
   String _authEmail(String phone) {
     final normalized = SudanPhoneValidator.normalize(phone);
     final digits = normalized.substring(1).replaceAll('+', '');
-    return '$digits@auth.wasel.internal';
+
+    // The app uses Email Auth internally while the user only sees
+    // their Sudanese phone number. Use the project's real Supabase
+    // domain instead of a non-public .internal domain.
+    return 'wasel_$digits@nxmsfpccezuhvhsfwipd.supabase.co';
   }
 
   Future<bool?> phoneAccountExists(String phone) async {
@@ -171,6 +175,14 @@ class WaselAuthService {
       return const AuthResult(success: true);
     } on AuthException catch (error) {
       final message = error.message.toLowerCase();
+      if (error.code == 'email_address_invalid' ||
+          message.contains('email address') &&
+              message.contains('invalid')) {
+        return const AuthResult(
+          success: false,
+          message: 'تعذر إنشاء الحساب بسبب إعداد داخلي لخدمة الحساب. حاول مرة أخرى.',
+        );
+      }
       if (message.contains('already registered') ||
           message.contains('already exists') ||
           message.contains('user already') ||
