@@ -33,7 +33,7 @@ class SudanPhoneValidator {
     final phone = _clean(value);
 
     if (phone.startsWith('00249') && phone.length == 14) {
-      return '+249' + phone.substring(5);
+      return '+249${phone.substring(5)}';
     }
 
     if (phone.startsWith('+249') && phone.length == 13) {
@@ -41,7 +41,7 @@ class SudanPhoneValidator {
     }
 
     if (phone.startsWith('0') && phone.length == 10) {
-      return '+249' + phone.substring(1);
+      return '+249${phone.substring(1)}';
     }
 
     return phone;
