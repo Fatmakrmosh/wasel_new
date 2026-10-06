@@ -162,7 +162,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(
                   labelText: 'رقم الهاتف',
-                  hintText: 'مثال: 09XXXXXXXX',
+                  hintText: 'مثال: 00249110033224',
                   prefixIcon: Icon(Icons.phone_outlined),
                 ),
               ),
