@@ -42,13 +42,22 @@ class _AdminGateScreenState extends State<AdminGateScreen> {
 
       final role = row?['role'] as String?;
       final active = row?['is_active'] as bool? ?? false;
+      var hasSupervisorPermission = false;
+      if (role == 'supervisor' && active) {
+        final grants = await client
+            .from('user_permissions')
+            .select('permission_id')
+            .eq('user_id', user.id)
+            .limit(1);
+        hasSupervisorPermission = grants.isNotEmpty;
+      }
 
       if (!mounted) {
         return;
       }
 
       setState(() {
-        _allowed = active && (role == 'admin' || role == 'supervisor');
+        _allowed = active && (role == 'admin' || (role == 'supervisor' && hasSupervisorPermission));
         _loading = false;
       });
 
