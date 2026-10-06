@@ -6,7 +6,9 @@ import '../../core/theme/app_theme.dart';
 import '../../core/widgets/wasel_button.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({super.key, this.message});
+
+  final String? message;
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -19,12 +21,17 @@ class _LoginScreenState extends State<LoginScreen> {
   bool obscurePassword = true;
   bool isLoading = false;
   final FocusNode passwordFocusNode = FocusNode();
+  final FocusNode passwordVisibilityFocusNode = FocusNode(
+    skipTraversal: true,
+    canRequestFocus: false,
+  );
 
   @override
   void dispose() {
     phoneController.dispose();
     passwordController.dispose();
     passwordFocusNode.dispose();
+    passwordVisibilityFocusNode.dispose();
     super.dispose();
   }
 
@@ -139,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         obscurePassword = !obscurePassword;
                       });
                     },
-                    focusNode: FocusNode(skipTraversal: true, canRequestFocus: false),
+                    focusNode: passwordVisibilityFocusNode,
                     icon: Icon(
                       obscurePassword
                           ? Icons.visibility_outlined
