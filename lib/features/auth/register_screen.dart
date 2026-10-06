@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/auth/wasel_auth_service.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/widgets/wasel_button.dart';
 
@@ -19,6 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
+  bool isLoading = false;
 
   @override
   void dispose() {
@@ -29,42 +31,80 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  void _continue() {
+  Future<void> _continue() async {
+    if (isLoading) {
+      return;
+    }
+
     FocusScope.of(context).unfocus();
 
-    final name = nameController.text.trim();
-    final phone = phoneController.text.trim();
     final password = passwordController.text;
     final confirmPassword = confirmPasswordController.text;
 
-    if (name.isEmpty || phone.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('يرجى تعبئة جميع البيانات'),
-        ),
-      );
+    if (nameController.text.trim().isEmpty ||
+        phoneController.text.trim().isEmpty ||
+        password.isEmpty ||
+        confirmPassword.isEmpty) {
+      _showMessage('يرجى تعبئة جميع البيانات');
       return;
     }
 
     if (password.length < 6) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('كلمة المرور يجب أن تكون 6 أحرف أو أكثر'),
-        ),
-      );
+      _showMessage('كلمة المرور يجب أن تكون 6 أحرف أو أكثر');
       return;
     }
 
     if (password != confirmPassword) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('كلمتا المرور غير متطابقتين'),
-        ),
-      );
+      _showMessage('كلمتا المرور غير متطابقتين');
       return;
     }
 
-    context.go('/account-type');
+    setState(() {
+      isLoading = true;
+    });
+
+    final result = await WaselAuthService.instance.signUp(
+      name: nameController.text,
+      phone: phoneController.text,
+      password: password,
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      isLoading = false;
+    });
+
+    if (!result.success) {
+      _showMessage(result.message ?? 'تعذر إنشاء الحساب حالياً');
+      return;
+    }
+
+    if (WaselAuthService.instance.currentUser != null) {
+      context.go('/account-type');
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          result.message ?? 'تم إنشاء الحساب. يمكنك تسجيل الدخول الآن.',
+        ),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+    context.go('/login');
+  }
+
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
 
   @override
@@ -80,7 +120,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             padding: const EdgeInsets.fromLTRB(24, 20, 24, 32),
             children: [
               const SizedBox(height: 12),
-
               Center(
                 child: Image.asset(
                   'assets/images/wasel-logo.png',
@@ -89,9 +128,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   fit: BoxFit.contain,
                 ),
               ),
-
               const SizedBox(height: 20),
-
               const Text(
                 'أنشئ حسابك في WASEL',
                 textAlign: TextAlign.center,
@@ -100,9 +137,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   fontWeight: FontWeight.w800,
                 ),
               ),
-
               const SizedBox(height: 10),
-
               const Text(
                 'أدخل بياناتك للبدء في استخدام خدمات WASEL',
                 textAlign: TextAlign.center,
@@ -111,9 +146,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   fontSize: 15,
                 ),
               ),
-
               const SizedBox(height: 32),
-
               TextField(
                 controller: nameController,
                 textInputAction: TextInputAction.next,
@@ -122,9 +155,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   prefixIcon: Icon(Icons.person_outline),
                 ),
               ),
-
               const SizedBox(height: 16),
-
               TextField(
                 controller: phoneController,
                 keyboardType: TextInputType.phone,
@@ -135,9 +166,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   prefixIcon: Icon(Icons.phone_outlined),
                 ),
               ),
-
               const SizedBox(height: 16),
-
               TextField(
                 controller: passwordController,
                 obscureText: obscurePassword,
@@ -159,9 +188,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 16),
-
               TextField(
                 controller: confirmPasswordController,
                 obscureText: obscureConfirmPassword,
@@ -184,16 +211,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 28),
-
               WaselButton(
-                text: 'متابعة',
-                onPressed: _continue,
+                text: isLoading ? 'جارٍ إنشاء الحساب...' : 'متابعة',
+                onPressed: isLoading ? () {} : _continue,
               ),
-
               const SizedBox(height: 16),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -204,14 +227,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () => context.go('/login'),
+                    onPressed:
+                        isLoading ? null : () => context.go('/login'),
                     child: const Text('تسجيل الدخول'),
                   ),
                 ],
               ),
-
               const SizedBox(height: 12),
-
               const Text(
                 'بإنشاء الحساب، أنت توافق على شروط استخدام WASEL وسياسة الخصوصية.',
                 textAlign: TextAlign.center,
