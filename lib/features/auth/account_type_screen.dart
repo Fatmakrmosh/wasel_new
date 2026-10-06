@@ -1,10 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/auth/wasel_auth_service.dart';
 import '../../core/theme/app_theme.dart';
 
 class AccountTypeScreen extends StatelessWidget {
   const AccountTypeScreen({super.key});
+
+  Future<void> _select(
+    BuildContext context,
+    String accountType,
+    String route,
+  ) async {
+    final result =
+        await WaselAuthService.instance.setRequestedAccountType(accountType);
+
+    if (!context.mounted) {
+      return;
+    }
+
+    if (!result.success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content:
+              Text(result.message ?? 'تعذر حفظ نوع الحساب حالياً'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
+
+    context.go(route);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,18 +40,21 @@ class AccountTypeScreen extends StatelessWidget {
         title: 'راكب',
         subtitle: 'اطلب رحلات داخل المدينة وبين المدن وأرسل طرودك',
         icon: Icons.person_outline,
+        type: 'passenger',
         route: '/home',
       ),
       (
         title: 'سائق',
         subtitle: 'استقبل طلبات الرحلات وحقق دخلاً مع WASEL',
         icon: Icons.drive_eta_outlined,
+        type: 'driver',
         route: '/driver-register',
       ),
       (
         title: 'شركة نقل',
         subtitle: 'أدر رحلاتك ومركباتك وسائقيك عبر WASEL',
         icon: Icons.business_outlined,
+        type: 'company',
         route: '/company-register',
       ),
     ];
@@ -47,9 +77,7 @@ class AccountTypeScreen extends StatelessWidget {
                   fit: BoxFit.contain,
                 ),
               ),
-
               const SizedBox(height: 20),
-
               const Text(
                 'اختر نوع حسابك',
                 textAlign: TextAlign.center,
@@ -58,20 +86,16 @@ class AccountTypeScreen extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                 ),
               ),
-
               const SizedBox(height: 10),
-
               const Text(
-                'اختر الحساب المناسب لك للمتابعة في WASEL',
+                'اختيارك هنا يحدد مسار التسجيل فقط، ولا يمنح صلاحيات إدارية.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: AppColors.muted,
                   fontSize: 15,
                 ),
               ),
-
               const SizedBox(height: 32),
-
               ...items.map(
                 (item) => Padding(
                   padding: const EdgeInsets.only(bottom: 16),
@@ -79,15 +103,17 @@ class AccountTypeScreen extends StatelessWidget {
                     title: item.title,
                     subtitle: item.subtitle,
                     icon: item.icon,
-                    onTap: () => context.go(item.route),
+                    onTap: () => _select(
+                      context,
+                      item.type,
+                      item.route,
+                    ),
                   ),
                 ),
               ),
-
               const SizedBox(height: 8),
-
               const Text(
-                'يمكنك استخدام WASEL كراكب، أو التسجيل كسائق، أو إدارة خدمات النقل كشركة.',
+                'صلاحيات السائق والشركة والإدارة تُمنح من النظام ولا تُحدد من هذه الشاشة.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: AppColors.muted,
@@ -147,9 +173,7 @@ class _AccountTypeCard extends StatelessWidget {
                   size: 30,
                 ),
               ),
-
               const SizedBox(width: 16),
-
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -173,9 +197,7 @@ class _AccountTypeCard extends StatelessWidget {
                   ],
                 ),
               ),
-
               const SizedBox(width: 12),
-
               const Icon(
                 Icons.arrow_back_ios_new,
                 size: 17,
