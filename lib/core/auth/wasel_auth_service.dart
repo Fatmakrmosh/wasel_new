@@ -140,22 +140,8 @@ class WaselAuthService {
       );
     }
 
-    final exists = await phoneAccountExists(phone);
-
-    if (exists == true) {
-      return const AuthResult(
-        success: false,
-        message: 'يوجد حساب بهذا الرقم بالفعل. استخدم تسجيل الدخول.',
-      );
-    }
-
-    if (exists == null) {
-      return const AuthResult(
-        success: false,
-        message: 'تعذر التحقق من الرقم حالياً. حاول مرة أخرى.',
-      );
-    }
-
+    // Do not block registration on the optional account-existence RPC.
+    // Supabase Auth is the final authority for duplicate accounts.
     try {
       final normalizedPhone = SudanPhoneValidator.normalize(phone);
       final response = await client.auth.signUp(
@@ -187,7 +173,9 @@ class WaselAuthService {
       final message = error.message.toLowerCase();
       if (message.contains('already registered') ||
           message.contains('already exists') ||
-          message.contains('user already')) {
+          message.contains('user already') ||
+          message.contains('duplicate') ||
+          message.contains('unique')) {
         return const AuthResult(
           success: false,
           message: 'يوجد حساب بهذا الرقم بالفعل. استخدم تسجيل الدخول.',
@@ -197,6 +185,11 @@ class WaselAuthService {
       return const AuthResult(
         success: false,
         message: 'تعذر إنشاء الحساب حالياً. حاول مرة أخرى.',
+      );
+    } on PostgrestException catch (_) {
+      return const AuthResult(
+        success: false,
+        message: 'تعذر حفظ بيانات الحساب حالياً. حاول مرة أخرى.',
       );
     } catch (_) {
       return const AuthResult(
