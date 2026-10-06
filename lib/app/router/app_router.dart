@@ -1,5 +1,7 @@
 import 'package:go_router/go_router.dart';
 
+import '../../core/network/supabase_service.dart';
+
 import '../../features/splash/splash_screen.dart';
 import '../../features/onboarding/onboarding_screen.dart';
 import '../../features/language/language_screen.dart';
@@ -33,6 +35,21 @@ import '../../features/admin/admin_gate_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/splash',
+  redirect: (context, state) {
+    final loggedIn = SupabaseService.client?.auth.currentSession != null;
+    final publicRoute = ["/splash","/onboarding","/language","/login","/register"];
+    final isPublic = publicRoute.contains(state.uri.path);
+
+    if (!loggedIn && !isPublic) {
+      return '/login?reason=auth';
+    }
+
+    if (loggedIn && (state.uri.path == '/login' || state.uri.path == '/register')) {
+      return '/home';
+    }
+
+    return null;
+  },
   routes: [
     // =========================
     // البداية والمصادقة
