@@ -39,7 +39,10 @@ class WaselAuthService {
         'phone_account_exists',
         params: {'normalized_phone': normalized},
       );
+
       return result == true;
+    } on PostgrestException {
+      return null;
     } catch (_) {
       return null;
     }
