@@ -175,6 +175,7 @@ class WaselAuthService {
       return const AuthResult(success: true);
     } on AuthException catch (error) {
       debugPrint('WASEL signUp AuthException code: ${error.code}');
+debugPrint('WASEL signUp AuthException message: ${error.message}');
       final message = error.message.toLowerCase();
       if (error.code == 'email_address_invalid' ||
           message.contains('email address') &&
