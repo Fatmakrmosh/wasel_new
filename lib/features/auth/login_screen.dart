@@ -26,6 +26,18 @@ class _LoginScreenState extends State<LoginScreen> {
     canRequestFocus: false,
   );
 
+  void _togglePasswordVisibility() {
+    final selection = passwordController.selection;
+    setState(() {
+      obscurePassword = !obscurePassword;
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      passwordFocusNode.requestFocus();
+      passwordController.selection = selection;
+    });
+  }
+
   @override
   void dispose() {
     phoneController.dispose();
@@ -141,11 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   labelText: 'كلمة المرور',
                   prefixIcon: const Icon(Icons.lock_outline),
                   suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        obscurePassword = !obscurePassword;
-                      });
-                    },
+                    onPressed: _togglePasswordVisibility,
                     focusNode: passwordVisibilityFocusNode,
                     icon: Icon(
                       obscurePassword
