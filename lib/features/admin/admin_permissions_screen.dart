@@ -155,20 +155,28 @@ class _AdminPermissionsScreenState extends State<AdminPermissionsScreen> {
                 if (_supervisors.isEmpty)
                   _emptyCard('لا يوجد مشرفون حالياً. عيّن مستخدماً كمشرف أولاً.')
                 else
-                  ..._supervisors.map((s) => RadioListTile<String>(
-                    value: s['id'].toString(),
+                  RadioGroup<String>(
                     groupValue: _selectedSupervisor,
-                    onChanged: (v) { if (v != null) _selectSupervisor(v); },
-                    activeColor: AppColors.lime,
-                    tileColor: AppColors.surface,
-                    title: Text(s['full_name']?.toString().isNotEmpty == true
-                        ? s['full_name'].toString() : 'بدون اسم',
-                        textAlign: TextAlign.right,
-                        style: const TextStyle(color: Colors.white)),
-                    subtitle: Text(s['phone']?.toString() ?? '',
-                        textAlign: TextAlign.right,
-                        style: const TextStyle(color: Colors.white54)),
-                  )),
+                    onChanged: (v) {
+                      if (v != null) _selectSupervisor(v);
+                    },
+                    child: Column(
+                      children: [
+                        ..._supervisors.map((s) => RadioListTile<String>(
+                          value: s['id'].toString(),
+                          activeColor: AppColors.lime,
+                          tileColor: AppColors.surface,
+                          title: Text(s['full_name']?.toString().isNotEmpty == true
+                              ? s['full_name'].toString() : 'بدون اسم',
+                              textAlign: TextAlign.right,
+                              style: const TextStyle(color: Colors.white)),
+                          subtitle: Text(s['phone']?.toString() ?? '',
+                              textAlign: TextAlign.right,
+                              style: const TextStyle(color: Colors.white54)),
+                        )),
+                      ],
+                    ),
+                  ),
                 if (_selectedSupervisor != null) ...[
                   const SizedBox(height: 24),
                   const Text('الصلاحيات', textAlign: TextAlign.right,
