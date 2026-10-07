@@ -28,6 +28,7 @@ import '../../features/account/account_screen.dart';
 import '../../features/driver/driver_registration_screen.dart';
 import '../../features/driver/vehicle_registration_screen.dart';
 import '../../features/driver/driver_home_screen.dart';
+import '../../features/driver/driver_marketplace_screen.dart';
 
 import '../../features/company/company_registration_screen.dart';
 import '../../features/company/company_home_screen.dart';
@@ -190,7 +191,7 @@ final GoRouter appRouter = GoRouter(
 
     GoRoute(
       path: '/driver-home',
-      builder: (_, _) => const DriverHomeScreen(),
+      builder: (_, _) => const DriverMarketplaceScreen(),
     ),
 
     // =========================
