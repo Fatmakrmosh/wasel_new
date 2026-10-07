@@ -57,22 +57,6 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     }
   }
 
-  Future<void> _setActive(Map<String, dynamic> user, bool active) async {
-    final client = SupabaseService.client;
-    if (client == null) return;
-    if (!await _isCurrentUserAdmin()) {
-      _message('تفعيل وإيقاف الحسابات من صلاحيات المدير فقط');
-      return;
-    }
-    try {
-      // profiles currently has no is_active column, so activation is not
-      // exposed until that field is added to the database schema.
-      _message('حالة التفعيل غير مضافة لجدول الحسابات حالياً');
-    } catch (_) {
-      _message('تعذر تحديث حالة الحساب');
-    }
-  }
-
   Future<void> _changeRole(Map<String, dynamic> user, String role) async {
     if (!await _isCurrentUserAdmin()) {
       _message('تغيير الأدوار وصلاحيات المشرفين من صلاحيات المدير فقط');
@@ -138,16 +122,11 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                 _changeRole(user, value);
               },
             ),
-            const SizedBox(height: 14),
-            OutlinedButton.icon(
-              onPressed: () {
-                Navigator.pop(sheetContext);
-                _setActive(user, !active);
-              },
-              icon: Icon(active ? Icons.block_outlined : Icons.check_circle_outline,
-                  color: active ? Colors.redAccent : AppColors.lime),
-              label: Text(active ? 'إيقاف الحساب' : 'تفعيل الحساب',
-                  style: TextStyle(color: active ? Colors.redAccent : AppColors.lime)),
+            const SizedBox(height: 10),
+            const Text(
+              'حالة التفعيل ستُضاف عند اعتماد حقل حالة الحساب في قاعدة البيانات.',
+              textAlign: TextAlign.right,
+              style: TextStyle(color: Colors.white38, fontSize: 11, height: 1.5),
             ),
           ],
         ),
@@ -169,14 +148,6 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
       case 'supervisor': return 'مشرف';
       case 'driver': return 'سائق';
       case 'company': return 'شركة';
-      default: return 'مستخدم';
-    }
-  }
-
-  String _typeLabel(dynamic value) {
-    switch (value?.toString()) {
-      case 'driver': return 'طلب سائق';
-      case 'company': return 'طلب شركة';
       default: return 'مستخدم';
     }
   }
