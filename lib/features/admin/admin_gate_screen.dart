@@ -40,8 +40,8 @@ class _AdminGateScreenState extends State<AdminGateScreen> {
           .eq('id', user.id)
           .maybeSingle();
 
-      final role = row?['role'] as String?;
-      final active = row?['is_active'] as bool? ?? false;
+      final role = row?['role']?.toString();
+      final active = row?['is_active'] == true;
       var hasSupervisorPermission = false;
       if (role == 'supervisor' && active) {
         final grants = await client
