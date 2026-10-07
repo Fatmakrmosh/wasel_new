@@ -22,6 +22,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
 
     await AppLocale.setLanguage(language);
 
+    if (!mounted) return;
     context.go('/login');
   }
 
