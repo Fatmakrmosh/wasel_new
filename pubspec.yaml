@@ -28,6 +28,7 @@ dependencies:
 
   # OpenStreetMap / Nominatim requests
   http: ^1.6.0
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:
