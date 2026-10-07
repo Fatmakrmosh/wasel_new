@@ -1345,3 +1345,139 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
                     width: double.infinity,
                     height: 54,
                     child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(
+                          sheetContext,
+                        );
+                        _showReceipt(rating);
+                      },
+                      style:
+                          ElevatedButton.styleFrom(
+                        backgroundColor:
+                            AppColors.lime,
+                        foregroundColor:
+                            Colors.black,
+                        elevation: 0,
+                        shape:
+                            RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(
+                            16,
+                          ),
+                        ),
+                      ),
+                      child: const Text(
+                        'إرسال التقييم',
+                        style: TextStyle(
+                          fontWeight:
+                              FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showReceipt(int rating) {
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          backgroundColor: AppColors.surface,
+          title: const Text(
+            'إيصال الرحلة',
+            textAlign: TextAlign.center,
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.check_circle,
+                color: AppColors.lime,
+                size: 55,
+              ),
+              const SizedBox(height: 15),
+              _receiptRow(
+                'السائق',
+                'محمد أحمد',
+              ),
+              _receiptRow(
+                'المركبة',
+                'Toyota Corolla',
+              ),
+              _receiptRow(
+                'التقييم',
+                '$rating ⭐',
+              ),
+              _receiptRow(
+                'السعر',
+                '4,000 جنيه',
+              ),
+              _receiptRow(
+                'رقم الرحلة',
+                _activeRideId ??
+                    'WAS-R-10254',
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(
+                  dialogContext,
+                );
+                context.go('/home');
+              },
+              child: const Text(
+                'العودة للرئيسية',
+                style: TextStyle(
+                  color: AppColors.lime,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _receiptRow(
+    String title,
+    String value,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 6,
+      ),
+      child: Row(
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: Colors.grey.shade500,
+              fontSize: 12,
+            ),
+          ),
+          const Spacer(),
+          Flexible(
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
