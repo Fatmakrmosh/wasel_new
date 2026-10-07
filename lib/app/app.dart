@@ -22,7 +22,11 @@ class WaselApp extends StatelessWidget {
             Locale('ar'),
             Locale('en'),
           ],
-          localizationsDelegates: GlobalMaterialLocalizations.delegates,
+          localizationsDelegates: const [
+            GlobalCupertinoLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
           routerConfig: appRouter,
         );
       },
