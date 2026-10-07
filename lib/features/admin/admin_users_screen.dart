@@ -40,9 +40,21 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
   List<Map<String, dynamic>> get _filteredUsers =>
       _filter == 'all' ? _users : _users.where((u) => u['role'] == _filter).toList();
 
+  Future<bool> _isCurrentUserAdmin() async {
+    final client = SupabaseService.client;
+    final current = client?.auth.currentUser;
+    if (client == null || current == null) return false;
+    final row = await client.from('profiles').select('role,is_active').eq('id', current.id).maybeSingle();
+    return row?['role']?.toString() == 'admin' && row?['is_active'] == true;
+  }
+
   Future<void> _setActive(Map<String, dynamic> user, bool active) async {
     final client = SupabaseService.client;
     if (client == null) return;
+    if (!await _isCurrentUserAdmin()) {
+      _message('تفعيل وإيقاف الحسابات من صلاحيات المدير فقط');
+      return;
+    }
     try {
       await client.from('profiles').update({'is_active': active}).eq('id', user['id']);
       await _loadUsers();
@@ -53,6 +65,10 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
   }
 
   Future<void> _changeRole(Map<String, dynamic> user, String role) async {
+    if (!await _isCurrentUserAdmin()) {
+      _message('تغيير الأدوار وصلاحيات المشرفين من صلاحيات المدير فقط');
+      return;
+    }
     if (user['role'] == 'admin' && role != 'admin') {
       _message('لا تغيّر حساب المدير الرئيسي من هذه الشاشة');
       return;
