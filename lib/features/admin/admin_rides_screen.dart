@@ -131,7 +131,7 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Text(
-                              'رحلة #\${ride['id']}',
+                              'رحلة #${ride['id']}',
                               textAlign: TextAlign.right,
                               style: const TextStyle(
                                 color: Colors.white,
@@ -140,19 +140,19 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'الحالة: \${_statusLabel(ride['status'])}',
+                              'الحالة: ${_statusLabel(ride['status'])}',
                               textAlign: TextAlign.right,
                               style: const TextStyle(color: AppColors.lime),
                             ),
                             const SizedBox(height: 5),
                             Text(
-                              'السائق: \${ride['driver_id']?.toString() ?? 'غير محدد'}',
+                              'السائق: ${ride['driver_id']?.toString() ?? 'غير محدد'}',
                               textAlign: TextAlign.right,
                               style: const TextStyle(color: Colors.white54),
                             ),
                             const SizedBox(height: 5),
                             Text(
-                              'آخر تحديث: \${ride['updated_at']?.toString() ?? 'غير متوفر'}',
+                              'آخر تحديث: ${ride['updated_at']?.toString() ?? 'غير متوفر'}',
                               textAlign: TextAlign.right,
                               style: const TextStyle(color: Colors.white38),
                             ),
