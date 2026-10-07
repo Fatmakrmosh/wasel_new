@@ -79,7 +79,6 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
 
   void _showUser(Map<String, dynamic> user) {
     final role = user['role']?.toString() ?? 'passenger';
-    const active = true;
     showModalBottomSheet<void>(
       context: context,
       backgroundColor: AppColors.surface,
@@ -193,7 +192,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                     _chip('supervisor', 'المشرفون'), _chip('admin', 'المديرون'),
                   ]),
                   const SizedBox(height: 18),
-                  Text('النتائج: ' + users.length.toString(), textAlign: TextAlign.right,
+                  Text('النتائج: ${users.length}', textAlign: TextAlign.right,
                       style: const TextStyle(color: Colors.white54)),
                   const SizedBox(height: 10),
                   ...users.map((user) => Container(
@@ -211,7 +210,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                         style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
                       ),
                       subtitle: Text(
-                        (user['phone']?.toString() ?? '') + ' • ' + _roleLabel(user['role']),
+                        '${user['phone']?.toString() ?? ''} • ${_roleLabel(user['role'])}',
                         textAlign: TextAlign.right,
                         style: const TextStyle(color: Colors.white54),
                       ),
