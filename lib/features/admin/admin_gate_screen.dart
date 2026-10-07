@@ -34,22 +34,30 @@ class _AdminGateScreenState extends State<AdminGateScreen> {
     }
 
     try {
-      final row = await client
+      Map<String, dynamic>? row = await client
           .from('profiles')
-          .select('role,is_active')
+          .select('role')
           .eq('id', user.id)
           .maybeSingle();
 
-      final role = row?['role']?.toString();
-      final active = row?['is_active'] == true;
-      var hasSupervisorPermission = false;
-      if (role == 'supervisor' && active) {
+      if (row == null && user.phone != null && user.phone!.isNotEmpty) {
+        row = await client
+            .from('profiles')
+            .select('role')
+            .eq('phone', user.phone!)
+            .maybeSingle();
+      }
+
+      final role = row?['role']?.toString().trim().toLowerCase();
+      var allowed = role == 'admin';
+
+      if (role == 'supervisor') {
         final grants = await client
             .from('user_permissions')
             .select('permission_id')
             .eq('user_id', user.id)
             .limit(1);
-        hasSupervisorPermission = grants.isNotEmpty;
+        allowed = grants.isNotEmpty;
       }
 
       if (!mounted) {
@@ -57,7 +65,7 @@ class _AdminGateScreenState extends State<AdminGateScreen> {
       }
 
       setState(() {
-        _allowed = active && (role == 'admin' || (role == 'supervisor' && hasSupervisorPermission));
+        _allowed = allowed;
         _loading = false;
       });
 
