@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: AppLocale.isEnglish ? TextDirection.ltr : TextDirection.rtl,,
+      textDirection: AppLocale.isEnglish ? TextDirection.ltr : TextDirection.rtl,
       child: Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(
@@ -149,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   AppStrings.homeWelcome,
                   style: TextStyle(
                     fontSize: 27,
@@ -157,7 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 const SizedBox(height: 6),
-                const Text(
+                Text(
                   AppStrings.whereToday,
                   style: TextStyle(
                     color: AppColors.muted,
@@ -167,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 20),
                 _buildAnnouncement(),
                 const SizedBox(height: 26),
-                const Text(
+                Text(
                   AppStrings.services,
                   style: TextStyle(
                     fontSize: 21,
