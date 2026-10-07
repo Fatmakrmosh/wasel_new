@@ -13,6 +13,7 @@ class AdminDashboardScreen extends StatefulWidget {
 class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   bool _loading = true;
   String _role = 'supervisor';
+  Set<String> _permissionCodes = {};
   int _users = 0;
   int _drivers = 0;
   int _companies = 0;
@@ -27,13 +28,32 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     if (client == null || user == null) return;
     try {
       final profile = await client.from('profiles').select('role').eq('id', user.id).maybeSingle();
+      final role = profile?['role']?.toString() ?? 'supervisor';
+      final grants = role == 'supervisor'
+          ? await client.from('user_permissions').select('permission_id').eq('user_id', user.id)
+          : const <Map<String, dynamic>>[];
+      final permissionIds = grants
+          .map((row) => (row['permission_id'] as num).toInt())
+          .toList();
+      var permissionCodes = <String>{};
+      if (permissionIds.isNotEmpty) {
+        final permissions = await client
+            .from('permissions')
+            .select('id,code')
+            .inFilter('id', permissionIds);
+        permissionCodes = permissions
+            .map<String>((row) => row['code'].toString().toLowerCase())
+            .toSet();
+      }
+
       final users = await client.from('profiles').select('id').eq('role', 'passenger');
       final drivers = await client.from('profiles').select('id').eq('role', 'driver');
       final companies = await client.from('profiles').select('id').eq('role', 'company');
       final supervisors = await client.from('profiles').select('id').eq('role', 'supervisor');
       if (!mounted) return;
       setState(() {
-        _role = profile?['role']?.toString() ?? 'supervisor';
+        _role = role;
+        _permissionCodes = permissionCodes;
         _users = users.length;
         _drivers = drivers.length;
         _companies = companies.length;
@@ -48,6 +68,24 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   }
 
   bool get _isAdmin => _role == 'admin';
+
+  bool _can(String area) {
+    if (_isAdmin) return true;
+    if (_role != 'supervisor') return false;
+    if (_permissionCodes.contains('manage_all') || _permissionCodes.contains('admin_all')) return true;
+
+    const aliases = <String, List<String>>{
+      'users': ['user', 'account', 'passenger'],
+      'drivers': ['driver'],
+      'companies': ['company'],
+      'rides': ['ride', 'trip', 'route'],
+      'parcels': ['parcel', 'package', 'shipment'],
+      'permissions': ['permission', 'supervisor'],
+      'settings': ['setting', 'system'],
+    };
+    return _permissionCodes.any((code) =>
+        aliases[area]?.any((word) => code.contains(word)) ?? false);
+  }
 
   void _message(String message) {
     if (!mounted) return;
@@ -107,12 +145,13 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             const SizedBox(height: 24),
             _section('الإدارة'),
             const SizedBox(height: 10),
-            _action(
-              'المستخدمون والحسابات',
-              'عرض الحسابات وتغيير الدور وإيقاف الحساب',
-              Icons.people_alt_outlined,
-              () => context.push('/admin/users'),
-            ),
+            if (_can('users'))
+              _action(
+                'المستخدمون والحسابات',
+                'عرض الحسابات وإدارة الحسابات حسب الصلاحية',
+                Icons.people_alt_outlined,
+                () => context.push('/admin/users'),
+              ),
             if (_isAdmin)
               _action(
                 'المشرفون والصلاحيات',
@@ -120,19 +159,21 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 Icons.admin_panel_settings_outlined,
                 () => context.push('/admin/permissions'),
               ),
-            _action(
+            if (_can('drivers'))
+              _action(
               'مراجعة السائقين',
               'طلبات السائقين والوثائق والمركبات والتأمين',
               Icons.fact_check_outlined,
               () => _message('قسم مراجعة السائقين سيتم ربطه ببيانات الطلبات في الخطوة التالية'),
             ),
-            _action(
+            if (_can('rides'))
+              _action(
               'الرحلات والمتابعة',
               'مراقبة الرحلات والحالات',
               Icons.route_outlined,
               () => _message('قسم الرحلات سيتم ربطه بالبيانات الفعلية'),
             ),
-            if (_isAdmin)
+            if (_isAdmin || _can('settings'))
               _action(
                 'إعدادات النظام',
                 'الإعدادات العامة للمنصة',
