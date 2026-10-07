@@ -272,8 +272,10 @@ class _DriverRegistrationScreenState
                     color: AppColors.lime,
                   ),
                   title: const Text('تصوير بالكاميرا'),
-                  onTap: () =>
-                      Navigator.pop(sheetContext, ImageSource.camera),
+                  onTap: () => Navigator.pop(
+                    sheetContext,
+                    ImageSource.camera,
+                  ),
                 ),
                 ListTile(
                   leading: const Icon(
@@ -281,8 +283,10 @@ class _DriverRegistrationScreenState
                     color: AppColors.lime,
                   ),
                   title: const Text('اختيار من الهاتف'),
-                  onTap: () =>
-                      Navigator.pop(sheetContext, ImageSource.gallery),
+                  onTap: () => Navigator.pop(
+                    sheetContext,
+                    ImageSource.gallery,
+                  ),
                 ),
               ],
             ),
@@ -291,7 +295,9 @@ class _DriverRegistrationScreenState
       },
     );
 
-    if (source == null) return;
+    if (source == null) {
+      return;
+    }
 
     try {
       final photo = await _picker.pickImage(
@@ -300,12 +306,15 @@ class _DriverRegistrationScreenState
         maxWidth: 2000,
         maxHeight: 2000,
       );
-      if (photo == null || !mounted) return;
+
+      if (photo == null || !mounted) {
+        return;
+      }
 
       setState(() {
         if (document == 'الهوية الوطنية') {
           nationalIdPhoto = photo;
-        } else {
+        } else if (document == 'رخصة القيادة') {
           drivingLicensePhoto = photo;
         }
       });
@@ -557,7 +566,13 @@ class _DriverRegistrationScreenState
                 if (nationalId.isEmpty) {
                   return 'يرجى إدخال الرقم الوطني';
                 }
-                if (!RegExp(r'^\d{11}
+                if (nationalId.length != 11 ||
+                    int.tryParse(nationalId) == null) {
+                  return 'الرقم الوطني يجب أن يتكون من 11 رقمًا';
+                }
+                return null;
+              },
+            ),
             const SizedBox(height: 13),
             InkWell(
               onTap: _selectBirthDate,
@@ -726,312 +741,6 @@ class _DriverRegistrationScreenState
                   Expanded(
                     child: Text(
                       'تنبيه: ارفع صورًا أصلية وواضحة وغير معدلة بفلتر أو فوتوشوب أو أي برنامج تعديل. الصور غير الواضحة أو المعدلة قد تُرفض عند المراجعة.',
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 11,
-                        height: 1.6,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 25),
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: CheckboxListTile(
-                value: agreedToTerms,
-                onChanged: (value) {
-                  setState(() {
-                    agreedToTerms = value ?? false;
-                  });
-                },
-                activeColor: AppColors.lime,
-                checkColor: Colors.black,
-                controlAffinity: ListTileControlAffinity.leading,
-                title: const Text(
-                  'أوافق على شروط وأحكام التسجيل كسائق في منصة واصل.',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 12,
-                    height: 1.5,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 25),
-            SizedBox(
-              height: 54,
-              child: ElevatedButton(
-                onPressed: _submit,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.lime,
-                  foregroundColor: Colors.black,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'متابعة',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(width: 8),
-                    Icon(
-                      Icons.arrow_forward_rounded,
-                      size: 21,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeader() {
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            AppColors.lime.withValues(alpha: 0.16),
-            AppColors.surface,
-          ],
-        ),
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(
-          color: AppColors.lime.withValues(alpha: 0.20),
-        ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 58,
-            height: 58,
-            decoration: const BoxDecoration(
-              color: AppColors.lime,
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.drive_eta_rounded,
-              color: Colors.black,
-              size: 31,
-            ),
-          ),
-          const SizedBox(width: 14),
-          const Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  'انضم إلى سائقي واصل',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 6),
-                Text(
-                  'أكمل بياناتك للبدء في إجراءات التسجيل والمراجعة.',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                    color: Colors.white60,
-                    fontSize: 12,
-                    height: 1.5,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}).hasMatch(nationalId)) {
-                  return 'الرقم الوطني يجب أن يتكون من 11 رقمًا';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 13),
-            InkWell(
-              onTap: _selectBirthDate,
-              borderRadius: BorderRadius.circular(15),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 17,
-                ),
-                decoration: BoxDecoration(
-                  color: AppColors.surface,
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(
-                    color: Colors.white10,
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.calendar_month_outlined,
-                      color: AppColors.lime,
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        birthDate == null
-                            ? 'اختر تاريخ الميلاد'
-                            : '${birthDate!.day.toString().padLeft(2, '0')}/${birthDate!.month.toString().padLeft(2, '0')}/${birthDate!.year}',
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                          color: birthDate == null
-                              ? Colors.white54
-                              : Colors.white,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                    const Text(
-                      'تاريخ الميلاد',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 13),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 2,
-              ),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(
-                  color: Colors.white10,
-                ),
-              ),
-              child: DropdownButtonFormField<String>(
-                initialValue: selectedCity,
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  labelText: 'مدينة العمل',
-                  labelStyle: TextStyle(
-                    color: Colors.white54,
-                  ),
-                  prefixIcon: Icon(
-                    Icons.location_city_outlined,
-                    color: AppColors.lime,
-                  ),
-                ),
-                dropdownColor: const Color(0xFF252525),
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                ),
-                items: cities.map((city) {
-                  return DropdownMenuItem<String>(
-                    value: city,
-                    child: Text(city),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  if (value != null) {
-                    setState(() {
-                      selectedCity = value;
-                    });
-                  }
-                },
-              ),
-            ),
-            const SizedBox(height: 13),
-            _buildTextField(
-              controller: addressController,
-              label: 'العنوان',
-              icon: Icons.home_outlined,
-              hint: 'الحي / المنطقة',
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return 'يرجى إدخال العنوان';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 28),
-            _buildSectionTitle('المستندات'),
-            const Text(
-              'يجب تقديم المستندات المطلوبة حتى تتمكن إدارة واصل من مراجعة طلبك.',
-              textAlign: TextAlign.right,
-              style: TextStyle(
-                color: Colors.white54,
-                fontSize: 12,
-                height: 1.5,
-              ),
-            ),
-            const SizedBox(height: 13),
-            _buildDocumentCard(
-              title: 'الهوية الشخصية',
-              subtitle: 'صورة واضحة من الهوية',
-              icon: Icons.badge_outlined,
-              uploaded: hasNationalId,
-              onTap: () {
-                setState(() {
-                  hasNationalId = !hasNationalId;
-                });
-              },
-            ),
-            _buildDocumentCard(
-              title: 'رخصة القيادة',
-              subtitle: 'صورة واضحة من رخصة القيادة',
-              icon: Icons.credit_card_outlined,
-              uploaded: hasDrivingLicense,
-              onTap: () {
-                setState(() {
-                  hasDrivingLicense = !hasDrivingLicense;
-                });
-              },
-            ),
-            const SizedBox(height: 16),
-            Container(
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                color: AppColors.lime.withValues(alpha: 0.06),
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(
-                  color: AppColors.lime.withValues(alpha: 0.18),
-                ),
-              ),
-              child: const Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.info_outline_rounded,
-                    color: AppColors.lime,
-                    size: 20,
-                  ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      'هذه الشاشة مجهزة حاليًا لواجهة المستندات. سيتم ربط رفع الصور والتخزين والتحقق من المستندات بالواجهة الخلفية لاحقًا.',
                       textAlign: TextAlign.right,
                       style: TextStyle(
                         color: Colors.white70,
