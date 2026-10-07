@@ -196,17 +196,24 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             if (_can('drivers'))
               _action(
               'مراجعة السائقين',
-              'طلبات السائقين والوثائق والمركبات والتأمين',
+              'عرض حسابات السائقين ومراجعة بياناتهم',
               Icons.fact_check_outlined,
-              () => _message('قسم مراجعة السائقين سيتم ربطه ببيانات الطلبات في الخطوة التالية'),
+              () => context.push('/admin/users?filter=driver'),
             ),
             if (_can('rides'))
               _action(
               'الرحلات والمتابعة',
-              'مراقبة الرحلات والحالات',
+              'مراقبة الرحلات وحالاتها من البيانات الفعلية',
               Icons.route_outlined,
-              () => _message('قسم الرحلات سيتم ربطه بالبيانات الفعلية'),
+              () => context.push('/admin/rides'),
             ),
+            if (_can('companies'))
+              _action(
+                'إدارة الشركات',
+                'عرض حسابات شركات النقل المسجلة',
+                Icons.business_outlined,
+                () => context.push('/admin/users?filter=company'),
+              ),
             if (_isAdmin || _can('settings'))
               _action(
                 'إعدادات النظام',
