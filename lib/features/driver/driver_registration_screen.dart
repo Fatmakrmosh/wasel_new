@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../core/theme/app_theme.dart';
@@ -544,6 +545,9 @@ class _DriverRegistrationScreenState
               hint: 'أدخل الرقم الوطني',
               keyboardType: TextInputType.number,
               maxLength: 11,
+              inputFormatters: const [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
               validator: (value) {
                 final nationalId = value?.trim() ?? '';
                 if (nationalId.isEmpty) {
