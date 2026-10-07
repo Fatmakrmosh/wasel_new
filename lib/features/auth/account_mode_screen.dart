@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/auth/wasel_auth_service.dart';
 import '../../core/localization/app_locale.dart';
-import '../../core/localization/app_strings.dart';
 import '../../core/theme/app_theme.dart';
 
 class AccountModeScreen extends StatelessWidget {
