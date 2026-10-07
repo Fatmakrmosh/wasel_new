@@ -249,6 +249,18 @@ debugPrint('WASEL signUp AuthException message: ${error.message}');
         );
       }
 
+      try {
+        await client.auth.updateUser(
+          UserAttributes(
+            data: {
+              'requested_account_type': accountType,
+            },
+          ),
+        );
+      } catch (_) {
+        // The secure RPC remains the source of truth if metadata refresh fails.
+      }
+
       return const AuthResult(success: true);
     } catch (_) {
       return const AuthResult(
@@ -270,4 +282,9 @@ debugPrint('WASEL signUp AuthException message: ${error.message}');
   Session? get session => _client?.auth.currentSession;
 
   User? get currentUser => _client?.auth.currentUser;
+
+  String? get requestedAccountType {
+    final value = currentUser?.userMetadata?['requested_account_type'];
+    return value is String ? value : null;
+  }
 }
