@@ -83,6 +83,8 @@ class _LoginScreenState extends State<LoginScreen> {
               .eq('id', user.id)
               .maybeSingle();
           final role = profile?['role'] as String?;
+          final requestedType =
+              WaselAuthService.instance.requestedAccountType;
           if (!mounted) return;
 
           if (role == 'admin' || role == 'supervisor') {
@@ -91,6 +93,10 @@ class _LoginScreenState extends State<LoginScreen> {
             context.go('/driver-home');
           } else if (role == 'company') {
             context.go('/company-home');
+          } else if (requestedType == 'driver') {
+            context.go('/driver-register');
+          } else if (requestedType == 'company') {
+            context.go('/company-register');
           } else {
             context.go('/home');
           }
