@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
+import '../../../core/network/ride_market_service.dart';
 import '../../../core/theme/app_theme.dart';
 import 'city_ride_request.dart';
 
@@ -845,14 +846,43 @@ class _CityRideScreenState extends State<CityRideScreen> {
                                   .trim(),
                         );
 
-                        Navigator.pop(
-                          sheetContext,
-                        );
+                        try {
+                          final rideId =
+                              await RideMarketService.createRideRequest(
+                            pickupLat: request.pickupPoint.latitude,
+                            pickupLng: request.pickupPoint.longitude,
+                            destinationLat:
+                                request.destinationPoint.latitude,
+                            destinationLng:
+                                request.destinationPoint.longitude,
+                            pickupAddress: request.pickupLabel,
+                            destinationAddress:
+                                request.destinationLabel,
+                            vehicleType: request.vehicleType,
+                            passengers: request.passengers,
+                            suggestedFare: request.estimatedFare,
+                            notes: request.notes,
+                          );
 
-                        context.push(
-                          '/driver-offers',
-                          extra: request,
-                        );
+                          if (!mounted || rideId == null) {
+                            return;
+                          }
+
+                          Navigator.pop(sheetContext);
+
+                          context.push(
+                            '/driver-offers?rideId=$rideId',
+                            extra: request,
+                          );
+                        } catch (_) {
+                          if (!mounted) {
+                            return;
+                          }
+
+                          _showMessage(
+                            'تعذر إرسال طلب الرحلة. حاول مرة أخرى.',
+                          );
+                        }
                       },
                       style:
                           ElevatedButton.styleFrom(
