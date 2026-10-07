@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/network/supabase_service.dart';
 import '../../core/theme/app_theme.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,47 +12,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
-  bool _canManage = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadManagementAccess();
-  }
-
-  Future<void> _loadManagementAccess() async {
-    final client = SupabaseService.client;
-    final user = client?.auth.currentUser;
-    if (client == null || user == null) return;
-
-    try {
-      Map<String, dynamic>? row = await client
-          .from('profiles')
-          .select('role')
-          .eq('id', user.id)
-          .maybeSingle();
-
-      if (row == null && user.phone != null && user.phone!.isNotEmpty) {
-        row = await client
-            .from('profiles')
-            .select('role')
-            .eq('phone', user.phone!)
-            .maybeSingle();
-      }
-
-      final role = row?['role']?.toString().trim().toLowerCase();
-
-      if (!mounted) return;
-      setState(() {
-        _canManage = role == 'admin' || role == 'supervisor';
-      });
-    } catch (_) {
-      if (mounted) {
-        setState(() => _canManage = false);
-      }
-    }
-  }
-
   final services = const [
     (
       icon: Icons.location_on_outlined,
