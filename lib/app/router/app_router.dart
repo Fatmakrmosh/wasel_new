@@ -27,7 +27,6 @@ import '../../features/account/account_screen.dart';
 
 import '../../features/driver/driver_registration_screen.dart';
 import '../../features/driver/vehicle_registration_screen.dart';
-import '../../features/driver/driver_home_screen.dart';
 import '../../features/driver/driver_marketplace_screen.dart';
 
 import '../../features/company/company_registration_screen.dart';
