@@ -11,6 +11,7 @@ class AdminPermissionsScreen extends StatefulWidget {
 
 class _AdminPermissionsScreenState extends State<AdminPermissionsScreen> {
   bool _loading = true;
+  bool _isAdmin = false;
   List<Map<String, dynamic>> _supervisors = [];
   List<Map<String, dynamic>> _permissions = [];
   String? _selectedSupervisor;
@@ -24,6 +25,17 @@ class _AdminPermissionsScreenState extends State<AdminPermissionsScreen> {
     if (client == null) return;
     setState(() => _loading = true);
     try {
+      final current = client.auth.currentUser;
+      if (current == null) return;
+      final profile = await client.from('profiles').select('role,is_active').eq('id', current.id).maybeSingle();
+      final isAdmin = profile?['role']?.toString() == 'admin' && profile?['is_active'] == true;
+      if (!isAdmin) {
+        if (mounted) {
+          setState(() { _isAdmin = false; _loading = false; });
+        }
+        return;
+      }
+
       final supervisors = await client.from('profiles').select('id,full_name,phone,is_active,created_at')
           .eq('role', 'supervisor').order('created_at', ascending: false);
       final permissions = await client.from('permissions').select('id,code,label_ar').order('id');
@@ -32,6 +44,7 @@ class _AdminPermissionsScreenState extends State<AdminPermissionsScreen> {
           : await client.from('user_permissions').select('permission_id').eq('user_id', _selectedSupervisor!);
       if (!mounted) return;
       setState(() {
+        _isAdmin = true;
         _supervisors = List<Map<String, dynamic>>.from(supervisors);
         _permissions = List<Map<String, dynamic>>.from(permissions);
         _granted = grants.map<int>((row) => (row['permission_id'] as num).toInt()).toSet();
@@ -78,6 +91,23 @@ class _AdminPermissionsScreenState extends State<AdminPermissionsScreen> {
     final selected = _supervisors.where((s) => s['id'] == _selectedSupervisor);
     final selectedName = selected.isEmpty ? null : (selected.first['full_name']?.toString().isNotEmpty == true
         ? selected.first['full_name'].toString() : selected.first['phone']?.toString());
+
+    if (!_isAdmin && !_loading) {
+      return Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          backgroundColor: AppColors.background,
+          title: const Text('صلاحيات المشرفين', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        ),
+        body: const Center(
+          child: Text(
+            'هذه الصفحة متاحة للمدير فقط',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white70, fontSize: 16),
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       backgroundColor: AppColors.background,
