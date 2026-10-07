@@ -158,34 +158,24 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           actions: [
-            IconButton(
-              tooltip: 'الإشعارات',
-              onPressed: () => context.push('/notifications'),
-              icon: const Icon(Icons.notifications_none),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8),
-              child: TextButton.icon(
-                  onPressed: _canManage ? () => context.push('/admin') : null,
+            if (_canManage)
+              Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: FilledButton.icon(
+                  onPressed: () => context.push('/admin'),
                   icon: const Icon(
                     Icons.admin_panel_settings_outlined,
                     size: 19,
                   ),
                   label: const Text('الإدارة'),
-                  style: TextButton.styleFrom(
-                    foregroundColor: AppColors.lime,
-                    disabledForegroundColor: Colors.white30,
-                    backgroundColor: _canManage
-                        ? AppColors.lime.withValues(alpha: 0.10)
-                        : Colors.white.withValues(alpha: 0.04),
-                    side: BorderSide(
-                      color: AppColors.lime.withValues(alpha: 0.30),
-                    ),
+                  style: FilledButton.styleFrom(
+                    foregroundColor: Colors.black,
+                    backgroundColor: AppColors.lime,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(13),
                     ),
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 11,
+                      horizontal: 12,
                       vertical: 8,
                     ),
                     minimumSize: const Size(0, 40),
