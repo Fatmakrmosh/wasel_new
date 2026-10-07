@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../../core/auth/wasel_auth_service.dart';
 import '../../core/network/supabase_service.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/localization/app_locale.dart';
+import '../../core/localization/app_strings.dart';
 import '../../core/widgets/wasel_button.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -110,15 +112,15 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    final message = result.message ?? 'تعذر تسجيل الدخول حالياً';
+    final message = result.message ?? (AppLocale.isEnglish ? 'Unable to log in right now' : 'تعذر تسجيل الدخول حالياً');
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
         behavior: SnackBarBehavior.floating,
-        action: message.contains('إنشاء حساب')
+        action: message.contains('إنشاء حساب') || message.contains('Create an account')
             ? SnackBarAction(
-                label: 'إنشاء حساب',
+                label: AppStrings.createAccount.replaceFirst('Create a new account', 'Create account'),
                 onPressed: () => context.go('/register'),
               )
             : null,
@@ -129,10 +131,10 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: AppLocale.isEnglish ? TextDirection.ltr : TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('تسجيل الدخول'),
+          title: Text(AppStrings.login),
         ),
         body: SafeArea(
           child: ListView(
@@ -148,8 +150,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              const Text(
-                'مرحباً بك في WASEL',
+              Text(
+                AppStrings.welcome,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 28,
@@ -157,8 +159,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
-                'ادخل إلى حسابك لمتابعة رحلاتك وطرودك',
+              Text(
+                AppStrings.loginSubtitle,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: AppColors.muted,
@@ -170,9 +172,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: phoneController,
                 keyboardType: TextInputType.phone,
                 textInputAction: TextInputAction.next,
-                decoration: const InputDecoration(
-                  labelText: 'رقم الهاتف',
-                  hintText: 'مثال: 00249110033224',
+                decoration: InputDecoration(
+                  labelText: AppStrings.phone,
+                  hintText: AppStrings.phoneHint,
                   prefixIcon: Icon(Icons.phone_outlined),
                 ),
               ),
@@ -184,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 textInputAction: TextInputAction.done,
                 onSubmitted: (_) => _login(),
                 decoration: InputDecoration(
-                  labelText: 'كلمة المرور',
+                  labelText: AppStrings.password,
                   prefixIcon: const Icon(Icons.lock_outline),
                   suffixIcon: IconButton(
                     onPressed: _togglePasswordVisibility,
@@ -203,19 +205,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: TextButton(
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
+                      SnackBar(
                         content: Text(
-                          'سيتم تفعيل استعادة كلمة المرور لاحقاً',
+                          AppStrings.passwordRecoveryLater,
                         ),
                       ),
                     );
                   },
-                  child: const Text('نسيت كلمة المرور؟'),
+                  child: Text(AppStrings.forgotPassword),
                 ),
               ),
               const SizedBox(height: 16),
               WaselButton(
-                text: isLoading ? 'جارٍ تسجيل الدخول...' : 'دخول',
+                text: isLoading ? AppStrings.loggingIn : AppStrings.enter,
                 onPressed: isLoading ? () {} : _login,
               ),
               const SizedBox(height: 16),
@@ -225,7 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Text(
-                      'أو',
+                      AppStrings.or,
                       style: TextStyle(
                         color: Colors.white.withValues(alpha: 0.5),
                       ),
@@ -241,12 +243,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: OutlinedButton(
                   onPressed:
                       isLoading ? null : () => context.go('/register'),
-                  child: const Text('إنشاء حساب جديد'),
+                  child: Text(AppStrings.createAccount),
                 ),
               ),
               const SizedBox(height: 24),
-              const Text(
-                'بتسجيل الدخول، أنت توافق على شروط استخدام WASEL وسياسة الخصوصية.',
+              Text(
+                AppStrings.terms,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: AppColors.muted,
