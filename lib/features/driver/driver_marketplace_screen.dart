@@ -54,7 +54,9 @@ class _DriverMarketplaceScreenState extends State<DriverMarketplaceScreen> {
     if (mounted && !silent) setState(() => _isLoading = true);
     try {
       final requests = await RideMarketService.listPendingRides();
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       setState(() { _requests = requests; _isLoading = false; });
       await _loadActiveRide();
     } catch (_) {
@@ -97,7 +99,9 @@ class _DriverMarketplaceScreenState extends State<DriverMarketplaceScreen> {
   }
 
   Future<void> _syncLocation() async {
-    if (!_locationPermissionGranted) return;
+    if (!_locationPermissionGranted) {
+      return;
+    }
     try {
       final position = await Geolocator.getCurrentPosition(locationSettings: const LocationSettings(accuracy: LocationAccuracy.high));
       if (!mounted) return;
@@ -113,13 +117,26 @@ class _DriverMarketplaceScreenState extends State<DriverMarketplaceScreen> {
   }
 
   Future<void> _setAvailability(bool value) async {
-    setState(() => _isAvailable = value);
-    if (value) await _refreshAll();
-    else if (mounted) setState(() => _requests = []);
+    setState(() {
+      _isAvailable = value;
+    });
+
+    if (value) {
+      await _refreshAll();
+      return;
+    }
+
+    if (mounted) {
+      setState(() {
+        _requests = [];
+      });
+    }
   }
 
   Future<void> _showOfferSheet(Map<String, dynamic> request) async {
-    final controller = TextEditingController(text: _number(request['suggested_fare']).round().toString());
+    final controller = TextEditingController(
+      text: _number(request['suggested_fare']).round().toString(),
+    );
     await showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -127,16 +144,39 @@ class _DriverMarketplaceScreenState extends State<DriverMarketplaceScreen> {
       backgroundColor: Colors.transparent,
       builder: (sheetContext) {
         return Padding(
-          padding: EdgeInsets.only(bottom: MediaQuery.of(sheetContext).viewInsets.bottom),
+          padding: EdgeInsets.only(
+        bottom: MediaQuery.of(sheetContext).viewInsets.bottom,
+      ),
           child: Container(
             padding: const EdgeInsets.fromLTRB(20, 14, 20, 28),
-            decoration: const BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.vertical(top: Radius.circular(28))),
+            decoration: const BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(28),
+              ),
+            ),
             child: ListView(
               shrinkWrap: true,
               children: [
-                Center(child: Container(width: 45, height: 5, decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(10)))),
+                Center(
+                  child: Container(
+                    width: 45,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: Colors.white24,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 20),
-                Text(_isEnglish ? 'Submit your fare' : 'قدّم عرضك السعري', textAlign: TextAlign.center, style: const TextStyle(fontSize: 21, fontWeight: FontWeight.bold)),
+                Text(
+                  _isEnglish ? 'Submit your fare' : 'قدّم عرضك السعري',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 const SizedBox(height: 8),
                 Text(
         '${request['pickup_address']?.toString() ?? ''}  →  ${request['destination_address']?.toString() ?? ''}',
@@ -150,7 +190,16 @@ class _DriverMarketplaceScreenState extends State<DriverMarketplaceScreen> {
                 const SizedBox(height: 20),
                 TextField(controller: controller, autofocus: true, keyboardType: TextInputType.number, decoration: InputDecoration(labelText: _isEnglish ? 'Your fare' : 'السعر الذي تقترحه', suffixText: _isEnglish ? 'SDG' : 'جنيه', prefixIcon: const Icon(Icons.payments_outlined))),
                 const SizedBox(height: 12),
-                Text(_isEnglish ? 'Passenger suggested ' + _number(request['suggested_fare']).round().toString() + ' SDG.' : 'السعر التقديري للراكب ' + _number(request['suggested_fare']).round().toString() + ' جنيه.', textAlign: TextAlign.center, style: const TextStyle(color: AppColors.muted, fontSize: 12)),
+                Text(
+                  _isEnglish
+                      ? 'Passenger suggested ${_number(request['suggested_fare']).round()} SDG.'
+                      : 'السعر التقديري للراكب ${_number(request['suggested_fare']).round()} جنيه.',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: AppColors.muted,
+                    fontSize: 12,
+                  ),
+                ),
                 const SizedBox(height: 22),
                 SizedBox(height: 54, child: ElevatedButton(
                   onPressed: _isSubmitting ? null : () async {
@@ -159,7 +208,10 @@ class _DriverMarketplaceScreenState extends State<DriverMarketplaceScreen> {
                     setState(() => _isSubmitting = true);
                     try {
                       await RideMarketService.submitOffer(rideId: request['id'].toString(), proposedFare: fare);
-                      if (!mounted) return;
+                      if (!sheetContext.mounted) {
+                        return;
+                      }
+
                       Navigator.pop(sheetContext);
                       _showMessage(_isEnglish ? 'Your offer was sent successfully.' : 'تم إرسال عرضك السعري بنجاح.');
                       await _refreshAll();
@@ -193,11 +245,25 @@ class _DriverMarketplaceScreenState extends State<DriverMarketplaceScreen> {
 
   String _formatDate(dynamic value) {
     final date = DateTime.tryParse(value?.toString() ?? '');
-    if (date == null) return '';
+    if (date == null) {
+      return '';
+    }
+
     final diff = DateTime.now().difference(date.toLocal());
-    if (diff.inMinutes < 1) return _isEnglish ? 'just now' : 'الآن';
-    if (diff.inMinutes < 60) return _isEnglish ? diff.inMinutes.toString() + ' min ago' : 'منذ ' + diff.inMinutes.toString() + ' دقيقة';
-    return _isEnglish ? diff.inHours.toString() + ' hr ago' : 'منذ ' + diff.inHours.toString() + ' ساعة';
+
+    if (diff.inMinutes < 1) {
+      return _isEnglish ? 'just now' : 'الآن';
+    }
+
+    if (diff.inMinutes < 60) {
+      return _isEnglish
+          ? '${diff.inMinutes} min ago'
+          : 'منذ ${diff.inMinutes} دقيقة';
+    }
+
+    return _isEnglish
+        ? '${diff.inHours} hr ago'
+        : 'منذ ${diff.inHours} ساعة';
   }
 
   @override
