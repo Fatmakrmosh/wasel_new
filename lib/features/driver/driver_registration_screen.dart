@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../core/theme/app_theme.dart';
 
 class DriverRegistrationScreen extends StatefulWidget {
@@ -13,6 +14,11 @@ class DriverRegistrationScreen extends StatefulWidget {
 class _DriverRegistrationScreenState
     extends State<DriverRegistrationScreen> {
   final _formKey = GlobalKey<FormState>();
+  final ImagePicker _picker = ImagePicker();
+
+  XFile? personalPhoto;
+  XFile? nationalIdPhoto;
+  XFile? drivingLicensePhoto;
 
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
@@ -23,8 +29,9 @@ class _DriverRegistrationScreenState
   DateTime? birthDate;
   bool agreedToTerms = false;
 
-  bool hasNationalId = false;
-  bool hasDrivingLicense = false;
+  bool get hasNationalId => nationalIdPhoto != null;
+  bool get hasDrivingLicense => drivingLicensePhoto != null;
+  bool get hasPersonalPhoto => personalPhoto != null;
 
   final List<String> cities = [
     'الخرطوم',
@@ -92,13 +99,18 @@ class _DriverRegistrationScreenState
       return;
     }
 
+    if (!hasPersonalPhoto) {
+      _showMessage('يرجى التقاط الصورة الشخصية بالكاميرا');
+      return;
+    }
+
     if (!hasNationalId) {
-      _showMessage('يرجى إضافة مستند الهوية');
+      _showMessage('يرجى إضافة صورة الهوية الوطنية');
       return;
     }
 
     if (!hasDrivingLicense) {
-      _showMessage('يرجى إضافة رخصة القيادة');
+      _showMessage('يرجى إضافة صورة رخصة القيادة');
       return;
     }
 
@@ -193,6 +205,112 @@ class _DriverRegistrationScreenState
         );
       },
     );
+  }
+
+  Future<void> _takePersonalPhoto() async {
+    try {
+      final photo = await _picker.pickImage(
+        source: ImageSource.camera,
+        imageQuality: 90,
+        maxWidth: 1600,
+        maxHeight: 1600,
+      );
+      if (photo != null) {
+        setState(() {
+          personalPhoto = photo;
+        });
+      }
+    } catch (_) {
+      _showMessage('تعذر فتح الكاميرا. تأكد من منح الإذن للكاميرا.');
+    }
+  }
+
+  Future<void> _chooseDocument(String document) async {
+    final source = await showModalBottomSheet<ImageSource>(
+      context: context,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 45,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Colors.white24,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'إضافة المستند',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  document,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.white60,
+                    fontSize: 12,
+                  ),
+                ),
+                const SizedBox(height: 18),
+                ListTile(
+                  leading: const Icon(
+                    Icons.photo_camera_outlined,
+                    color: AppColors.lime,
+                  ),
+                  title: const Text('تصوير بالكاميرا'),
+                  onTap: () =>
+                      Navigator.pop(sheetContext, ImageSource.camera),
+                ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.photo_library_outlined,
+                    color: AppColors.lime,
+                  ),
+                  title: const Text('اختيار من الهاتف'),
+                  onTap: () =>
+                      Navigator.pop(sheetContext, ImageSource.gallery),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    if (source == null) return;
+
+    try {
+      final photo = await _picker.pickImage(
+        source: source,
+        imageQuality: 90,
+        maxWidth: 2000,
+        maxHeight: 2000,
+      );
+      if (photo == null) return;
+
+      setState(() {
+        if (document == 'الهوية الشخصية') {
+          nationalIdPhoto = photo;
+        } else {
+          drivingLicensePhoto = photo;
+        }
+      });
+    } catch (_) {
+      _showMessage('تعذر إضافة الصورة. حاول مرة أخرى.');
+    }
   }
 
   void _showMessage(String message) {
@@ -425,9 +543,321 @@ class _DriverRegistrationScreenState
               icon: Icons.badge_outlined,
               hint: 'أدخل الرقم الوطني',
               keyboardType: TextInputType.number,
+              maxLength: 11,
+              validator: (value) {
+                final nationalId = value?.trim() ?? '';
+                if (nationalId.isEmpty) {
+                  return 'يرجى إدخال الرقم الوطني';
+                }
+                if (!RegExp(r'^\\d{11}
+            ),
+            const SizedBox(height: 13),
+            InkWell(
+              onTap: _selectBirthDate,
+              borderRadius: BorderRadius.circular(15),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 17,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(
+                    color: Colors.white10,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.calendar_month_outlined,
+                      color: AppColors.lime,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        birthDate == null
+                            ? 'اختر تاريخ الميلاد'
+                            : '${birthDate!.day.toString().padLeft(2, '0')}/${birthDate!.month.toString().padLeft(2, '0')}/${birthDate!.year}',
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                          color: birthDate == null
+                              ? Colors.white54
+                              : Colors.white,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                    const Text(
+                      'تاريخ الميلاد',
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 13),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 2,
+              ),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(
+                  color: Colors.white10,
+                ),
+              ),
+              child: DropdownButtonFormField<String>(
+                initialValue: selectedCity,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  labelText: 'مدينة العمل',
+                  labelStyle: TextStyle(
+                    color: Colors.white54,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.location_city_outlined,
+                    color: AppColors.lime,
+                  ),
+                ),
+                dropdownColor: const Color(0xFF252525),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                ),
+                items: cities.map((city) {
+                  return DropdownMenuItem<String>(
+                    value: city,
+                    child: Text(city),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      selectedCity = value;
+                    });
+                  }
+                },
+              ),
+            ),
+            const SizedBox(height: 13),
+            _buildTextField(
+              controller: addressController,
+              label: 'العنوان',
+              icon: Icons.home_outlined,
+              hint: 'الحي / المنطقة',
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'يرجى إدخال الرقم الوطني';
+                  return 'يرجى إدخال العنوان';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 28),
+            _buildSectionTitle('الصورة الشخصية والمستندات'),
+            const Text(
+              'الصورة الشخصية يجب التقاطها بالكاميرا. أما الهوية ورخصة القيادة فيمكن تصويرهما أو اختيارهما من الهاتف.',
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                color: Colors.white54,
+                fontSize: 12,
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 13),
+            _buildDocumentCard(
+              title: 'الصورة الشخصية (الوجه)',
+              subtitle: personalPhoto == null
+                  ? 'التقاط صورة واضحة للوجه بالكاميرا'
+                  : 'تم التقاط الصورة',
+              icon: Icons.face_retouching_natural_outlined,
+              uploaded: hasPersonalPhoto,
+              onTap: _takePersonalPhoto,
+            ),
+            _buildDocumentCard(
+              title: 'الهوية الوطنية',
+              subtitle: nationalIdPhoto == null
+                  ? 'الكاميرا أو اختيار صورة من الهاتف'
+                  : 'تمت إضافة الصورة',
+              icon: Icons.badge_outlined,
+              uploaded: hasNationalId,
+              onTap: () => _chooseDocument('الهوية الشخصية'),
+            ),
+            _buildDocumentCard(
+              title: 'رخصة القيادة',
+              subtitle: drivingLicensePhoto == null
+                  ? 'الكاميرا أو اختيار صورة من الهاتف'
+                  : 'تمت إضافة الصورة',
+              icon: Icons.credit_card_outlined,
+              uploaded: hasDrivingLicense,
+              onTap: () => _chooseDocument('رخصة القيادة'),
+            ),
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: AppColors.lime.withValues(alpha: 0.06),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(
+                  color: AppColors.lime.withValues(alpha: 0.18),
+                ),
+              ),
+              child: const Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.info_outline_rounded,
+                    color: AppColors.lime,
+                    size: 20,
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      'تنبيه: ارفع صورًا أصلية وواضحة وغير معدلة بفلتر أو فوتوشوب أو أي برنامج تعديل. الصور غير الواضحة أو المعدلة قد تُرفض عند المراجعة.',
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 11,
+                        height: 1.6,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 25),
+            Container(
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: CheckboxListTile(
+                value: agreedToTerms,
+                onChanged: (value) {
+                  setState(() {
+                    agreedToTerms = value ?? false;
+                  });
+                },
+                activeColor: AppColors.lime,
+                checkColor: Colors.black,
+                controlAffinity: ListTileControlAffinity.leading,
+                title: const Text(
+                  'أوافق على شروط وأحكام التسجيل كسائق في منصة واصل.',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 12,
+                    height: 1.5,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 25),
+            SizedBox(
+              height: 54,
+              child: ElevatedButton(
+                onPressed: _submit,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.lime,
+                  foregroundColor: Colors.black,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'متابعة',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Icon(
+                      Icons.arrow_forward_rounded,
+                      size: 21,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            AppColors.lime.withValues(alpha: 0.16),
+            AppColors.surface,
+          ],
+        ),
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(
+          color: AppColors.lime.withValues(alpha: 0.20),
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 58,
+            height: 58,
+            decoration: const BoxDecoration(
+              color: AppColors.lime,
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.drive_eta_rounded,
+              color: Colors.black,
+              size: 31,
+            ),
+          ),
+          const SizedBox(width: 14),
+          const Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  'انضم إلى سائقي واصل',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 6),
+                Text(
+                  'أكمل بياناتك للبدء في إجراءات التسجيل والمراجعة.',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                    color: Colors.white60,
+                    fontSize: 12,
+                    height: 1.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}).hasMatch(nationalId)) {
+                  return 'الرقم الوطني يجب أن يتكون من 11 رقمًا';
                 }
                 return null;
               },
