@@ -28,9 +28,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     if (client == null) return;
     setState(() => _loading = true);
     try {
-      final rows = await client.from('profiles').select(
-        'id,full_name,phone,role',
-      );
+      final rows = await client.rpc('admin_list_profiles');
       if (!mounted) return;
       setState(() {
         _users = List<Map<String, dynamic>>.from(rows);
@@ -69,7 +67,10 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     final client = SupabaseService.client;
     if (client == null) return;
     try {
-      await client.from('profiles').update({'role': role}).eq('id', user['id']);
+      await client.rpc('admin_set_profile_role', params: {
+        'target_user': user['id'],
+        'target_role': role,
+      });
       await _loadUsers();
       _message('تم تحديث الصلاحية');
     } catch (_) {
