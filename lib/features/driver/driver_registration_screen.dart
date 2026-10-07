@@ -216,7 +216,7 @@ class _DriverRegistrationScreenState
         maxWidth: 1600,
         maxHeight: 1600,
       );
-      if (photo != null) {
+      if (photo != null && mounted) {
         setState(() {
           personalPhoto = photo;
         });
@@ -300,10 +300,10 @@ class _DriverRegistrationScreenState
         maxWidth: 2000,
         maxHeight: 2000,
       );
-      if (photo == null) return;
+      if (photo == null || !mounted) return;
 
       setState(() {
-        if (document == 'الهوية الشخصية') {
+        if (document == 'الهوية الوطنية') {
           nationalIdPhoto = photo;
         } else {
           drivingLicensePhoto = photo;
@@ -331,11 +331,15 @@ class _DriverRegistrationScreenState
     required IconData icon,
     String? hint,
     TextInputType? keyboardType,
+    int? maxLength,
+    List<TextInputFormatter>? inputFormatters,
     String? Function(String?)? validator,
   }) {
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
+      maxLength: maxLength,
+      inputFormatters: inputFormatters,
       textAlign: TextAlign.right,
       style: const TextStyle(
         color: Colors.white,
@@ -542,7 +546,7 @@ class _DriverRegistrationScreenState
               controller: nationalIdController,
               label: 'الرقم الوطني',
               icon: Icons.badge_outlined,
-              hint: 'أدخل الرقم الوطني',
+              hint: 'أدخل الرقم الوطني المكون من 11 رقمًا',
               keyboardType: TextInputType.number,
               maxLength: 11,
               inputFormatters: const [
@@ -553,8 +557,7 @@ class _DriverRegistrationScreenState
                 if (nationalId.isEmpty) {
                   return 'يرجى إدخال الرقم الوطني';
                 }
-                if (!RegExp(r'^\\d{11}
-            ),
+                if (!RegExp(r'^\d{11}
             const SizedBox(height: 13),
             InkWell(
               onTap: _selectBirthDate,
@@ -665,7 +668,7 @@ class _DriverRegistrationScreenState
             const SizedBox(height: 28),
             _buildSectionTitle('الصورة الشخصية والمستندات'),
             const Text(
-              'الصورة الشخصية يجب التقاطها بالكاميرا. أما الهوية ورخصة القيادة فيمكن تصويرهما أو اختيارهما من الهاتف.',
+              'الصورة الشخصية تُلتقط بالكاميرا. ويمكن تصوير المستندات أو اختيار صورها من الهاتف.',
               textAlign: TextAlign.right,
               style: TextStyle(
                 color: Colors.white54,
@@ -690,7 +693,7 @@ class _DriverRegistrationScreenState
                   : 'تمت إضافة الصورة',
               icon: Icons.badge_outlined,
               uploaded: hasNationalId,
-              onTap: () => _chooseDocument('الهوية الشخصية'),
+              onTap: () => _chooseDocument('الهوية الوطنية'),
             ),
             _buildDocumentCard(
               title: 'رخصة القيادة',
