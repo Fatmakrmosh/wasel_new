@@ -79,22 +79,10 @@ class _LoginScreenState extends State<LoginScreen> {
           final client = SupabaseService.client;
           final profile = await client
               ?.from('profiles')
-              .select('role,is_active')
+              .select('role')
               .eq('id', user.id)
               .maybeSingle();
           final role = profile?['role'] as String?;
-          final isActive = profile?['is_active'] as bool? ?? false;
-
-          if (!isActive) {
-            await SupabaseService.client?.auth.signOut();
-            if (mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('الحساب غير نشط حالياً.')),
-              );
-            }
-            return;
-          }
-
           if (!mounted) return;
 
           if (role == 'admin' || role == 'supervisor') {
