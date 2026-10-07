@@ -23,8 +23,8 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     setState(() => _loading = true);
     try {
       final rows = await client.from('profiles').select(
-        'id,full_name,phone,requested_account_type,role,is_active,created_at',
-      ).order('created_at', ascending: false);
+        'id,full_name,phone,role',
+      );
       if (!mounted) return;
       setState(() {
         _users = List<Map<String, dynamic>>.from(rows);
@@ -42,10 +42,13 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
 
   Future<bool> _isCurrentUserAdmin() async {
     final client = SupabaseService.client;
-    final current = client?.auth.currentUser;
-    if (client == null || current == null) return false;
-    final row = await client.from('profiles').select('role,is_active').eq('id', current.id).maybeSingle();
-    return row?['role']?.toString() == 'admin' && row?['is_active'] == true;
+    if (client == null) return false;
+    try {
+      final role = await client.rpc('get_my_role');
+      return role?.toString().trim().toLowerCase() == 'admin';
+    } catch (_) {
+      return false;
+    }
   }
 
   Future<void> _setActive(Map<String, dynamic> user, bool active) async {
@@ -56,9 +59,9 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
       return;
     }
     try {
-      await client.from('profiles').update({'is_active': active}).eq('id', user['id']);
-      await _loadUsers();
-      _message(active ? 'تم تفعيل الحساب' : 'تم إيقاف الحساب');
+      // profiles currently has no is_active column, so activation is not
+      // exposed until that field is added to the database schema.
+      _message('حالة التفعيل غير مضافة لجدول الحسابات حالياً');
     } catch (_) {
       _message('تعذر تحديث حالة الحساب');
     }
@@ -86,7 +89,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
 
   void _showUser(Map<String, dynamic> user) {
     final role = user['role']?.toString() ?? 'passenger';
-    final active = user['is_active'] == true;
+    const active = true;
     showModalBottomSheet<void>(
       context: context,
       backgroundColor: AppColors.surface,
@@ -108,8 +111,8 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                 style: const TextStyle(color: Colors.white54)),
             const SizedBox(height: 18),
             _infoRow('الدور الحالي', _roleLabel(role)),
-            _infoRow('نوع الطلب', _typeLabel(user['requested_account_type'])),
-            _infoRow('الحالة', active ? 'نشط' : 'موقوف'),
+            _infoRow('الحالة', 'الحساب موجود'),
+
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
               initialValue: role,
@@ -235,8 +238,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                         textAlign: TextAlign.right,
                         style: const TextStyle(color: Colors.white54),
                       ),
-                      trailing: Icon(user['is_active'] == true ? Icons.check_circle_rounded : Icons.block_rounded,
-                          color: user['is_active'] == true ? AppColors.lime : Colors.redAccent),
+                      trailing: const Icon(Icons.chevron_left_rounded, color: Colors.white30),
                     ),
                   )),
                 ],
