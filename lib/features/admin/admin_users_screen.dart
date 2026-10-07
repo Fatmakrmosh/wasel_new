@@ -4,7 +4,9 @@ import '../../core/network/supabase_service.dart';
 import '../../core/theme/app_theme.dart';
 
 class AdminUsersScreen extends StatefulWidget {
-  const AdminUsersScreen({super.key});
+  final String initialFilter;
+
+  const AdminUsersScreen({super.key, this.initialFilter = 'all'});
   @override
   State<AdminUsersScreen> createState() => _AdminUsersScreenState();
 }
@@ -15,7 +17,11 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
   List<Map<String, dynamic>> _users = [];
 
   @override
-  void initState() { super.initState(); _loadUsers(); }
+  void initState() {
+    super.initState();
+    _filter = widget.initialFilter;
+    _loadUsers();
+  }
 
   Future<void> _loadUsers() async {
     final client = SupabaseService.client;
