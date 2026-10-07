@@ -157,10 +157,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               mainAxisSpacing: 10,
               childAspectRatio: 1.55,
               children: [
-                _stat('المستخدمون', _users, Icons.people_alt_outlined),
-                _stat('السائقون', _drivers, Icons.drive_eta_outlined),
-                _stat('الشركات', _companies, Icons.business_outlined),
-                _stat('المشرفون', _supervisors, Icons.admin_panel_settings_outlined),
+                _stat('المستخدمون', _users, Icons.people_alt_outlined, () => context.push('/admin/users')),
+                _stat('السائقون', _drivers, Icons.drive_eta_outlined, () => context.push('/admin/users?filter=driver')),
+                _stat('الشركات', _companies, Icons.business_outlined, () => context.push('/admin/users?filter=company')),
+                _stat('المشرفون', _supervisors, Icons.admin_panel_settings_outlined, () => context.push('/admin/permissions')),
               ],
             ),
             const SizedBox(height: 24),
@@ -169,7 +169,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             if (_can('users'))
               _action(
                 'المستخدمون والحسابات',
-                'عرض الحسابات وإدارة الحسابات حسب الصلاحية',
+                'عرض الحسابات وتعيين المستخدمين كسائقين أو شركات أو مشرفين',
                 Icons.people_alt_outlined,
                 () => context.push('/admin/users'),
               ),
@@ -183,7 +183,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             if (_can('drivers'))
               _action(
               'مراجعة السائقين',
-              'عرض حسابات السائقين ومراجعة بياناتهم',
+              'عرض السائقين وتعيين المستخدمين كحسابات سائق',
               Icons.fact_check_outlined,
               () => context.push('/admin/users?filter=driver'),
             ),
@@ -197,7 +197,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             if (_can('companies'))
               _action(
                 'إدارة الشركات',
-                'عرض حسابات شركات النقل المسجلة',
+                'عرض الشركات وتعيين المستخدمين كحسابات شركات',
                 Icons.business_outlined,
                 () => context.push('/admin/users?filter=company'),
               ),
@@ -206,7 +206,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 'إعدادات النظام',
                 'الإعدادات العامة للمنصة',
                 Icons.settings_outlined,
-                () => _message('إعدادات النظام قيد البناء'),
+                () => _message('سنربط إعدادات النظام ببيانات المنصة بعد اعتماد جداول الإعدادات.'),
               ),
             const SizedBox(height: 20),
             if (_isAdmin)
@@ -274,21 +274,37 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     style: const TextStyle(color: AppColors.lime, fontSize: 16, fontWeight: FontWeight.bold),
   );
 
-  Widget _stat(String title, int value, IconData icon) => Container(
-    padding: const EdgeInsets.all(14),
+  Widget _stat(String title, int value, IconData icon, VoidCallback onTap) => Container(
     decoration: BoxDecoration(
       color: AppColors.surface,
       borderRadius: BorderRadius.circular(18),
       border: Border.all(color: Colors.white10),
     ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, color: AppColors.lime, size: 22),
-        const Spacer(),
-        Text(value.toString(), style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
-        Text(title, style: const TextStyle(color: Colors.white54, fontSize: 11)),
-      ],
+    child: Material(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(18),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(18),
+        child: Padding(
+          padding: const EdgeInsets.all(14),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(icon, color: AppColors.lime, size: 22),
+              const Spacer(),
+              Text(value.toString(), style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
+              Row(
+                children: [
+                  const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white30, size: 12),
+                  const SizedBox(width: 5),
+                  Expanded(child: Text(title, style: const TextStyle(color: Colors.white54, fontSize: 11))),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     ),
   );
 
