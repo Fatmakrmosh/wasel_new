@@ -27,8 +27,8 @@ class _AdminPermissionsScreenState extends State<AdminPermissionsScreen> {
     try {
       final current = client.auth.currentUser;
       if (current == null) return;
-      final profile = await client.from('profiles').select('role,is_active').eq('id', current.id).maybeSingle();
-      final isAdmin = profile?['role']?.toString() == 'admin' && profile?['is_active'] == true;
+      final role = await client.rpc('get_my_role');
+      final isAdmin = role?.toString().trim().toLowerCase() == 'admin';
       if (!isAdmin) {
         if (mounted) {
           setState(() { _isAdmin = false; _loading = false; });
@@ -36,8 +36,8 @@ class _AdminPermissionsScreenState extends State<AdminPermissionsScreen> {
         return;
       }
 
-      final supervisors = await client.from('profiles').select('id,full_name,phone,is_active,created_at')
-          .eq('role', 'supervisor').order('created_at', ascending: false);
+      final supervisors = await client.from('profiles').select('id,full_name,phone')
+           .eq('role', 'supervisor');
       final permissions = await client.from('permissions').select('id,code,label_ar').order('id');
       final grants = _selectedSupervisor == null
           ? const <Map<String, dynamic>>[]
