@@ -34,6 +34,7 @@ import '../../features/company/company_home_screen.dart';
 import '../../features/admin/admin_gate_screen.dart';
 import '../../features/admin/admin_users_screen.dart';
 import '../../features/admin/admin_permissions_screen.dart';
+import '../../features/admin/admin_rides_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/splash',
@@ -217,6 +218,11 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/admin/permissions',
       builder: (_, _) => const AdminPermissionsScreen(),
+    ),
+
+    GoRoute(
+      path: '/admin/rides',
+      builder: (_, _) => const AdminRidesScreen(),
     ),
   ],
 );
