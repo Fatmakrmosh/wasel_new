@@ -81,11 +81,15 @@ class _DriverMarketplaceScreenState extends State<DriverMarketplaceScreen> {
         return;
       }
       var permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
       final granted = permission == LocationPermission.always || permission == LocationPermission.whileInUse;
       if (!mounted) return;
       setState(() { _locationServiceEnabled = true; _locationPermissionGranted = granted; });
-      if (!granted) return;
+      if (!granted) {
+        return;
+      }
       await _syncLocation();
       _locationTimer?.cancel();
       _locationTimer = Timer.periodic(const Duration(seconds: 10), (_) => _syncLocation());
@@ -97,7 +101,9 @@ class _DriverMarketplaceScreenState extends State<DriverMarketplaceScreen> {
     try {
       final position = await Geolocator.getCurrentPosition(locationSettings: const LocationSettings(accuracy: LocationAccuracy.high));
       if (!mounted) return;
-      setState(() => _currentPosition = position);
+      setState(() {
+        _currentPosition = position;
+      });
       final activeRideId = _activeRideId;
       final driverId = SupabaseService.client?.auth.currentUser?.id;
       if (activeRideId != null && driverId != null) {
@@ -132,7 +138,15 @@ class _DriverMarketplaceScreenState extends State<DriverMarketplaceScreen> {
                 const SizedBox(height: 20),
                 Text(_isEnglish ? 'Submit your fare' : 'قدّم عرضك السعري', textAlign: TextAlign.center, style: const TextStyle(fontSize: 21, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
-                Text((request['pickup_address']?.toString() ?? '') + '  →  ' + (request['destination_address']?.toString() ?? ''), textAlign: TextAlign.center, style: const TextStyle(color: AppColors.muted, fontSize: 12, height: 1.5)),
+                Text(
+        '${request['pickup_address']?.toString() ?? ''}  →  ${request['destination_address']?.toString() ?? ''}',
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          color: AppColors.muted,
+          fontSize: 12,
+          height: 1.5,
+        ),
+      ),
                 const SizedBox(height: 20),
                 TextField(controller: controller, autofocus: true, keyboardType: TextInputType.number, decoration: InputDecoration(labelText: _isEnglish ? 'Your fare' : 'السعر الذي تقترحه', suffixText: _isEnglish ? 'SDG' : 'جنيه', prefixIcon: const Icon(Icons.payments_outlined))),
                 const SizedBox(height: 12),
