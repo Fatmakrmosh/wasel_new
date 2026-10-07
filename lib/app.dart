@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'app/router/app_router.dart';
 import 'app/theme/app_theme.dart';
@@ -20,6 +21,11 @@ class WaselApp extends StatelessWidget {
           supportedLocales: const [
             Locale('ar'),
             Locale('en'),
+          ],
+          localizationsDelegates: const [
+            GlobalCupertinoLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
           ],
           routerConfig: appRouter,
         );
