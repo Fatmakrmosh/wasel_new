@@ -24,23 +24,40 @@ class RideMarketService {
       throw Exception('AUTH_REQUIRED');
     }
 
-    final result = await client.rpc(
-      'create_ride_request',
-      params: {
-        'p_pickup_lat': pickupLat,
-        'p_pickup_lng': pickupLng,
-        'p_destination_lat': destinationLat,
-        'p_destination_lng': destinationLng,
-        'p_pickup_address': pickupAddress,
-        'p_destination_address': destinationAddress,
-        'p_vehicle_type': vehicleType,
-        'p_passengers': passengers,
-        'p_suggested_fare': suggestedFare,
-        'p_notes': notes,
-      },
-    );
+    try {
+      final result = await client.rpc(
+        'create_ride_request',
+        params: {
+          'p_pickup_lat': pickupLat,
+          'p_pickup_lng': pickupLng,
+          'p_destination_lat': destinationLat,
+          'p_destination_lng': destinationLng,
+          'p_pickup_address': pickupAddress,
+          'p_destination_address': destinationAddress,
+          'p_vehicle_type': vehicleType,
+          'p_passengers': passengers,
+          'p_suggested_fare': suggestedFare,
+          'p_notes': notes,
+        },
+      );
 
-    return result?.toString();
+      final rideId = result?.toString().trim();
+
+      if (rideId == null || rideId.isEmpty) {
+        throw Exception('تعذر إنشاء طلب الرحلة.');
+      }
+
+      return rideId;
+    } on PostgrestException catch (error) {
+      throw Exception(
+        'تعذر إنشاء الطلب: ${error.message}'
+        '${error.code == null ? '' : ' (${error.code})'}',
+      );
+    } catch (error) {
+      throw Exception(
+        'تعذر إنشاء طلب الرحلة: $error',
+      );
+    }
   }
 
   static Future<List<Map<String, dynamic>>> listPendingRides() async {
