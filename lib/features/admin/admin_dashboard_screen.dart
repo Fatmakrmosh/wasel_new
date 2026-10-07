@@ -333,6 +333,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
       subtitle: Text(subtitle, textAlign: TextAlign.right,
           style: const TextStyle(color: Colors.white54, fontSize: 11)),
+      ),
     ),
   );
 }
