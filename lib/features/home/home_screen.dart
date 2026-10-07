@@ -157,8 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           actions: [
-            if (_canManage)
-              Padding(
+            Padding(
                 padding: const EdgeInsets.only(left: 8),
                 child: FilledButton.icon(
                   onPressed: () => context.push('/admin'),
