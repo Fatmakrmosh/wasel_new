@@ -27,55 +27,140 @@ class _DriverOffersScreenState extends State<DriverOffersScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) { _readRouteData(); _loadOffers(); });
-    _timer = Timer.periodic(const Duration(seconds: 5), (_) => _loadOffers(silent: true));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _readRouteData();
+      _loadOffers();
+    });
+    _timer = Timer.periodic(
+      const Duration(seconds: 5),
+      (_) => _loadOffers(silent: true),
+    );
   }
   @override
-  void dispose() { _timer?.cancel(); super.dispose(); }
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   void _readRouteData() {
     final state = GoRouterState.of(context);
     _rideId = state.uri.queryParameters['rideId'];
     final extra = state.extra;
-    if (extra is CityRideRequest) _request = extra;
-    if (extra is Map) { _rideId ??= extra['rideId']?.toString(); final value = extra['request']; if (value is CityRideRequest) _request = value; }
+    if (extra is CityRideRequest) {
+      _request = extra;
+    }
+    if (extra is Map) {
+      _rideId ??= extra['rideId']?.toString();
+      final value = extra['request'];
+      if (value is CityRideRequest) {
+        _request = value;
+      }
+    }
   }
 
   Future<void> _loadOffers({bool silent = false}) async {
     final rideId = _rideId;
-    if (rideId == null) { if (mounted) setState(() => _isLoading = false); return; }
+    if (rideId == null) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      return;
+    }
     try {
       final offers = await RideMarketService.listOffers(rideId: rideId);
       if (!mounted) return;
-      setState(() { _offers = offers; _isLoading = false; });
-    } catch (_) { if (mounted && !silent) setState(() => _isLoading = false); }
+      setState(() {
+        _offers = offers;
+        _isLoading = false;
+      });
+    } catch (_) {
+      if (mounted && !silent) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   Future<void> _acceptOffer(Map<String, dynamic> offer) async {
-    if (_isAccepting) return;
-    setState(() => _isAccepting = true);
+    if (_isAccepting) {
+      return;
+    }
+
+    setState(() {
+      _isAccepting = true;
+    });
     try {
       final success = await RideMarketService.acceptOffer(offerId: offer['id'].toString());
       if (!mounted) return;
-      if (!success) { _showMessage(_isEnglish ? 'Unable to accept this offer.' : 'تعذر قبول هذا العرض.'); return; }
-      _showMessage(_isEnglish ? 'Offer accepted. Your driver is on the way.' : 'تم قبول العرض. السائق في طريقه إليك.');
+      if (!success) {
+        _showMessage(
+          _isEnglish
+              ? 'Unable to accept this offer.'
+              : 'تعذر قبول هذا العرض.',
+        );
+        return;
+      }
+      _showMessage(
+        _isEnglish
+            ? 'Offer accepted. Your driver is on the way.'
+            : 'تم قبول العرض. السائق في طريقه إليك.',
+      );
       await Future<void>.delayed(const Duration(milliseconds: 300));
       if (mounted) context.go('/ride-status');
     } catch (_) {
       if (mounted) _showMessage(_isEnglish ? 'This offer is no longer available.' : 'هذا العرض لم يعد متاحاً.');
-    } finally { if (mounted) setState(() => _isAccepting = false); }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isAccepting = false;
+        });
+      }
+    }
   }
 
   Future<void> _cancelRide() async {
     final client = SupabaseService.client;
     final rideId = _rideId;
     final userId = client?.auth.currentUser?.id;
-    if (client == null || rideId == null || userId == null) return;
-    try { await client.from('rides').update({'status': 'cancelled', 'updated_at': DateTime.now().toUtc().toIso8601String()}).eq('id', rideId).eq('passenger_id', userId); } catch (_) {}
+    if (client == null || rideId == null || userId == null) {
+      return;
+    }
+    try {
+      await client
+          .from('rides')
+          .update({
+            'status': 'cancelled',
+            'updated_at': DateTime.now().toUtc().toIso8601String(),
+          })
+          .eq('id', rideId)
+          .eq('passenger_id', userId);
+    } catch (_) {
+      // Keep the waiting screen usable if cancellation fails.
+    }
   }
 
-  void _showMessage(String message) { if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message), behavior: SnackBarBehavior.floating)); }
-  double _number(dynamic value) => value is num ? value.toDouble() : double.tryParse(value?.toString() ?? '') ?? 0;
+  void _showMessage(String message) {
+    if (!mounted) {
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+  double _number(dynamic value) {
+    if (value is num) {
+      return value.toDouble();
+    }
+
+    return double.tryParse(value?.toString() ?? '') ?? 0;
+  }
 
   @override
   Widget build(BuildContext context) {
