@@ -24,6 +24,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
 
   Position? _currentPosition;
   StreamSubscription<Position>? _positionSubscription;
+  Timer? _rideRefreshTimer;
 
   String? _activeRideId;
   String? _driverId;
@@ -58,14 +59,39 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
   @override
   void initState() {
     super.initState();
-    _loadDriverAndRide();
-    _initializeLocationTracking();
+    _initializeDriverTracking();
   }
 
   @override
   void dispose() {
     _positionSubscription?.cancel();
+    _rideRefreshTimer?.cancel();
     super.dispose();
+  }
+
+  Future<void> _initializeDriverTracking() async {
+    await _loadDriverAndRide();
+    await _initializeLocationTracking();
+
+    _rideRefreshTimer?.cancel();
+    _rideRefreshTimer = Timer.periodic(
+      const Duration(seconds: 8),
+      (_) async {
+        if (!mounted || !isAvailable) {
+          return;
+        }
+
+        await _loadDriverAndRide();
+
+        final hasActiveRide = _activeRideId != null;
+        final isTracking = _positionSubscription != null;
+
+        if (hasActiveRide && !isTracking &&
+            _locationPermissionGranted) {
+          await _startLocationTracking();
+        }
+      },
+    );
   }
 
   Future<void> _loadDriverAndRide() async {
