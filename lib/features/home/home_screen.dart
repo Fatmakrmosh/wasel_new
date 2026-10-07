@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/network/supabase_service.dart';
 import '../../core/theme/app_theme.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,6 +13,36 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
+  bool _canManage = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadManagementAccess();
+  }
+
+  Future<void> _loadManagementAccess() async {
+    final client = SupabaseService.client;
+    final user = client?.auth.currentUser;
+    if (client == null || user == null) return;
+
+    try {
+      final row = await client
+          .from('profiles')
+          .select('role,is_active')
+          .eq('id', user.id)
+          .maybeSingle();
+
+      if (!mounted) return;
+      setState(() {
+        _canManage = row?['is_active'] == true &&
+            (row?['role']?.toString() == 'admin' ||
+                row?['role']?.toString() == 'supervisor');
+      });
+    } catch (_) {
+      // Keep the management button hidden if access cannot be verified.
+    }
+  }
 
   final services = const [
     (
@@ -121,6 +152,33 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () => context.push('/notifications'),
               icon: const Icon(Icons.notifications_none),
             ),
+            if (_canManage)
+              Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: TextButton.icon(
+                  onPressed: () => context.push('/admin'),
+                  icon: const Icon(
+                    Icons.admin_panel_settings_outlined,
+                    size: 19,
+                  ),
+                  label: const Text('الإدارة'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppColors.lime,
+                    backgroundColor: AppColors.lime.withValues(alpha: 0.10),
+                    side: BorderSide(
+                      color: AppColors.lime.withValues(alpha: 0.30),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(13),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 11,
+                      vertical: 8,
+                    ),
+                    minimumSize: const Size(0, 40),
+                  ),
+                ),
+              ),
             const SizedBox(width: 8),
           ],
         ),
