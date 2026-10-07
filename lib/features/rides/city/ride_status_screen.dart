@@ -507,7 +507,7 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
                 ? 'GPS مباشر'
                 : _isLoadingRide
                     ? 'جاري الاتصال...'
-                    : 'بانتظار موقع السائق',
+                    : 'بانتظار GPS',
             style: const TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.bold,
@@ -549,7 +549,7 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
             child: Text(
               _isLiveLocation
                   ? 'موقع السائق يتحدث مباشرة'
-                  : 'بانتظار بيانات موقع السائق',
+                  : 'بانتظار GPS',
               style: const TextStyle(
                 fontSize: 11,
                 color: Colors.white70,
@@ -732,7 +732,7 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
                 Text(
                   locationReady
                       ? 'يتم تحديث موقع المركبة من GPS السائق مباشرة'
-                      : 'سيظهر موقع السائق هنا بمجرد إرسال بيانات GPS',
+                      : 'بانتظار إشارة GPS من السائق',
                   style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 11,
