@@ -20,6 +20,7 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
   final MapController _mapController = MapController();
 
   StreamSubscription<Map<String, dynamic>?>? _locationSubscription;
+  Timer? _rideRefreshTimer;
 
   int currentStep = 0;
 
@@ -95,11 +96,13 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
   void initState() {
     super.initState();
     _loadActiveRide();
+    _startRideRefresh();
   }
 
   @override
   void dispose() {
     _locationSubscription?.cancel();
+    _rideRefreshTimer?.cancel();
     super.dispose();
   }
 
@@ -107,22 +110,14 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
     final client = SupabaseService.client;
 
     if (client == null) {
-      if (mounted) {
-        setState(() {
-          _isLoadingRide = false;
-        });
-      }
+      _clearRide();
       return;
     }
 
     final user = client.auth.currentUser;
 
     if (user == null) {
-      if (mounted) {
-        setState(() {
-          _isLoadingRide = false;
-        });
-      }
+      _clearRide();
       return;
     }
 
@@ -139,11 +134,24 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
           .order('updated_at', ascending: false)
           .limit(1);
 
-      if (response.isNotEmpty) {
+      if (response.isEmpty) {
+        _clearRide();
+      } else {
         final ride = response.first;
+        final rideId = ride['id']?.toString();
+        final driverId = ride['driver_id']?.toString();
+        final status = ride['status']?.toString();
 
-        _activeRideId = ride['id'] as String?;
-        _driverId = ride['driver_id'] as String?;
+        if (rideId != _activeRideId) {
+          _locationSubscription?.cancel();
+          _locationSubscription = null;
+          _liveDriverPosition = null;
+          _isLiveLocation = false;
+        }
+
+        _activeRideId = rideId;
+        _driverId = driverId;
+        _setStepFromStatus(status);
 
         if (_activeRideId != null) {
           await _loadInitialDriverLocation();
@@ -151,8 +159,7 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
         }
       }
     } catch (_) {
-      _activeRideId = null;
-      _driverId = null;
+      _clearRide();
     } finally {
       if (mounted) {
         setState(() {
@@ -160,6 +167,45 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
         });
       }
     }
+  }
+
+  void _clearRide() {
+    _locationSubscription?.cancel();
+    _locationSubscription = null;
+    _activeRideId = null;
+    _driverId = null;
+    _liveDriverPosition = null;
+    _isLiveLocation = false;
+    currentStep = 0;
+
+    if (mounted) {
+      setState(() {
+        _isLoadingRide = false;
+      });
+    }
+  }
+
+  void _setStepFromStatus(String? status) {
+    final step = switch (status) {
+      'accepted' => 0,
+      'driver_arriving' => 0,
+      'in_progress' => 2,
+      _ => 0,
+    };
+
+    currentStep = step;
+  }
+
+  void _startRideRefresh() {
+    _rideRefreshTimer?.cancel();
+    _rideRefreshTimer = Timer.periodic(
+      const Duration(seconds: 8),
+      (_) {
+        if (mounted) {
+          _loadActiveRide();
+        }
+      },
+    );
   }
 
   Future<void> _loadInitialDriverLocation() async {
@@ -393,15 +439,16 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
                 userAgentPackageName:
                     'com.wasel.app',
               ),
-              PolylineLayer(
-                polylines: [
-                  Polyline(
-                    points: _routePoints,
-                    strokeWidth: 6,
-                    color: AppColors.lime,
-                  ),
-                ],
-              ),
+              if (_activeRideId != null)
+                PolylineLayer(
+                  polylines: [
+                    Polyline(
+                      points: _routePoints,
+                      strokeWidth: 6,
+                      color: AppColors.lime,
+                    ),
+                  ],
+                ),
               MarkerLayer(
                 markers: [
                   Marker(
@@ -1298,139 +1345,3 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
                     width: double.infinity,
                     height: 54,
                     child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(
-                          sheetContext,
-                        );
-                        _showReceipt(rating);
-                      },
-                      style:
-                          ElevatedButton.styleFrom(
-                        backgroundColor:
-                            AppColors.lime,
-                        foregroundColor:
-                            Colors.black,
-                        elevation: 0,
-                        shape:
-                            RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(
-                            16,
-                          ),
-                        ),
-                      ),
-                      child: const Text(
-                        'إرسال التقييم',
-                        style: TextStyle(
-                          fontWeight:
-                              FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  void _showReceipt(int rating) {
-    showDialog<void>(
-      context: context,
-      builder: (dialogContext) {
-        return AlertDialog(
-          backgroundColor: AppColors.surface,
-          title: const Text(
-            'إيصال الرحلة',
-            textAlign: TextAlign.center,
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(
-                Icons.check_circle,
-                color: AppColors.lime,
-                size: 55,
-              ),
-              const SizedBox(height: 15),
-              _receiptRow(
-                'السائق',
-                'محمد أحمد',
-              ),
-              _receiptRow(
-                'المركبة',
-                'Toyota Corolla',
-              ),
-              _receiptRow(
-                'التقييم',
-                '$rating ⭐',
-              ),
-              _receiptRow(
-                'السعر',
-                '4,000 جنيه',
-              ),
-              _receiptRow(
-                'رقم الرحلة',
-                _activeRideId ??
-                    'WAS-R-10254',
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(
-                  dialogContext,
-                );
-                context.go('/home');
-              },
-              child: const Text(
-                'العودة للرئيسية',
-                style: TextStyle(
-                  color: AppColors.lime,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _receiptRow(
-    String title,
-    String value,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 6,
-      ),
-      child: Row(
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              color: Colors.grey.shade500,
-              fontSize: 12,
-            ),
-          ),
-          const Spacer(),
-          Flexible(
-            child: Text(
-              value,
-              textAlign: TextAlign.end,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 12,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
