@@ -163,11 +163,10 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () => context.push('/notifications'),
               icon: const Icon(Icons.notifications_none),
             ),
-            if (_canManage)
-              Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: TextButton.icon(
-                  onPressed: () => context.push('/admin'),
+            Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: TextButton.icon(
+                  onPressed: _canManage ? () => context.push('/admin') : null,
                   icon: const Icon(
                     Icons.admin_panel_settings_outlined,
                     size: 19,
@@ -175,7 +174,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   label: const Text('الإدارة'),
                   style: TextButton.styleFrom(
                     foregroundColor: AppColors.lime,
-                    backgroundColor: AppColors.lime.withValues(alpha: 0.10),
+                    disabledForegroundColor: Colors.white30,
+                    backgroundColor: _canManage
+                        ? AppColors.lime.withValues(alpha: 0.10)
+                        : Colors.white.withValues(alpha: 0.04),
                     side: BorderSide(
                       color: AppColors.lime.withValues(alpha: 0.30),
                     ),
