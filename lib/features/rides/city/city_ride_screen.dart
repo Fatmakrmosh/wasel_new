@@ -815,7 +815,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
                     height: 54,
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         final request =
                             CityRideRequest(
                           pickupLabel:
@@ -864,11 +864,15 @@ class _CityRideScreenState extends State<CityRideScreen> {
                             notes: request.notes,
                           );
 
-                          if (!mounted || rideId == null) {
+                          if (rideId == null || !sheetContext.mounted) {
                             return;
                           }
 
                           Navigator.pop(sheetContext);
+
+                          if (!mounted) {
+                            return;
+                          }
 
                           context.push(
                             '/driver-offers?rideId=$rideId',
