@@ -27,8 +27,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     final user = client?.auth.currentUser;
     if (client == null || user == null) return;
     try {
-      final profile = await client.from('profiles').select('role').eq('id', user.id).maybeSingle();
-      final role = profile?['role']?.toString() ?? 'supervisor';
+      final roleResult = await client.rpc('get_my_role');
+      final role = roleResult?.toString().trim().toLowerCase() ?? 'supervisor';
       final grants = role == 'supervisor'
           ? await client.from('user_permissions').select('permission_id').eq('user_id', user.id)
           : const <Map<String, dynamic>>[];
