@@ -290,7 +290,7 @@ class _VehicleRegistrationScreenState
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    context.go('/driver-home');
+                    context.go('/account-mode');
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.lime,
