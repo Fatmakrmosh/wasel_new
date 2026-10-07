@@ -91,12 +91,30 @@ class _AdminGateScreenState extends State<AdminGateScreen> {
         context.go('/home');
       }
     } catch (error) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('تعذر فتح لوحة الإدارة: $error')),
-        );
-        setState(() => _loading = false);
+      if (!mounted) {
+        return;
       }
+
+      String message = 'حدث خطأ أثناء التحقق من صلاحية الإدارة.';
+
+      final text = error.toString().toLowerCase();
+      if (text.contains('permission denied') ||
+          text.contains('row-level security') ||
+          text.contains('rls')) {
+        message = 'صلاحيات Supabase تمنع قراءة بيانات الحساب.';
+      } else if (text.contains('user_permissions')) {
+        message = 'حصل خطأ في صلاحيات المشرفين.';
+      } else if (text.contains('profiles')) {
+        message = 'تعذر قراءة ملف الحساب من profiles.';
+      }
+
+      setState(() => _loading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          duration: const Duration(seconds: 6),
+        ),
+      );
     }
   }
 
