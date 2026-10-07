@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/localization/app_locale.dart';
+import '../../core/localization/app_strings.dart';
 import '../../core/theme/app_theme.dart';
 
 class LanguageScreen extends StatefulWidget {
@@ -14,12 +15,12 @@ class LanguageScreen extends StatefulWidget {
 class _LanguageScreenState extends State<LanguageScreen> {
   String _selectedLanguage = AppLocale.locale.value.languageCode;
 
-  void _selectLanguage(String language) {
+  Future<void> _selectLanguage(String language) async {
     setState(() {
       _selectedLanguage = language;
     });
 
-    AppLocale.setLanguage(language);
+    await AppLocale.setLanguage(language);
 
     context.go('/login');
   }
@@ -59,7 +60,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                 const SizedBox(height: 28),
 
                 Text(
-                  isEnglish ? 'Choose Language' : 'اختر اللغة',
+                  AppStrings.chooseLanguage,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 30,
@@ -70,9 +71,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                 const SizedBox(height: 10),
 
                 Text(
-                  isEnglish
-                      ? 'Choose your preferred language'
-                      : 'Choose your preferred language',
+                  AppStrings.preferredLanguage,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: AppColors.muted,
@@ -84,8 +83,8 @@ class _LanguageScreenState extends State<LanguageScreen> {
 
                 _languageButton(
                   languageCode: 'ar',
-                  title: 'العربية',
-                  subtitle: 'اللغة العربية',
+                  title: AppStrings.arabic,
+                  subtitle: AppStrings.arabicLanguage,
                   direction: TextDirection.rtl,
                 ),
 
@@ -93,8 +92,8 @@ class _LanguageScreenState extends State<LanguageScreen> {
 
                 _languageButton(
                   languageCode: 'en',
-                  title: 'English',
-                  subtitle: 'English language',
+                  title: AppStrings.english,
+                  subtitle: AppStrings.englishLanguage,
                   direction: TextDirection.ltr,
                 ),
 
@@ -113,7 +112,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                 const SizedBox(height: 8),
 
                 Text(
-                  isEnglish ? 'We connect you with ease' : 'نوصلك بكل سهولة',
+                  AppStrings.connectWithEase,
                   style: const TextStyle(
                     color: AppColors.muted,
                     fontSize: 11,
