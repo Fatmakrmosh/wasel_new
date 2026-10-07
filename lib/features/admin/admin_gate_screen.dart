@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/network/supabase_service.dart';
-import '../../core/auth/phone_validator.dart';
 import '../../core/theme/app_theme.dart';
 import 'admin_dashboard_screen.dart';
 
@@ -35,36 +34,13 @@ class _AdminGateScreenState extends State<AdminGateScreen> {
     }
 
     try {
-      Map<String, dynamic>? row = await client
+      // The profiles.id is linked to auth.users.id, so this is the
+      // RLS-safe lookup and matches the "read own profile" policy.
+      final row = await client
           .from('profiles')
           .select('role')
           .eq('id', user.id)
           .maybeSingle();
-
-      if (row == null && user.phone != null && user.phone!.isNotEmpty) {
-        row = await client
-            .from('profiles')
-            .select('role')
-            .eq('phone', user.phone!)
-            .maybeSingle();
-      }
-
-      if (row == null && user.email != null) {
-        final email = user.email!;
-        const prefix = 'wasel_';
-        if (email.startsWith(prefix)) {
-          final at = email.indexOf('@');
-          if (at > prefix.length) {
-            final digits = email.substring(prefix.length, at);
-            final phone = SudanPhoneValidator.normalize('+$digits');
-            row = await client
-                .from('profiles')
-                .select('role')
-                .eq('phone', phone)
-                .maybeSingle();
-          }
-        }
-      }
 
       final role = row?['role']?.toString().trim().toLowerCase();
       var allowed = role == 'admin';
@@ -96,12 +72,12 @@ class _AdminGateScreenState extends State<AdminGateScreen> {
       }
 
       String message = 'حدث خطأ أثناء التحقق من صلاحية الإدارة.';
-
       final text = error.toString().toLowerCase();
+
       if (text.contains('permission denied') ||
           text.contains('row-level security') ||
           text.contains('rls')) {
-        message = 'صلاحيات Supabase تمنع قراءة بيانات الحساب.';
+        message = 'تعذر قراءة صلاحية الحساب من Supabase.';
       } else if (text.contains('user_permissions')) {
         message = 'حصل خطأ في صلاحيات المشرفين.';
       } else if (text.contains('profiles')) {
