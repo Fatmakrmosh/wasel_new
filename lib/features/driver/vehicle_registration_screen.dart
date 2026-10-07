@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../core/theme/app_theme.dart';
 
 class VehicleRegistrationScreen extends StatefulWidget {
@@ -13,6 +14,11 @@ class VehicleRegistrationScreen extends StatefulWidget {
 class _VehicleRegistrationScreenState
     extends State<VehicleRegistrationScreen> {
   final _formKey = GlobalKey<FormState>();
+  final ImagePicker _picker = ImagePicker();
+
+  XFile? vehicleLicensePhoto;
+  XFile? insurancePhoto;
+  XFile? vehiclePhoto;
 
   final plateController = TextEditingController();
   final modelController = TextEditingController();
@@ -23,8 +29,9 @@ class _VehicleRegistrationScreenState
   String selectedBrand = 'Toyota';
   String selectedSeats = '4 مقاعد';
 
-  bool hasVehicleLicense = false;
-  bool hasVehiclePhoto = false;
+  bool get hasVehicleLicense => vehicleLicensePhoto != null;
+  bool get hasVehiclePhoto => vehiclePhoto != null;
+  bool get hasInsurance => insurancePhoto != null;
   bool agreedToTerms = false;
 
   final List<String> vehicleTypes = [
@@ -73,6 +80,96 @@ class _VehicleRegistrationScreenState
     super.dispose();
   }
 
+  Future<void> _choosePhoto(String document) async {
+    final source = await showModalBottomSheet<ImageSource>(
+      context: context,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 45,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Colors.white24,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'إضافة الصورة',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  document,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.white60,
+                    fontSize: 12,
+                  ),
+                ),
+                const SizedBox(height: 18),
+                ListTile(
+                  leading: const Icon(
+                    Icons.photo_camera_outlined,
+                    color: AppColors.lime,
+                  ),
+                  title: const Text('تصوير بالكاميرا'),
+                  onTap: () =>
+                      Navigator.pop(sheetContext, ImageSource.camera),
+                ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.photo_library_outlined,
+                    color: AppColors.lime,
+                  ),
+                  title: const Text('اختيار من الهاتف'),
+                  onTap: () =>
+                      Navigator.pop(sheetContext, ImageSource.gallery),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    if (source == null) return;
+
+    try {
+      final photo = await _picker.pickImage(
+        source: source,
+        imageQuality: 90,
+        maxWidth: 2000,
+        maxHeight: 2000,
+      );
+      if (photo == null) return;
+
+      setState(() {
+        if (document == 'رخصة المركبة') {
+          vehicleLicensePhoto = photo;
+        } else if (document == 'التأمين') {
+          insurancePhoto = photo;
+        } else {
+          vehiclePhoto = photo;
+        }
+      });
+    } catch (_) {
+      _showMessage('تعذر إضافة الصورة. حاول مرة أخرى.');
+    }
+  }
+
   void _showMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -90,7 +187,12 @@ class _VehicleRegistrationScreenState
     }
 
     if (!hasVehicleLicense) {
-      _showMessage('يرجى إضافة رخصة المركبة');
+      _showMessage('يرجى إضافة صورة رخصة المركبة');
+      return;
+    }
+
+    if (!hasInsurance) {
+      _showMessage('يرجى إضافة صورة التأمين');
       return;
     }
 
@@ -577,26 +679,31 @@ class _VehicleRegistrationScreenState
             ),
             const SizedBox(height: 13),
             _buildDocumentCard(
-              title: 'رخصة المركبة',
-              subtitle: 'صورة واضحة من رخصة المركبة',
+              title: 'رخصة المركبة / الترخيص',
+              subtitle: hasVehicleLicense
+                  ? 'تمت إضافة الصورة'
+                  : 'الكاميرا أو اختيار صورة من الهاتف',
               icon: Icons.description_outlined,
               uploaded: hasVehicleLicense,
-              onTap: () {
-                setState(() {
-                  hasVehicleLicense = !hasVehicleLicense;
-                });
-              },
+              onTap: () => _choosePhoto('رخصة المركبة'),
+            ),
+            _buildDocumentCard(
+              title: 'التأمين',
+              subtitle: hasInsurance
+                  ? 'تمت إضافة الصورة'
+                  : 'الكاميرا أو اختيار صورة من الهاتف',
+              icon: Icons.verified_user_outlined,
+              uploaded: hasInsurance,
+              onTap: () => _choosePhoto('التأمين'),
             ),
             _buildDocumentCard(
               title: 'صورة المركبة',
-              subtitle: 'صورة واضحة للمركبة من الخارج',
+              subtitle: hasVehiclePhoto
+                  ? 'تمت إضافة الصورة'
+                  : 'صورة واضحة للمركبة من الخارج',
               icon: Icons.directions_car_outlined,
               uploaded: hasVehiclePhoto,
-              onTap: () {
-                setState(() {
-                  hasVehiclePhoto = !hasVehiclePhoto;
-                });
-              },
+              onTap: () => _choosePhoto('صورة المركبة'),
             ),
             const SizedBox(height: 8),
             Container(
@@ -619,7 +726,7 @@ class _VehicleRegistrationScreenState
                   SizedBox(width: 10),
                   Expanded(
                     child: Text(
-                      'رفع الصور وحفظ المستندات والتحقق منها سيتم ربطه بالواجهة الخلفية في مرحلة الربط التقني.',
+                      'تنبيه: ارفع صورًا أصلية وواضحة وغير معدلة بفلتر أو فوتوشوب أو أي برنامج تعديل. الصور غير الواضحة أو المعدلة قد تُرفض عند المراجعة.',
                       textAlign: TextAlign.right,
                       style: TextStyle(
                         color: Colors.white70,
