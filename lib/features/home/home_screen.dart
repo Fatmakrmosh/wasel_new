@@ -27,31 +27,30 @@ class _HomeScreenState extends State<HomeScreen> {
     if (client == null || user == null) return;
 
     try {
-      final row = await client
+      Map<String, dynamic>? row = await client
           .from('profiles')
-          .select('role,is_active')
+          .select('role')
           .eq('id', user.id)
           .maybeSingle();
 
-      final role = row?['role']?.toString();
-      final active = row?['is_active'] == true;
-      var hasPermission = false;
-
-      if (role == 'supervisor' && active) {
-        final grants = await client
-            .from('user_permissions')
-            .select('permission_id')
-            .eq('user_id', user.id)
-            .limit(1);
-        hasPermission = grants.isNotEmpty;
+      if (row == null && user.phone != null && user.phone!.isNotEmpty) {
+        row = await client
+            .from('profiles')
+            .select('role')
+            .eq('phone', user.phone!)
+            .maybeSingle();
       }
+
+      final role = row?['role']?.toString().trim().toLowerCase();
 
       if (!mounted) return;
       setState(() {
-        _canManage = active && (role == 'admin' || (role == 'supervisor' && hasPermission));
+        _canManage = role == 'admin' || role == 'supervisor';
       });
     } catch (_) {
-      // Keep the management button hidden if access cannot be verified.
+      if (mounted) {
+        setState(() => _canManage = false);
+      }
     }
   }
 
