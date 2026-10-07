@@ -48,10 +48,18 @@ class _DriverMarketplaceScreenState extends State<DriverMarketplaceScreen> {
 
   Future<void> _refreshAll({bool silent = false}) async {
     if (!_isAvailable) {
-      if (mounted && !silent) setState(() => _isLoading = false);
+      if (mounted && !silent) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
       return;
     }
-    if (mounted && !silent) setState(() => _isLoading = true);
+    if (mounted && !silent) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
     try {
       final requests = await RideMarketService.listPendingRides();
       if (!mounted) {
@@ -60,18 +68,28 @@ class _DriverMarketplaceScreenState extends State<DriverMarketplaceScreen> {
       setState(() { _requests = requests; _isLoading = false; });
       await _loadActiveRide();
     } catch (_) {
-      if (mounted) setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
   Future<void> _loadActiveRide() async {
     final client = SupabaseService.client;
     final user = client?.auth.currentUser;
-    if (client == null || user == null) return;
+    if (client == null || user == null) {
+      return;
+    }
     try {
       final response = await client.from('rides').select('id').eq('driver_id', user.id).inFilter('status', ['accepted', 'driver_arriving', 'in_progress']).order('updated_at', ascending: false).limit(1);
       final id = response.isEmpty ? null : response.first['id']?.toString();
-      if (mounted && id != _activeRideId) setState(() => _activeRideId = id);
+      if (mounted && id != _activeRideId) {
+        setState(() {
+          _activeRideId = id;
+        });
+      }
     } catch (_) {}
   }
 
@@ -87,7 +105,9 @@ class _DriverMarketplaceScreenState extends State<DriverMarketplaceScreen> {
         permission = await Geolocator.requestPermission();
       }
       final granted = permission == LocationPermission.always || permission == LocationPermission.whileInUse;
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       setState(() { _locationServiceEnabled = true; _locationPermissionGranted = granted; });
       if (!granted) {
         return;
@@ -104,7 +124,9 @@ class _DriverMarketplaceScreenState extends State<DriverMarketplaceScreen> {
     }
     try {
       final position = await Geolocator.getCurrentPosition(locationSettings: const LocationSettings(accuracy: LocationAccuracy.high));
-      if (!mounted) return;
+      if (!mounted) {
+      return;
+    }
       setState(() {
         _currentPosition = position;
       });
@@ -216,9 +238,19 @@ class _DriverMarketplaceScreenState extends State<DriverMarketplaceScreen> {
                       _showMessage(_isEnglish ? 'Your offer was sent successfully.' : 'تم إرسال عرضك السعري بنجاح.');
                       await _refreshAll();
                     } catch (_) {
-                      if (mounted) _showMessage(_isEnglish ? 'This request is no longer available.' : 'هذا الطلب لم يعد متاحاً.');
+                      if (mounted) {
+      _showMessage(
+        _isEnglish
+            ? 'This request is no longer available.'
+            : 'هذا الطلب لم يعد متاحاً.',
+      );
+    }
                     } finally {
-                      if (mounted) setState(() => _isSubmitting = false);
+                      if (mounted) {
+      setState(() {
+        _isSubmitting = false;
+      });
+    }
                     }
                   },
                   style: ElevatedButton.styleFrom(backgroundColor: AppColors.lime, foregroundColor: Colors.black, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
@@ -239,7 +271,9 @@ class _DriverMarketplaceScreenState extends State<DriverMarketplaceScreen> {
   }
 
   double _number(dynamic value) {
-    if (value is num) return value.toDouble();
+    if (value is num) {
+      return value.toDouble();
+    }
     return double.tryParse(value?.toString() ?? '') ?? 0;
   }
 
@@ -346,7 +380,7 @@ class _DriverMarketplaceScreenState extends State<DriverMarketplaceScreen> {
     final vehicleType = request['vehicle_type']?.toString() ?? '';
     final notes = request['notes']?.toString() ?? '';
     return Container(margin: const EdgeInsets.only(bottom: 12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(20), border: Border.all(color: Colors.white.withValues(alpha: 0.06))), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Row(children: [const CircleAvatar(radius: 22, backgroundColor: Color(0x1FE0FF4F), child: Icon(Icons.person_outline_rounded, color: AppColors.lime)), const SizedBox(width: 10), Expanded(child: Text(_isEnglish ? 'Passenger request' : 'طلب راكب', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold))), Text(fare.toString() + ' ' + (_isEnglish ? 'SDG' : 'جنيه'), style: const TextStyle(color: AppColors.lime, fontSize: 16, fontWeight: FontWeight.w900))]),
+      Row(children: [const CircleAvatar(radius: 22, backgroundColor: Color(0x1FE0FF4F), child: Icon(Icons.person_outline_rounded, color: AppColors.lime)), const SizedBox(width: 10), Expanded(child: Text(_isEnglish ? 'Passenger request' : 'طلب راكب', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold))), Text('$fare ${_isEnglish ? 'SDG' : 'جنيه'}', style: const TextStyle(color: AppColors.lime, fontSize: 16, fontWeight: FontWeight.w900))]),
       const SizedBox(height: 14),
       _routeRow(Icons.radio_button_checked, request['pickup_address']?.toString() ?? '', AppColors.lime),
       const SizedBox(height: 8),
