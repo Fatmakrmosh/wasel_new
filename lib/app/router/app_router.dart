@@ -8,6 +8,7 @@ import '../../features/language/language_screen.dart';
 import '../../features/auth/login_screen.dart';
 import '../../features/auth/register_screen.dart';
 import '../../features/auth/account_type_screen.dart';
+import '../../features/auth/account_mode_screen.dart';
 import '../../features/home/home_screen.dart';
 
 import '../../features/rides/city/city_ride_screen.dart';
@@ -90,6 +91,11 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/account-type',
       builder: (_, _) => const AccountTypeScreen(),
+    ),
+
+    GoRoute(
+      path: '/account-mode',
+      builder: (_, _) => const AccountModeScreen(),
     ),
 
     // =========================
