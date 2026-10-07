@@ -26,44 +26,78 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     final client = SupabaseService.client;
     final user = client?.auth.currentUser;
     if (client == null || user == null) return;
+
+    // The role is the critical part of the dashboard. Load it first and
+    // render the admin actions immediately. Statistics/permissions must not
+    // be allowed to disable the whole administration screen.
     try {
       final roleResult = await client.rpc('get_my_role');
       final role = roleResult?.toString().trim().toLowerCase() ?? 'supervisor';
-      final grants = role == 'supervisor'
-          ? await client.from('user_permissions').select('permission_id').eq('user_id', user.id)
-          : const <Map<String, dynamic>>[];
-      final permissionIds = grants
-          .map((row) => (row['permission_id'] as num).toInt())
-          .toList();
-      var permissionCodes = <String>{};
-      if (permissionIds.isNotEmpty) {
-        final permissions = await client
-            .from('permissions')
-            .select('id,code')
-            .inFilter('id', permissionIds);
-        permissionCodes = permissions
-            .map<String>((row) => row['code'].toString().toLowerCase())
-            .toSet();
-      }
 
+      if (!mounted) return;
+      setState(() {
+        _role = role;
+        _permissionCodes = {};
+        _loading = false;
+      });
+    } catch (error) {
+      if (!mounted) return;
+      debugPrint('WASEL admin role error: $error');
+      setState(() => _loading = false);
+      _message('تعذر تحميل صلاحيات الإدارة');
+      return;
+    }
+
+    // Permissions are only needed for supervisors. Admins already have full
+    // access and should never depend on the permission tables to open the UI.
+    if (_role == 'supervisor') {
+      try {
+        final grants = await client
+            .from('user_permissions')
+            .select('permission_id')
+            .eq('user_id', user.id);
+
+        final permissionIds = grants
+            .map((row) => (row['permission_id'] as num).toInt())
+            .toList();
+
+        if (permissionIds.isNotEmpty) {
+          final permissions = await client
+              .from('permissions')
+              .select('id,code')
+              .inFilter('id', permissionIds);
+
+          final permissionCodes = permissions
+              .map<String>((row) => row['code'].toString().toLowerCase())
+              .toSet();
+
+          if (mounted) {
+            setState(() => _permissionCodes = permissionCodes);
+          }
+        }
+      } catch (error) {
+        debugPrint('WASEL supervisor permissions error: $error');
+        // Keep the dashboard usable even if permission details cannot be read.
+      }
+    }
+
+    // Statistics are optional. A failure here must not hide management actions.
+    try {
       final users = await client.from('profiles').select('id').eq('role', 'passenger');
       final drivers = await client.from('profiles').select('id').eq('role', 'driver');
       final companies = await client.from('profiles').select('id').eq('role', 'company');
       final supervisors = await client.from('profiles').select('id').eq('role', 'supervisor');
+
       if (!mounted) return;
       setState(() {
-        _role = role;
-        _permissionCodes = permissionCodes;
         _users = users.length;
         _drivers = drivers.length;
         _companies = companies.length;
         _supervisors = supervisors.length;
-        _loading = false;
       });
-    } catch (_) {
-      if (!mounted) return;
-      setState(() => _loading = false);
-      _message('تعذر تحميل بيانات الإدارة');
+    } catch (error) {
+      debugPrint('WASEL admin statistics error: $error');
+      // Leave statistics at zero and keep all admin actions available.
     }
   }
 
