@@ -33,11 +33,22 @@ class _HomeScreenState extends State<HomeScreen> {
           .eq('id', user.id)
           .maybeSingle();
 
+      final role = row?['role']?.toString();
+      final active = row?['is_active'] == true;
+      var hasPermission = false;
+
+      if (role == 'supervisor' && active) {
+        final grants = await client
+            .from('user_permissions')
+            .select('permission_id')
+            .eq('user_id', user.id)
+            .limit(1);
+        hasPermission = grants.isNotEmpty;
+      }
+
       if (!mounted) return;
       setState(() {
-        _canManage = row?['is_active'] == true &&
-            (row?['role']?.toString() == 'admin' ||
-                row?['role']?.toString() == 'supervisor');
+        _canManage = active && (role == 'admin' || (role == 'supervisor' && hasPermission));
       });
     } catch (_) {
       // Keep the management button hidden if access cannot be verified.
