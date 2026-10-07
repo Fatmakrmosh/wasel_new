@@ -878,13 +878,16 @@ class _CityRideScreenState extends State<CityRideScreen> {
                             '/driver-offers?rideId=$rideId',
                             extra: request,
                           );
-                        } catch (_) {
+                        } catch (error) {
                           if (!mounted) {
                             return;
                           }
 
                           _showMessage(
-                            'تعذر إرسال طلب الرحلة. حاول مرة أخرى.',
+                            error.toString().replaceFirst(
+                              'Exception: ',
+                              '',
+                            ),
                           );
                         }
                       },
