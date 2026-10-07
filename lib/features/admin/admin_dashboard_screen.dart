@@ -52,28 +52,13 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     // access and should never depend on the permission tables to open the UI.
     if (_role == 'supervisor') {
       try {
-        final grants = await client
-            .from('user_permissions')
-            .select('permission_id')
-            .eq('user_id', user.id);
+        final raw = await client.rpc('get_my_permission_codes');
+        final permissionCodes = (raw as List)
+            .map((row) => row['code'].toString().toLowerCase())
+            .toSet();
 
-        final permissionIds = grants
-            .map((row) => (row['permission_id'] as num).toInt())
-            .toList();
-
-        if (permissionIds.isNotEmpty) {
-          final permissions = await client
-              .from('permissions')
-              .select('id,code')
-              .inFilter('id', permissionIds);
-
-          final permissionCodes = permissions
-              .map<String>((row) => row['code'].toString().toLowerCase())
-              .toSet();
-
-          if (mounted) {
-            setState(() => _permissionCodes = permissionCodes);
-          }
+        if (mounted) {
+          setState(() => _permissionCodes = permissionCodes);
         }
       } catch (error) {
         debugPrint('WASEL supervisor permissions error: $error');
