@@ -3,9 +3,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'app.dart';
 import 'core/network/supabase_config.dart';
+import 'core/localization/app_locale.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await AppLocale.load();
 
   if (SupabaseConfig.isConfigured) {
     try {
@@ -14,7 +17,7 @@ Future<void> main() async {
         publishableKey: SupabaseConfig.publishableKey,
       );
     } catch (_) {
-      // Keep the app in Arabic and show a user-friendly message from Auth.
+      // Keep the app in the selected language and show a user-friendly message from Auth.
     }
   }
 
