@@ -558,7 +558,7 @@ class _DriverRegistrationScreenState
               hint: 'أدخل الرقم الوطني المكون من 11 رقمًا',
               keyboardType: TextInputType.number,
               maxLength: 11,
-              inputFormatters: const [
+              inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
               validator: (value) {
