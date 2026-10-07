@@ -34,25 +34,12 @@ class _AdminGateScreenState extends State<AdminGateScreen> {
     }
 
     try {
-      // The profiles.id is linked to auth.users.id, so this is the
-      // RLS-safe lookup and matches the "read own profile" policy.
-      final row = await client
-          .from('profiles')
-          .select('role')
-          .eq('id', user.id)
-          .maybeSingle();
-
-      final role = row?['role']?.toString().trim().toLowerCase();
-      var allowed = role == 'admin';
-
-      if (role == 'supervisor') {
-        final grants = await client
-            .from('user_permissions')
-            .select('permission_id')
-            .eq('user_id', user.id)
-            .limit(1);
-        allowed = grants.isNotEmpty;
-      }
+      // Read the current user's role through a small SECURITY DEFINER RPC.
+      // This avoids evaluating the profiles RLS policies while the gate
+      // itself is deciding whether the user can enter administration.
+      final result = await client.rpc('get_my_role');
+      final role = result?.toString().trim().toLowerCase();
+      final allowed = role == 'admin';
 
       if (!mounted) {
         return;
@@ -71,24 +58,13 @@ class _AdminGateScreenState extends State<AdminGateScreen> {
         return;
       }
 
-      String message = 'حدث خطأ أثناء التحقق من صلاحية الإدارة.';
-      final text = error.toString().toLowerCase();
-
-      if (text.contains('permission denied') ||
-          text.contains('row-level security') ||
-          text.contains('rls')) {
-        message = 'تعذر قراءة صلاحية الحساب من Supabase.';
-      } else if (text.contains('user_permissions')) {
-        message = 'حصل خطأ في صلاحيات المشرفين.';
-      } else if (text.contains('profiles')) {
-        message = 'تعذر قراءة ملف الحساب من profiles.';
-      }
-
+      debugPrint('WASEL admin gate error: $error');
       setState(() => _loading = false);
+
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          duration: const Duration(seconds: 6),
+        const SnackBar(
+          content: Text('تعذر التحقق من صلاحية الإدارة.'),
+          duration: Duration(seconds: 6),
         ),
       );
     }
