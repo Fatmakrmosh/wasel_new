@@ -92,11 +92,11 @@ class _LoginScreenState extends State<LoginScreen> {
           if (role == 'admin' || role == 'supervisor') {
             context.go('/admin');
           } else if (role == 'driver') {
-            context.go('/driver-home');
+            context.go('/account-mode');
           } else if (role == 'company') {
             context.go('/company-home');
           } else if (requestedType == 'driver') {
-            context.go('/driver-register');
+            context.go('/account-mode');
           } else if (requestedType == 'company') {
             context.go('/company-register');
           } else {
