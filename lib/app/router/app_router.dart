@@ -212,7 +212,9 @@ final GoRouter appRouter = GoRouter(
 
     GoRoute(
       path: '/admin/users',
-      builder: (_, _) => const AdminUsersScreen(),
+      builder: (_, state) => AdminUsersScreen(
+        initialFilter: state.uri.queryParameters['filter'] ?? 'all',
+      ),
     ),
 
     GoRoute(
