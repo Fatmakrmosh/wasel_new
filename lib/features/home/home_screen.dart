@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/theme/app_theme.dart';
+import '../../core/localization/app_locale.dart';
+import '../../core/localization/app_strings.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,41 +14,41 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
-  final services = const [
+  List<({IconData icon, String title, String subtitle, String route})> get services => [
     (
       icon: Icons.location_on_outlined,
-      title: 'رحلات داخل المدينة',
-      subtitle: 'اطلب رحلة الآن',
+      title: AppStrings.cityRides,
+      subtitle: AppStrings.requestRide,
       route: '/city-ride',
     ),
     (
       icon: Icons.directions_car_outlined,
-      title: 'ليموزين بين المدن',
-      subtitle: 'سافر براحة',
+      title: AppStrings.intercity,
+      subtitle: AppStrings.travelComfortably,
       route: '/intercity',
     ),
     (
       icon: Icons.directions_bus_outlined,
-      title: 'باصات وحافلات',
-      subtitle: 'احجز مقعدك',
+      title: AppStrings.buses,
+      subtitle: AppStrings.bookSeat,
       route: '/bus',
     ),
     (
       icon: Icons.inventory_2_outlined,
-      title: 'إرسال طرد',
-      subtitle: 'أرسل بأمان',
+      title: AppStrings.sendParcel,
+      subtitle: AppStrings.sendSafely,
       route: '/send-parcel',
     ),
     (
       icon: Icons.location_searching,
-      title: 'تتبع طرد',
-      subtitle: 'تابع شحنتك',
+      title: AppStrings.trackParcel,
+      subtitle: AppStrings.trackShipment,
       route: '/track-parcel',
     ),
     (
       icon: Icons.history,
-      title: 'رحلاتي',
-      subtitle: 'السجل والحجوزات',
+      title: AppStrings.myRides,
+      subtitle: AppStrings.historyBookings,
       route: '/my-rides',
     ),
   ];
@@ -75,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: AppLocale.isEnglish ? TextDirection.ltr : TextDirection.rtl,,
       child: Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(
@@ -96,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'واصل',
+                    'WASEL',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w800,
@@ -123,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Icons.admin_panel_settings_outlined,
                     size: 19,
                   ),
-                  label: const Text('الإدارة'),
+                  label: Text(AppStrings.admin),
                   style: FilledButton.styleFrom(
                     foregroundColor: Colors.black,
                     backgroundColor: AppColors.lime,
@@ -148,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'مرحباً بك 👋',
+                  AppStrings.homeWelcome,
                   style: TextStyle(
                     fontSize: 27,
                     fontWeight: FontWeight.w800,
@@ -156,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 6),
                 const Text(
-                  'إلى أين تريد الذهاب اليوم؟',
+                  AppStrings.whereToday,
                   style: TextStyle(
                     color: AppColors.muted,
                     fontSize: 15,
@@ -166,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 _buildAnnouncement(),
                 const SizedBox(height: 26),
                 const Text(
-                  'خدمات واصل',
+                  AppStrings.services,
                   style: TextStyle(
                     fontSize: 21,
                     fontWeight: FontWeight.w800,
@@ -235,7 +237,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'واصل معك دائماً',
+                  AppStrings.alwaysWithYou,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 18,
@@ -244,7 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  'رحلات، طرود وسفر بين المدن في مكان واحد',
+                  AppStrings.allInOne,
                   style: TextStyle(
                     color: Colors.black87,
                     fontSize: 13,
@@ -345,7 +347,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'تحتاج إلى مساعدة؟',
+                      AppStrings.needHelp,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
@@ -353,7 +355,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      'فريق واصل جاهز لمساعدتك',
+                      AppStrings.teamReady,
                       style: TextStyle(
                         color: AppColors.muted,
                         fontSize: 12,
@@ -379,31 +381,31 @@ class _HomeScreenState extends State<HomeScreen> {
       indicatorColor: AppColors.lime.withValues(alpha: 0.18),
       selectedIndex: _currentIndex,
       onDestinationSelected: _onNavigationSelected,
-      destinations: const [
+      destinations: [
         NavigationDestination(
           icon: Icon(Icons.home_outlined),
           selectedIcon: Icon(Icons.home),
-          label: 'الرئيسية',
+          label: AppStrings.home,
         ),
         NavigationDestination(
           icon: Icon(Icons.directions_car_outlined),
           selectedIcon: Icon(Icons.directions_car),
-          label: 'الرحلات',
+          label: AppStrings.myRides,
         ),
         NavigationDestination(
           icon: Icon(Icons.inventory_2_outlined),
           selectedIcon: Icon(Icons.inventory_2),
-          label: 'الطرود',
+          label: AppStrings.sendParcel,
         ),
         NavigationDestination(
           icon: Icon(Icons.notifications_none),
           selectedIcon: Icon(Icons.notifications),
-          label: 'الإشعارات',
+          label: AppStrings.notifications,
         ),
         NavigationDestination(
           icon: Icon(Icons.person_outline),
           selectedIcon: Icon(Icons.person),
-          label: 'حسابي',
+          label: AppStrings.account,
         ),
       ],
     );
