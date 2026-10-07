@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/network/supabase_service.dart';
+import '../../core/auth/phone_validator.dart';
 import '../../core/theme/app_theme.dart';
 import 'admin_dashboard_screen.dart';
 
@@ -48,6 +49,23 @@ class _AdminGateScreenState extends State<AdminGateScreen> {
             .maybeSingle();
       }
 
+      if (row == null && user.email != null) {
+        final email = user.email!;
+        const prefix = 'wasel_';
+        if (email.startsWith(prefix)) {
+          final at = email.indexOf('@');
+          if (at > prefix.length) {
+            final digits = email.substring(prefix.length, at);
+            final phone = SudanPhoneValidator.normalize('+$digits');
+            row = await client
+                .from('profiles')
+                .select('role')
+                .eq('phone', phone)
+                .maybeSingle();
+          }
+        }
+      }
+
       final role = row?['role']?.toString().trim().toLowerCase();
       var allowed = role == 'admin';
 
@@ -72,9 +90,12 @@ class _AdminGateScreenState extends State<AdminGateScreen> {
       if (!_allowed) {
         context.go('/home');
       }
-    } catch (_) {
+    } catch (error) {
       if (mounted) {
-        context.go('/home');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('تعذر فتح لوحة الإدارة: $error')),
+        );
+        setState(() => _loading = false);
       }
     }
   }
