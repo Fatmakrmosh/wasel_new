@@ -83,17 +83,19 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
     // Statistics are optional. A failure here must not hide management actions.
     try {
-      final users = await client.from('profiles').select('id').eq('role', 'passenger');
-      final drivers = await client.from('profiles').select('id').eq('role', 'driver');
-      final companies = await client.from('profiles').select('id').eq('role', 'company');
-      final supervisors = await client.from('profiles').select('id').eq('role', 'supervisor');
+      final stats = await client.rpc('admin_get_profile_counts');
+      final data = Map<String, dynamic>.from(stats as Map);
+      final users = (data['passenger'] as num?)?.toInt() ?? 0;
+      final drivers = (data['driver'] as num?)?.toInt() ?? 0;
+      final companies = (data['company'] as num?)?.toInt() ?? 0;
+      final supervisors = (data['supervisor'] as num?)?.toInt() ?? 0;
 
       if (!mounted) return;
       setState(() {
-        _users = users.length;
-        _drivers = drivers.length;
-        _companies = companies.length;
-        _supervisors = supervisors.length;
+        _users = users;
+        _drivers = drivers;
+        _companies = companies;
+        _supervisors = supervisors;
       });
     } catch (error) {
       debugPrint('WASEL admin statistics error: $error');
@@ -312,7 +314,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       borderRadius: BorderRadius.circular(17),
       border: Border.all(color: Colors.white10),
     ),
-    child: ListTile(
+    child: Material(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(17),
+      child: ListTile(
       onTap: onTap,
       leading: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white30, size: 16),
       trailing: Container(
