@@ -46,11 +46,7 @@ class _AdminRidesScreenState extends State<AdminRidesScreen> {
         throw Exception('not authorized');
       }
 
-      final rows = await client
-          .from('rides')
-          .select('id,driver_id,status,updated_at')
-          .order('updated_at', ascending: false)
-          .limit(100);
+      final rows = await client.rpc('admin_list_rides');
 
       if (!mounted) return;
       setState(() {
