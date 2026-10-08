@@ -143,7 +143,7 @@ class _AccountScreenState extends State<AccountScreen> {
         return AlertDialog(
           backgroundColor: AppColors.surface,
           title: const Text(
-            'تسجيل الخروج',
+            AppStrings.logout,
             textAlign: TextAlign.right,
             style: TextStyle(
               color: Colors.white,
@@ -151,7 +151,7 @@ class _AccountScreenState extends State<AccountScreen> {
             ),
           ),
           content: const Text(
-            'هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟',
+            AppStrings.logoutConfirm,
             textAlign: TextAlign.right,
             style: TextStyle(
               color: Colors.white70,
@@ -162,7 +162,7 @@ class _AccountScreenState extends State<AccountScreen> {
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: const Text(
-                'إلغاء',
+                AppStrings.cancel,
                 style: TextStyle(
                   color: Colors.white70,
                 ),
@@ -178,7 +178,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 foregroundColor: Colors.black,
               ),
               child: const Text(
-                'تسجيل الخروج',
+                AppStrings.logout,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
