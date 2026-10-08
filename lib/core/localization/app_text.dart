@@ -270,6 +270,8 @@ class AppText {
       'عدد الركاب': 'Number of passengers',
       'ملاحظات للسائق': 'Notes for the driver',
       'رحلات مريحة بعدد مقاعد محدود': 'Comfortable trips with limited seats',
+      'من': 'From',
+      'إلى': 'To',
       'راحة وفخامة للرحلات بين المدن': 'Comfort and luxury for intercity trips',
       'ركاب أو إيجار كامل': 'Passengers or full rental',
       'رحلات ركاب أو إيجار كامل': 'Passenger trips or full rental',
