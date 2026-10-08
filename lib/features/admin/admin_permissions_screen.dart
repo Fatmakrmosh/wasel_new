@@ -151,6 +151,60 @@ class _AdminPermissionsScreenState extends State<AdminPermissionsScreen> {
     }
   }
 
+  Future<void> _removeSupervisor() async {
+    final client = SupabaseService.client;
+    final supervisor = _selectedSupervisor;
+    if (client == null || supervisor == null) return;
+
+    final selected = _supervisors.firstWhere(
+      (s) => s['id'].toString() == supervisor,
+      orElse: () => <String, dynamic>{},
+    );
+    final name = selected['full_name']?.toString().trim();
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        backgroundColor: AppColors.surface,
+        title: const Text('إزالة المشرف',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        content: Text(
+          'هل تريد إزالة المشرف المحدد من دور المشرف؟',
+          textAlign: TextAlign.right,
+          style: const TextStyle(color: Colors.white70),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: const Text('إلغاء'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(dialogContext, true),
+            style: FilledButton.styleFrom(
+              backgroundColor: Colors.redAccent,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('إزالة'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+
+    try {
+      await client.rpc('admin_set_profile_role', params: {
+        'target_user': supervisor,
+        'target_role': 'passenger',
+      });
+      _selectedSupervisor = null;
+      _message('تمت إزالة المشرف');
+      await _load();
+    } catch (error) {
+      debugPrint('WASEL remove supervisor error: $error');
+      _message('تعذر إزالة المشرف');
+    }
+  }
+
   Future<void> _selectSupervisor(String id) async {
     setState(() { _selectedSupervisor = id; _loading = true; });
     final client = SupabaseService.client;
@@ -234,21 +288,41 @@ class _AdminPermissionsScreenState extends State<AdminPermissionsScreen> {
                 const Text('اختر المشرف', textAlign: TextAlign.right,
                     style: TextStyle(color: AppColors.lime, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
-                SizedBox(
-                  height: 48,
-                  child: FilledButton.icon(
-                    onPressed: _addSupervisor,
-                    icon: const Icon(Icons.person_add_alt_1_rounded),
-                    label: const Text('إضافة مشرف'),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: AppColors.lime,
-                      foregroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
+                Row(
+                children: [
+                  Expanded(
+                    child: FilledButton.icon(
+                      onPressed: _addSupervisor,
+                      icon: const Icon(Icons.person_add_alt_1_rounded),
+                      label: const Text('إضافة مشرف'),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: AppColors.lime,
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
                       ),
                     ),
                   ),
-                ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: _selectedSupervisor == null
+                          ? null
+                          : _removeSupervisor,
+                      icon: const Icon(Icons.person_remove_alt_1_rounded),
+                      label: const Text('إزالة المشرف'),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.redAccent,
+                        side: const BorderSide(color: Colors.redAccent),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
                 const SizedBox(height: 12),
                 if (_supervisors.isEmpty)
                   _emptyCard('لا يوجد مشرفون حالياً. عيّن مستخدماً كمشرف أولاً.')
