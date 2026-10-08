@@ -5,6 +5,9 @@ class AppText {
     if (!AppLocale.isEnglish) return arabic;
 
     const translations = <String, String>{
+      'أحمد محمد': 'Ahmed Mohamed',
+      'تعذر تسجيل الخروج. حاول مرة أخرى.': 'Unable to log out. Please try again.',
+      'لم يتم إنهاء الجلسة. حاول مرة أخرى.': 'The session was not ended. Please try again.',
       'لغة التطبيق': 'App language',
       'الإنجليزية ستكون متاحة قريبًا': 'English will be available soon',
       'تسجيل الخروج': 'Log out',
