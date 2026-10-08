@@ -581,14 +581,14 @@ class _AccountScreenState extends State<AccountScreen> {
           ),
           if (_isAdminAccount) ...[
             const SizedBox(height: 20),
-            _buildSectionTitle('الإدارة'),
+            _buildSectionTitle(AppStrings.admin),
             const SizedBox(height: 8),
             _buildAccountItem(
               icon: Icons.admin_panel_settings_outlined,
-              title: _role == 'admin' ? 'إدارة النظام' : 'لوحة المشرف',
+              title: _role == 'admin' ? AppStrings.systemManagement : AppStrings.supervisorPanel,
               subtitle: _role == 'admin'
-                  ? 'إدارة المستخدمين والمشرفين والرحلات والصلاحيات'
-                  : 'إدارة المهام حسب الصلاحيات الممنوحة',
+                  ? AppStrings.manageUsersTripsPermissions
+                  : AppStrings.manageTasksPermissions,
               onTap: () => context.push('/admin'),
             ),
           ],
