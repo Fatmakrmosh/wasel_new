@@ -82,15 +82,24 @@ class RideMarketService {
       throw Exception('AUTH_REQUIRED');
     }
 
-    final result = await client.rpc(
-      'submit_ride_offer',
-      params: {
-        'p_ride_id': rideId,
-        'p_proposed_fare': proposedFare,
-      },
-    );
+    try {
+      final result = await client.rpc(
+        'submit_ride_offer',
+        params: {
+          'p_ride_id': rideId,
+          'p_proposed_fare': proposedFare,
+        },
+      );
 
-    return result?.toString();
+      return result?.toString();
+    } on PostgrestException catch (error) {
+      throw Exception(
+        'تعذر إرسال العرض: ${error.message}'
+        '${error.code == null ? '' : ' (${error.code})'}',
+      );
+    } catch (error) {
+      throw Exception('تعذر إرسال العرض: $error');
+    }
   }
 
   static Future<List<Map<String, dynamic>>> listOffers({
