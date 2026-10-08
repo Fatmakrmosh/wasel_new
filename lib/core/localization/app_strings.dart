@@ -115,5 +115,14 @@ class AppStrings {
   static String get helpCenterMessage => en
       ? 'You can contact WASEL support for help with rides, parcels and accounts.\n\nThe support center will be connected to customer service later.'
       : 'يمكنك التواصل مع دعم واصل للحصول على المساعدة في الرحلات والطرود والحسابات.\n\nسيتم ربط مركز الدعم بخدمة العملاء لاحقًا.';
+  static String get privacyMessage => en
+      ? 'WASEL is committed to protecting user data and using it only to provide services and improve the user experience.\n\nThe full privacy policy will be added before the final launch.'
+      : 'تحرص واصل على حماية بيانات المستخدمين وعدم استخدامها إلا لتقديم الخدمات وتحسين تجربة الاستخدام.\n\nسيتم إضافة سياسة الخصوصية الكاملة قبل الإطلاق النهائي.';
+  static String get termsMessage => en
+      ? 'All WASEL services are subject to the terms of use and safety and payment policies approved by the platform management.\n\nThe final terms will be added before launch.'
+      : 'تخضع جميع خدمات واصل لشروط الاستخدام وسياسات السلامة والدفع المعتمدة من إدارة المنصة.\n\nسيتم إضافة الشروط النهائية قبل الإطلاق.';
+  static String get aboutWaselMessage => en
+      ? 'WASEL\n\nA Sudanese platform for transportation, rides and parcel delivery, designed to simplify travel and connect passengers with drivers and transport companies.'
+      : 'واصل WASEL\n\nمنصة سودانية للنقل والرحلات وإرسال الطرود، تهدف إلى تسهيل التنقل وربط الركاب بالسائقين وشركات النقل.';
 
 }
