@@ -64,5 +64,13 @@ class AppStrings {
   static String get changePassword => en ? 'Change password' : 'تغيير كلمة المرور';
   static String get language => en ? 'Language' : 'اللغة';
   static String get home => en ? 'Home' : 'الرئيسية';
+  static String get settings => en ? 'Settings' : 'الإعدادات';
+  static String get tripParcelAlerts => en ? 'Trip and parcel alerts' : 'تنبيهات الرحلات والطرود';
+  static String get darkMode => en ? 'Dark mode' : 'الوضع الداكن';
+  static String get appAppearance => en ? 'App appearance' : 'مظهر التطبيق';
+  static String get darkModeEnabled => en ? 'Dark mode enabled' : 'تم تفعيل الوضع الداكن';
+  static String get lightModeLater => en
+      ? 'Light mode will be applied later'
+      : 'سيتم تطبيق الوضع الفاتح لاحقًا';
 }
 
