@@ -799,14 +799,14 @@ class _CityRideScreenState extends State<CityRideScreen> {
                   _summaryRow(
                     Icons.route_outlined,
                     AppText.t('المسافة'),
-                    '${_distanceKm.toStringAsFixed(1)} كم',
+                    '${_distanceKm.toStringAsFixed(1)} ${AppText.t('كم')}',
                     AppColors.lime,
                   ),
                   const SizedBox(height: 12),
                   _summaryRow(
                     Icons.access_time,
                     AppText.t('الوقت المتوقع'),
-                    '${_durationMinutes.round()} دقيقة',
+                    '${_durationMinutes.round()} ${AppText.t('دقيقة')}',
                     AppColors.lime,
                   ),
                   const SizedBox(height: 20),
@@ -1350,7 +1350,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
                     Expanded(
                       child: Text(
                         _distanceKm > 0
-                            ? '${_distanceKm.toStringAsFixed(1)} كم • ${_durationMinutes.round()} دقيقة تقريبًا'
+                            ? '${_distanceKm.toStringAsFixed(1)} ${AppText.t('كم')} • ${_durationMinutes.round()} ${AppText.t('دقيقة')} ${AppText.t('تقريبًا')}'
                             : _routeFailed
                                 ? AppText.t('تعذر تحميل مسار الطريق')
                                 : AppText.t('حدد الانطلاق والوجهة لحساب المسافة'),
@@ -2070,7 +2070,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
           Text(
             _distanceKm > 0
                 ? '${_estimatedFare.round()} جنيه'
-                : 'بانتظار المسافة',
+                : AppText.t('بانتظار المسافة'),
             style:
                 const TextStyle(
               color:
@@ -2326,7 +2326,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
                 ),
                 child:
                     Text(
-                  'إلغاء',
+                  AppText.t('إلغاء'),
                 ),
               ),
               ElevatedButton(
@@ -2711,7 +2711,7 @@ class _LocationPickerSheetState
           .unfocus();
     } catch (_) {
       await _showSimpleMessage(
-        'تعذر الحصول على موقعك الحالي.',
+        AppText.t('تعذر الحصول على موقعك الحالي.'),
       );
     } finally {
       if (mounted) {
