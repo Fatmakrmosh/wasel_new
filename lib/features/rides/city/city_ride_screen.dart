@@ -10,6 +10,7 @@ import 'package:latlong2/latlong.dart';
 
 import '../../../core/network/ride_market_service.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/localization/app_text.dart';
 import 'city_ride_request.dart';
 
 class CityRideScreen extends StatefulWidget {
