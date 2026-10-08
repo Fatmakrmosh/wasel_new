@@ -364,23 +364,23 @@ Widget build(BuildContext context) {
             ),
             items: const [
               DropdownMenuItem(
-                value: AppText.t('طرد عادي'),
+                value: 'طرد عادي',
                 child: Text(AppText.t('طرد عادي')),
               ),
               DropdownMenuItem(
-                value: AppText.t('مستندات'),
+                value: 'مستندات',
                 child: Text(AppText.t('مستندات')),
               ),
               DropdownMenuItem(
-                value: AppText.t('ملابس'),
+                value: 'ملابس',
                 child: Text(AppText.t('ملابس')),
               ),
               DropdownMenuItem(
-                value: AppText.t('مواد غذائية'),
+                value: 'مواد غذائية',
                 child: Text(AppText.t('مواد غذائية')),
               ),
               DropdownMenuItem(
-                value: AppText.t('أخرى'),
+                value: 'أخرى',
                 child: Text(AppText.t('أخرى')),
               ),
             ],
@@ -432,13 +432,13 @@ Widget build(BuildContext context) {
   Widget _buildDeliveryOptions() {
     final options = [
       {
-        'title': AppText.t('مع رحلة مسافر'),
-        'subtitle': AppText.t('أوفر وأسرع عند توفر رحلة'),
+        'title': 'مع رحلة مسافر',
+        'subtitle': 'أوفر وأسرع عند توفر رحلة',
         'icon': Icons.directions_car_outlined,
       },
       {
-        'title': AppText.t('توصيل مخصص'),
-        'subtitle': AppText.t('إرسال مباشر للطرد'),
+        'title': 'توصيل مخصص',
+        'subtitle': 'إرسال مباشر للطرد',
         'icon': Icons.local_shipping_outlined,
       },
     ];
