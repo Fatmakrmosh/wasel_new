@@ -269,6 +269,13 @@ class AppText {
       'حدد المكان الذي تريد الوصول إليه': 'Set your destination',
       'عدد الركاب': 'Number of passengers',
       'ملاحظات للسائق': 'Notes for the driver',
+      'رحلات مريحة بعدد مقاعد محدود': 'Comfortable trips with limited seats',
+      'راحة وفخامة للرحلات بين المدن': 'Comfort and luxury for intercity trips',
+      'ركاب أو إيجار كامل': 'Passengers or full rental',
+      'رحلات ركاب أو إيجار كامل': 'Passenger trips or full rental',
+      'رحلات جماعية ومقاعد متعددة': 'Group trips with multiple seats',
+      'رحلات جماعية بعدد مقاعد كبير': 'Group trips with many seats',
+      'نقل البضائع والحمولات': 'Goods and cargo transport',
       'مثلاً: سأكون أمام البوابة الرئيسية': 'Example: I will be in front of the main gate',
     };
 
