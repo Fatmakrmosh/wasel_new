@@ -164,6 +164,23 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     );
   }
 
+  String get _screenTitle {
+    switch (_filter) {
+      case 'driver':
+        return 'إدارة السائقين';
+      case 'company':
+        return 'الشركات المسجلة';
+      case 'supervisor':
+        return 'المشرفون';
+      case 'admin':
+        return 'المديرون';
+      case 'passenger':
+        return 'المستخدمون';
+      default:
+        return 'المستخدمون المسجلون';
+    }
+  }
+
   void _message(String message) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message, textAlign: TextAlign.right)));
@@ -176,7 +193,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
-        title: const Text('إدارة المستخدمين', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        title: Text(_screenTitle, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         actions: [IconButton(onPressed: _loadUsers, icon: const Icon(Icons.refresh_rounded, color: Colors.white))],
       ),
       body: _loading
@@ -187,15 +204,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
               child: ListView(
                 padding: const EdgeInsets.all(16),
                 children: [
-                  Wrap(spacing: 8, runSpacing: 8, children: [
-                    _chip('all', 'الكل'), _chip('passenger', 'المستخدمون'),
-                    _chip('driver', 'السائقون'), _chip('company', 'الشركات'),
-                    _chip('supervisor', 'المشرفون'), _chip('admin', 'المديرون'),
-                  ]),
                   const SizedBox(height: 18),
-                  Text('النتائج: ${users.length}', textAlign: TextAlign.right,
-                      style: const TextStyle(color: Colors.white54)),
-                  const SizedBox(height: 10),
                   ...users.map((user) => Container(
                     margin: const EdgeInsets.only(bottom: 10),
                     decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white10)),
