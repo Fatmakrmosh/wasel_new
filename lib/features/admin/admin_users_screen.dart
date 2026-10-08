@@ -78,6 +78,135 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     }
   }
 
+  Future<void> _addCompany() async {
+    final candidates = _users.where((user) {
+      final role = user['role']?.toString().trim().toLowerCase();
+      return role != 'admin' && role != 'supervisor' && role != 'company';
+    }).toList();
+
+    if (candidates.isEmpty) {
+      _message('لا يوجد مستخدم متاح لإضافته كشركة');
+      return;
+    }
+
+    String? selectedId;
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          backgroundColor: AppColors.surface,
+          title: const Text('إضافة شركة',
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          content: DropdownButtonFormField<String>(
+            initialValue: selectedId,
+            dropdownColor: const Color(0xFF252525),
+            style: const TextStyle(color: Colors.white),
+            decoration: const InputDecoration(
+              labelText: 'اختر المستخدم',
+              labelStyle: TextStyle(color: Colors.white54),
+            ),
+            items: candidates.map((user) {
+              final name = user['full_name']?.toString().trim();
+              final phone = user['phone']?.toString() ?? '';
+              return DropdownMenuItem<String>(
+                value: user['id'].toString(),
+                child: Text(
+                  (name?.isNotEmpty == true ? name! : 'بدون اسم') +
+                      (phone.isEmpty ? '' : ' - $phone'),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              );
+            }).toList(),
+            onChanged: (value) => setDialogState(() => selectedId = value),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: const Text('إلغاء'),
+            ),
+            FilledButton(
+              onPressed: selectedId == null
+                  ? null
+                  : () => Navigator.pop(dialogContext),
+              style: FilledButton.styleFrom(
+                backgroundColor: AppColors.lime,
+                foregroundColor: Colors.black,
+              ),
+              child: const Text('إضافة شركة'),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    if (selectedId == null) return;
+    await _changeRole(
+      _users.firstWhere((u) => u['id'].toString() == selectedId),
+      'company',
+    );
+  }
+
+  Future<void> _removeCompany() async {
+    final companies = _filteredUsers;
+    if (companies.isEmpty) {
+      _message('لا توجد شركات مسجلة حالياً');
+      return;
+    }
+
+    String? selectedId;
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          backgroundColor: AppColors.surface,
+          title: const Text('إزالة شركة',
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          content: DropdownButtonFormField<String>(
+            initialValue: selectedId,
+            dropdownColor: const Color(0xFF252525),
+            style: const TextStyle(color: Colors.white),
+            decoration: const InputDecoration(
+              labelText: 'اختر الشركة',
+              labelStyle: TextStyle(color: Colors.white54),
+            ),
+            items: companies.map((user) => DropdownMenuItem<String>(
+              value: user['id'].toString(),
+              child: Text(
+                user['full_name']?.toString().isNotEmpty == true
+                    ? user['full_name'].toString()
+                    : 'بدون اسم',
+                overflow: TextOverflow.ellipsis,
+              ),
+            )).toList(),
+            onChanged: (value) => setDialogState(() => selectedId = value),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: const Text('إلغاء'),
+            ),
+            FilledButton(
+              onPressed: selectedId == null
+                  ? null
+                  : () => Navigator.pop(dialogContext),
+              style: FilledButton.styleFrom(
+                backgroundColor: Colors.redAccent,
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('إزالة'),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    if (selectedId == null) return;
+    await _changeRole(
+      _users.firstWhere((u) => u['id'].toString() == selectedId),
+      'passenger',
+    );
+  }
+
   void _showUser(Map<String, dynamic> user) {
     final role = user['role']?.toString() ?? 'passenger';
     showModalBottomSheet<void>(
@@ -188,7 +317,42 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
               child: ListView(
                 padding: const EdgeInsets.all(16),
                 children: [
-                  const SizedBox(height: 18),
+                  if (_filter == 'company') ...[
+                    Row(
+                      children: [
+                        Expanded(
+                          child: FilledButton.icon(
+                            onPressed: _addCompany,
+                            icon: const Icon(Icons.business_rounded),
+                            label: const Text('إضافة شركة'),
+                            style: FilledButton.styleFrom(
+                              backgroundColor: AppColors.lime,
+                              foregroundColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: _removeCompany,
+                            icon: const Icon(Icons.business_center_outlined),
+                            label: const Text('إزالة شركة'),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Colors.redAccent,
+                              side: const BorderSide(color: Colors.redAccent),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 18),
+                  ],
                   ...users.map((user) => Container(
                     margin: const EdgeInsets.only(bottom: 10),
                     decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white10)),
