@@ -196,6 +196,13 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
     _driverId = null;
     _liveDriverPosition = null;
     _isLiveLocation = false;
+    _pickupPointFromRide = null;
+    _destinationPointFromRide = null;
+    _pickupAddress = '';
+    _destinationAddress = '';
+    _driverName = 'السائق';
+    _vehicleInfo = 'المركبة';
+    _rideFare = 0;
     currentStep = 0;
 
     if (mounted) {
@@ -210,6 +217,7 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
       'accepted' => 0,
       'driver_arriving' => 1,
       'in_progress' => 2,
+      'completed' => 3,
       _ => 0,
     };
 
@@ -365,10 +373,10 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
     );
   }
 
-  Future<void> _updateRideStatus(String status) async {
+  Future<bool> _updateRideStatus(String status) async {
     final client = SupabaseService.client;
     final rideId = _activeRideId;
-    if (client == null || rideId == null) return;
+    if (client == null || rideId == null) return false;
     try {
       await client.from('rides').update({
         'status': status,
@@ -377,12 +385,14 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
       if (!mounted) return;
       _setStepFromStatus(status);
       setState(() {});
+      return true;
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('تعذر تحديث حالة الرحلة')),
         );
       }
+      return false;
     }
   }
 
@@ -1176,18 +1186,19 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
       width: double.infinity,
       height: 54,
       child: ElevatedButton(
-        onPressed: () {
+        onPressed: () async {
           if (currentStep == 0) {
-            _updateRideStatus('driver_arriving');
+            await _updateRideStatus('driver_arriving');
           } else if (currentStep == 1) {
-            _updateRideStatus('in_progress');
+            await _updateRideStatus('in_progress');
           } else if (currentStep == 2) {
-            _updateRideStatus('completed');
+            final updated = await _updateRideStatus('completed');
+            if (!updated || !mounted) return;
             setState(() {
               currentStep = 3;
               _isTracking = false;
             });
-            _locationSubscription?.cancel();
+            await _locationSubscription?.cancel();
           }
         },
         style: ElevatedButton.styleFrom(
