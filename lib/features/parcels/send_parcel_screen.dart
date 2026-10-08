@@ -21,8 +21,8 @@ class _SendParcelScreenState extends State<SendParcelScreen> {
 
   String fromCity = 'الخرطوم';
   String toCity = 'شندي';
-  String parcelType = AppText.t('طرد عادي');
-  String deliveryType = AppText.t('مع رحلة مسافر');
+  String parcelType = 'طرد عادي';
+  String deliveryType = 'مع رحلة مسافر';
 
   @override
   void dispose() {
@@ -237,7 +237,7 @@ Widget build(BuildContext context) {
             initialValue: value,
             dropdownColor: const Color(0xFF242424),
             decoration: InputDecoration(
-              labelText: label,
+              labelText: AppText.t(label),
               labelStyle: TextStyle(
                 color: Colors.grey.shade500,
               ),
@@ -522,7 +522,7 @@ Widget build(BuildContext context) {
   }
 
   Widget _buildPriceCard() {
-    final price = deliveryType == AppText.t('مع رحلة مسافر')
+    final price = deliveryType == 'مع رحلة مسافر'
         ? 3500
         : 6500;
 
@@ -550,7 +550,7 @@ Widget build(BuildContext context) {
             ),
           ),
           Text(
-            '$price جنيه',
+            '$price ${AppText.t('جنيه')}',
             style: const TextStyle(
               color: Colors.black,
               fontSize: 21,
