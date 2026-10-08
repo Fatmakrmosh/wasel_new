@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_theme.dart';
+import '../../../core/localization/app_text.dart';
 
 class BusScreen extends StatefulWidget {
   const BusScreen({super.key});
@@ -143,7 +144,7 @@ class _BusScreenState extends State<BusScreen> {
                 const SizedBox(height: 18),
 
                 const Text(
-                  'الباصات المتاحة',
+                  AppText.t('الباصات المتاحة'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
@@ -240,7 +241,7 @@ class _BusScreenState extends State<BusScreen> {
                       const SizedBox(width: 14),
                       const Expanded(
                         child: Text(
-                          'تأكيد حجز الباص',
+                          AppText.t('تأكيد حجز الباص'),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 21,
@@ -252,7 +253,7 @@ class _BusScreenState extends State<BusScreen> {
                   ),
                   const SizedBox(height: 8),
                   const Text(
-                    'راجع تفاصيل الرحلة قبل الانتقال إلى الدفع.',
+                    AppText.t('راجع تفاصيل الرحلة قبل الانتقال إلى الدفع.'),
                     style: TextStyle(
                       color: AppColors.muted,
                       fontSize: 13,
@@ -280,7 +281,7 @@ class _BusScreenState extends State<BusScreen> {
                           '$_fromCity ← $_toCity',
                         ),
                         _summaryRow(
-                          'تاريخ السفر',
+                          AppText.t('تاريخ السفر'),
                           _formattedDate(),
                         ),
                         _summaryRow(
@@ -318,7 +319,7 @@ class _BusScreenState extends State<BusScreen> {
                         const SizedBox(width: 12),
                         const Expanded(
                           child: Text(
-                            'إجمالي المبلغ',
+                            AppText.t('إجمالي المبلغ'),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,
@@ -327,7 +328,7 @@ class _BusScreenState extends State<BusScreen> {
                           ),
                         ),
                         Text(
-                          '$totalAmount جنيه',
+                          AppText.t('$totalAmount جنيه'),
                           style: const TextStyle(
                             color: AppColors.lime,
                             fontSize: 20,
@@ -351,7 +352,7 @@ class _BusScreenState extends State<BusScreen> {
                       },
                       icon: const Icon(Icons.arrow_back_rounded),
                       label: const Text(
-                        'المتابعة إلى الدفع',
+                        AppText.t('المتابعة إلى الدفع'),
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
@@ -374,7 +375,7 @@ class _BusScreenState extends State<BusScreen> {
                     child: TextButton(
                       onPressed: () => Navigator.pop(context),
                       child: const Text(
-                        'إلغاء',
+                        AppText.t('إلغاء'),
                         style: TextStyle(
                           color: AppColors.muted,
                         ),
@@ -443,7 +444,7 @@ class _BusScreenState extends State<BusScreen> {
                           ),
                           SizedBox(width: 12),
                           Text(
-                            'طريقة الدفع',
+                            AppText.t('طريقة الدفع'),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 21,
@@ -454,7 +455,7 @@ class _BusScreenState extends State<BusScreen> {
                       ),
                       const SizedBox(height: 8),
                       const Text(
-                        'اختر الطريقة المناسبة لإتمام الحجز.',
+                        AppText.t('اختر الطريقة المناسبة لإتمام الحجز.'),
                         style: TextStyle(
                           color: AppColors.muted,
                           fontSize: 13,
@@ -462,8 +463,8 @@ class _BusScreenState extends State<BusScreen> {
                       ),
                       const SizedBox(height: 20),
                       _paymentOption(
-                        title: 'بنكك',
-                        subtitle: 'التحويل إلى حساب WASEL',
+                        title: AppText.t('بنكك'),
+                        subtitle: AppText.t('التحويل إلى حساب WASEL'),
                         icon: Icons.account_balance_rounded,
                         selected: paymentMethod == 'bankak',
                         onTap: () {
@@ -474,8 +475,8 @@ class _BusScreenState extends State<BusScreen> {
                       ),
                       const SizedBox(height: 12),
                       _paymentOption(
-                        title: 'الدفع نقداً',
-                        subtitle: 'الدفع في مكتب الشركة',
+                        title: AppText.t('الدفع نقداً'),
+                        subtitle: AppText.t('الدفع في مكتب الشركة'),
                         icon: Icons.money_rounded,
                         selected: paymentMethod == 'cash',
                         onTap: () {
@@ -500,7 +501,7 @@ class _BusScreenState extends State<BusScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'رقم حساب بنكك',
+                                AppText.t('رقم حساب بنكك'),
                                 style: TextStyle(
                                   color: AppColors.muted,
                                   fontSize: 13,
@@ -518,7 +519,7 @@ class _BusScreenState extends State<BusScreen> {
                               ),
                               SizedBox(height: 8),
                               Text(
-                                'بعد التحويل أدخل رقم العملية للتأكيد.',
+                                AppText.t('بعد التحويل أدخل رقم العملية للتأكيد.'),
                                 style: TextStyle(
                                   color: Colors.white70,
                                   fontSize: 12,
@@ -533,7 +534,7 @@ class _BusScreenState extends State<BusScreen> {
                           keyboardType: TextInputType.text,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                            labelText: 'رقم العملية',
+                            labelText: AppText.t('رقم العملية'),
                             labelStyle: const TextStyle(
                               color: AppColors.muted,
                             ),
@@ -566,7 +567,7 @@ class _BusScreenState extends State<BusScreen> {
                               SizedBox(width: 12),
                               Expanded(
                                 child: Text(
-                                  'سيتم تحصيل قيمة الحجز نقداً في مكتب الشركة قبل السفر.',
+                                  AppText.t('سيتم تحصيل قيمة الحجز نقداً في مكتب الشركة قبل السفر.'),
                                   style: TextStyle(
                                     color: Colors.white70,
                                     fontSize: 13,
@@ -589,7 +590,7 @@ class _BusScreenState extends State<BusScreen> {
                           children: [
                             const Expanded(
                               child: Text(
-                                'إجمالي المبلغ',
+                                AppText.t('إجمالي المبلغ'),
                                 style: TextStyle(
                                   color: Colors.white70,
                                   fontSize: 14,
@@ -597,7 +598,7 @@ class _BusScreenState extends State<BusScreen> {
                               ),
                             ),
                             Text(
-                              '$totalAmount جنيه',
+                              AppText.t('$totalAmount جنيه'),
                               style: const TextStyle(
                                 color: AppColors.lime,
                                 fontSize: 19,
@@ -620,7 +621,7 @@ class _BusScreenState extends State<BusScreen> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
-                                    'أدخل رقم عملية بنكك أولاً',
+                                    AppText.t('أدخل رقم عملية بنكك أولاً'),
                                   ),
                                 ),
                               );
@@ -643,7 +644,7 @@ class _BusScreenState extends State<BusScreen> {
                             Icons.check_circle_outline_rounded,
                           ),
                           label: const Text(
-                            'تأكيد الدفع والحجز',
+                            AppText.t('تأكيد الدفع والحجز'),
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -666,7 +667,7 @@ class _BusScreenState extends State<BusScreen> {
                         child: TextButton(
                           onPressed: () => Navigator.pop(context),
                           child: const Text(
-                            'رجوع',
+                            AppText.t('رجوع'),
                             style: TextStyle(
                               color: AppColors.muted,
                             ),
@@ -702,7 +703,7 @@ class _BusScreenState extends State<BusScreen> {
         'WAS-R-${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}';
 
     final String paymentText =
-        paymentMethod == 'bankak' ? 'بنكك' : 'نقداً في المكتب';
+        paymentMethod == 'bankak' ? AppText.t('بنكك') : 'نقداً في المكتب';
 
     showDialog<void>(
       context: context,
@@ -737,7 +738,7 @@ class _BusScreenState extends State<BusScreen> {
                 ),
                 const SizedBox(height: 14),
                 const Text(
-                  'تم تأكيد الحجز',
+                  AppText.t('تم تأكيد الحجز'),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 22,
@@ -746,7 +747,7 @@ class _BusScreenState extends State<BusScreen> {
                 ),
                 const SizedBox(height: 6),
                 const Text(
-                  'تم إصدار تذكرتك الإلكترونية بنجاح',
+                  AppText.t('تم إصدار تذكرتك الإلكترونية بنجاح'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: AppColors.muted,
@@ -785,7 +786,7 @@ class _BusScreenState extends State<BusScreen> {
                         '$_fromCity ← $_toCity',
                       ),
                       _ticketRow(
-                        'تاريخ السفر',
+                        AppText.t('تاريخ السفر'),
                         _formattedDate(),
                       ),
                       _ticketRow(
@@ -806,12 +807,12 @@ class _BusScreenState extends State<BusScreen> {
                         highlight: true,
                       ),
                       _ticketRow(
-                        'طريقة الدفع',
+                        AppText.t('طريقة الدفع'),
                         paymentText,
                       ),
                       _ticketRow(
                         'المبلغ',
-                        '$totalAmount جنيه',
+                        AppText.t('$totalAmount جنيه'),
                         highlight: true,
                       ),
                     ],
@@ -823,7 +824,7 @@ class _BusScreenState extends State<BusScreen> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: Text(
-                      'رقم عملية بنكك: $paymentReference',
+                      AppText.t('رقم عملية بنكك: $paymentReference'),
                       style: const TextStyle(
                         color: Colors.white54,
                         fontSize: 12,
@@ -849,7 +850,7 @@ class _BusScreenState extends State<BusScreen> {
                       SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          'يمكن استخدام رقم التذكرة عند الصعود ومراجعة الحجز.',
+                          AppText.t('يمكن استخدام رقم التذكرة عند الصعود ومراجعة الحجز.'),
                           style: TextStyle(
                             color: Colors.white70,
                             fontSize: 12,
@@ -877,7 +878,7 @@ class _BusScreenState extends State<BusScreen> {
                       ),
                     ),
                     child: const Text(
-                      'تم',
+                      AppText.t('تم'),
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
@@ -988,7 +989,7 @@ class _BusScreenState extends State<BusScreen> {
           color: Colors.white,
         ),
         title: const Text(
-          'الباصات والحافلات',
+          AppText.t('الباصات والحافلات'),
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -1050,7 +1051,7 @@ class _BusScreenState extends State<BusScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'رحلات الباصات',
+                  AppText.t('رحلات الباصات'),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 19,
@@ -1059,7 +1060,7 @@ class _BusScreenState extends State<BusScreen> {
                 ),
                 SizedBox(height: 6),
                 Text(
-                  'احجز مقعدك مع شركات النقل والحافلات المتاحة عبر واصل.',
+                  AppText.t('احجز مقعدك مع شركات النقل والحافلات المتاحة عبر واصل.'),
                   style: TextStyle(
                     color: Colors.white54,
                     fontSize: 12,
@@ -1086,7 +1087,7 @@ class _BusScreenState extends State<BusScreen> {
           Row(
             children: [
               const Text(
-                'مسار الرحلة',
+                AppText.t('مسار الرحلة'),
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 15,
@@ -1106,7 +1107,7 @@ class _BusScreenState extends State<BusScreen> {
           ),
           const SizedBox(height: 6),
           _citySelector(
-            title: 'من',
+            title: AppText.t('من'),
             value: _fromCity,
             icon: Icons.radio_button_checked,
             color: AppColors.lime,
@@ -1130,7 +1131,7 @@ class _BusScreenState extends State<BusScreen> {
             ),
           ),
           _citySelector(
-            title: 'إلى',
+            title: AppText.t('إلى'),
             value: _toCity,
             icon: Icons.location_on,
             color: Colors.white70,
@@ -1234,7 +1235,7 @@ class _BusScreenState extends State<BusScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'تاريخ السفر',
+                    AppText.t('تاريخ السفر'),
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 14,
@@ -1243,7 +1244,7 @@ class _BusScreenState extends State<BusScreen> {
                   ),
                   SizedBox(height: 4),
                   Text(
-                    'اختر تاريخ الرحلة',
+                    AppText.t('اختر تاريخ الرحلة'),
                     style: TextStyle(
                       color: Colors.white38,
                       fontSize: 11,
@@ -1303,7 +1304,7 @@ class _BusScreenState extends State<BusScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'عدد المسافرين',
+                  AppText.t('عدد المسافرين'),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 14,
@@ -1312,7 +1313,7 @@ class _BusScreenState extends State<BusScreen> {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  'اختر عدد المقاعد',
+                  AppText.t('اختر عدد المقاعد'),
                   style: TextStyle(
                     color: Colors.white38,
                     fontSize: 11,
@@ -1391,7 +1392,7 @@ class _BusScreenState extends State<BusScreen> {
         onPressed: _searchBuses,
         icon: const Icon(Icons.search),
         label: const Text(
-          'البحث عن الباصات',
+          AppText.t('البحث عن الباصات'),
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -1427,7 +1428,7 @@ class _BusScreenState extends State<BusScreen> {
           SizedBox(width: 10),
           Expanded(
             child: Text(
-              'سوق الناقلين في واصل يتيح لشركات النقل عرض رحلاتها ومقاعدها. وإذا لم يكتمل الحد الأدنى للمقاعد، يمكن للنظام اقتراح ناقل أو رحلة بديلة.',
+              AppText.t('سوق الناقلين في واصل يتيح لشركات النقل عرض رحلاتها ومقاعدها. وإذا لم يكتمل الحد الأدنى للمقاعد، يمكن للنظام اقتراح ناقل أو رحلة بديلة.'),
               style: TextStyle(
                 color: Colors.white54,
                 fontSize: 12,
