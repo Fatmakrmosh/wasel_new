@@ -1,0 +1,58 @@
+import 'app_locale.dart';
+
+class AppText {
+  static String t(String arabic) {
+    if (!AppLocale.isEnglish) return arabic;
+
+    const translations = <String, String>{
+      'اختر نوع المركبة': 'Choose vehicle type',
+      'اختر رحلة قائمة للحجز، وسيتم تحديث المقاعد المتبقية تلقائياً.': 'Choose an available trip to book. Remaining seats update automatically.',
+      'إتمام الحجز': 'Complete booking',
+      'قطع تذكرة': 'Book a ticket',
+      'حجز مقعد': 'Reserve a seat',
+      'إيجار كامل': 'Full rental',
+      'المركبة كاملة': 'Entire vehicle',
+      'بنكك': 'Bankak',
+      'رقم الحساب: 9824691': 'Account number: 9824691',
+      'نقداً في المكتب': 'Cash at office',
+      'الدفع نقداً لدى مكتب واصل': 'Pay cash at a WASEL office',
+      'تأكيد وإصدار التذكرة الإلكترونية': 'Confirm and issue e-ticket',
+      'التذكرة الإلكترونية': 'E-ticket',
+      'تم تأكيد الحجز وإصدار التذكرة': 'Booking confirmed and ticket issued',
+      'رمز التحقق الإلكتروني': 'E-ticket verification code',
+      'تم': 'Done',
+      'نقل حمولة بالدفار': 'Pickup truck cargo transport',
+      'نوع الحمولة': 'Cargo type',
+      'وصف العفش أو البضاعة': 'Cargo or goods description',
+      'الكمية': 'Quantity',
+      'الوزن التقريبي': 'Approximate weight',
+      'الحجم التقريبي': 'Approximate volume',
+      'اسم المرسل': 'Sender name',
+      'اسم المستلم': 'Recipient name',
+      'ملاحظات': 'Notes',
+      'تعهد ومسؤولية صاحب الحمولة': 'Cargo owner declaration and responsibility',
+      'أقر بأن جميع البيانات المتعلقة بالحمولة صحيحة، وأنني أتحمل المسؤولية الكاملة عن أي مخالفة أو مواد ممنوعة أو غير نظامية أو أضرار ناتجة عن محتويات الحمولة. كما ألتزم بتحمل جميع الرسوم والجبايات ومصاريف الطريق وأي تكاليف نظامية متعلقة بالبضاعة أو نقلها.': 'I confirm that all cargo information is accurate and accept full responsibility for any violation, prohibited or unlawful materials, or damage caused by the cargo. I also accept all applicable fees, taxes, road expenses, and other lawful transport costs.',
+      'أوافق على التعهد والمسؤولية المذكورة أعلاه': 'I agree to the declaration and responsibility above',
+      'متابعة طلب النقل': 'Continue cargo request',
+      'تم تسجيل طلب النقل': 'Cargo request submitted',
+      'سيتم مراجعة بيانات الحمولة وتنسيق وسيلة النقل المناسبة وإرسال تفاصيل السعر والتأكيد.': 'The cargo details will be reviewed, suitable transport will be arranged, and pricing and confirmation details will be sent.',
+      'الرحلات بين المدن': 'Intercity trips',
+      'سافر بين المدن بسهولة': 'Travel between cities with ease',
+      'اختر مسارك أولاً، ثم اختر المركبة والرحلة المناسبة لك.': 'Choose your route first, then select the right vehicle and trip.',
+      'مسار الرحلة': 'Trip route',
+      'من': 'From',
+      'إلى': 'To',
+      'المركبات المتاحة لهذا المسار': 'Vehicles available for this route',
+      'رحلة قائمة': 'Available trip',
+      'اختيار الرحلة': 'Choose trip',
+      'لا توجد رحلة قائمة بهذا النوع حالياً': 'No available trip of this type right now',
+      'يمكنك العودة واختيار نوع مركبة آخر أو المحاولة لاحقاً.': 'You can go back and choose another vehicle type or try again later.',
+      'تاريخ السفر': 'Travel date',
+      'عدد المسافرين': 'Passengers',
+      'اختر عدد المقاعد': 'Choose number of seats',
+      'اختر المسار أولاً. بعد ذلك تظهر أنواع المركبات المتاحة، ثم الرحلات القائمة والمقاعد المتبقية. لا يتم عرض شركات النقل للمسافر؛ إدارة واصل تتولى تنسيق الناقل عند الحاجة.': 'Choose the route first. Then available vehicle types, trips, and remaining seats will appear. Transport companies are not shown to passengers; WASEL coordinates the carrier when needed.',
+    };
+
+    return translations[arabic] ?? arabic;
+  }
+}
