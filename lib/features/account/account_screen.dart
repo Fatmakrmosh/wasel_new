@@ -429,16 +429,16 @@ class _AccountScreenState extends State<AccountScreen> {
       builder: (context) {
         return AlertDialog(
           backgroundColor: AppColors.surface,
-          title: const Text(
-            'مركز المساعدة',
+          title: Text(
+            AppStrings.helpCenter,
             textAlign: TextAlign.right,
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
           ),
-          content: const Text(
-            'يمكنك التواصل مع دعم واصل للحصول على المساعدة في الرحلات والطرود والحسابات.\n\nسيتم ربط مركز الدعم بخدمة العملاء لاحقًا.',
+          content: Text(
+            AppStrings.helpCenterMessage,
             textAlign: TextAlign.right,
             style: TextStyle(
               color: Colors.white70,
@@ -448,8 +448,8 @@ class _AccountScreenState extends State<AccountScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text(
-                'إغلاق',
+              child: Text(
+                AppStrings.close,
                 style: TextStyle(
                   color: AppColors.lime,
                 ),
