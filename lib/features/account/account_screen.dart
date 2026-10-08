@@ -4,6 +4,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/network/supabase_service.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/localization/app_locale.dart';
+import '../../core/localization/app_strings.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -54,55 +56,34 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   void _showLanguageDialog() {
+    final isEnglish = AppLocale.isEnglish;
     showDialog<void>(
       context: context,
-      builder: (context) {
+      builder: (dialogContext) {
         return AlertDialog(
           backgroundColor: AppColors.surface,
-          title: const Text(
-            'لغة التطبيق',
-            textAlign: TextAlign.right,
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _languageOption('العربية', true),
-              _languageOption('English', false),
-            ],
-          ),
+          title: Text(AppStrings.language, textAlign: isEnglish ? TextAlign.left : TextAlign.right, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          content: Column(mainAxisSize: MainAxisSize.min, children: [
+            _languageOption('العربية', 'ar'),
+            _languageOption('English', 'en'),
+          ]),
         );
       },
     );
   }
 
-  Widget _languageOption(String title, bool selected) {
+  Widget _languageOption(String title, String languageCode) {
+    final selected = AppLocale.locale.value.languageCode == languageCode;
     return ListTile(
-      onTap: () {
+      onTap: () async {
         Navigator.pop(context);
-        if (!selected) {
-          _showMessage('اللغة الإنجليزية ستكون متاحة قريبًا');
-        }
+        await AppLocale.setLanguage(languageCode);
+        if (mounted) setState(() {});
       },
-      title: Text(
-        title,
-        textAlign: TextAlign.right,
-        style: const TextStyle(
-          color: Colors.white,
-        ),
-      ),
-      trailing: Icon(
-        selected
-            ? Icons.radio_button_checked_rounded
-            : Icons.radio_button_off_rounded,
-        color: selected ? AppColors.lime : Colors.white38,
-      ),
+      title: Text(title, textAlign: languageCode == 'en' ? TextAlign.left : TextAlign.right, style: const TextStyle(color: Colors.white)),
+      trailing: Icon(selected ? Icons.radio_button_checked_rounded : Icons.radio_button_off_rounded, color: selected ? AppColors.lime : Colors.white38),
     );
   }
-
   Future<void> _logout() async {
     final client = SupabaseService.client;
 
