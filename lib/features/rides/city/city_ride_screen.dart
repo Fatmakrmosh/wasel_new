@@ -998,7 +998,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
               const SizedBox(width: 10),
               const Expanded(
                 child: Text(
-                  'السعر التقديري',
+                  AppText.t('السعر التقديري'),
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight:
@@ -1029,7 +1029,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
           ),
           const SizedBox(height: 14),
           _fareLine(
-            'رسوم فتح الرحلة',
+            AppText.t('رسوم فتح الرحلة'),
             '${_baseFare.round()} جنيه',
           ),
           const SizedBox(height: 8),
@@ -1039,9 +1039,9 @@ class _CityRideScreenState extends State<CityRideScreen> {
           ),
           const SizedBox(height: 8),
           _fareLine(
-            'الانتظار',
+            AppText.t('الانتظار'),
             _waitingMinutes == 0
-                ? 'يُحسب أثناء الرحلة'
+                ? AppText.t('يُحسب أثناء الرحلة')
                 : '${_waitingFare.round()} جنيه',
           ),
           const SizedBox(height: 10),
@@ -1049,7 +1049,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
             alignment:
                 Alignment.centerRight,
             child: Text(
-              'المعادلة: 5,000 + 6,000 لكل كم + 500 لكل دقيقة انتظار',
+              AppText.t('المعادلة: 5,000 + 6,000 لكل كم + 500 لكل دقيقة انتظار'),
               style: TextStyle(
                 color:
                     Colors.grey.shade500,
@@ -1462,13 +1462,13 @@ class _CityRideScreenState extends State<CityRideScreen> {
             iconColor:
                 AppColors.lime,
             title:
-                'نقطة الانطلاق',
+                AppText.t('نقطة الانطلاق'),
             value:
                 _pickupController
                     .text
                     .trim(),
             hint:
-                'حدد مكان التقاطك',
+                AppText.t('حدد مكان التقاطك'),
             onTap: _choosePickup,
           ),
           Padding(
@@ -1497,13 +1497,13 @@ class _CityRideScreenState extends State<CityRideScreen> {
             iconColor:
                 Colors.redAccent,
             title:
-                'الوجهة',
+                AppText.t('الوجهة'),
             value:
                 _destinationController
                     .text
                     .trim(),
             hint:
-                'حدد المكان الذي تريد الوصول إليه',
+                AppText.t('حدد المكان الذي تريد الوصول إليه'),
             onTap:
                 _chooseDestination,
           ),
@@ -1812,7 +1812,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
           CrossAxisAlignment.start,
       children: [
         const Text(
-          'عدد الركاب',
+          AppText.t('عدد الركاب'),
           style: TextStyle(
             fontSize: 18,
             fontWeight:
@@ -1850,7 +1850,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
               ),
               const Expanded(
                 child: Text(
-                  'عدد الركاب',
+                  AppText.t('عدد الركاب'),
                   style:
                       TextStyle(
                     fontSize: 15,
@@ -1960,7 +1960,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
           CrossAxisAlignment.start,
       children: [
         const Text(
-          'ملاحظات للسائق',
+          AppText.t('ملاحظات للسائق'),
           style: TextStyle(
             fontSize: 18,
             fontWeight:
@@ -1984,7 +1984,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
           decoration:
               InputDecoration(
             hintText:
-                'مثلاً: سأكون أمام البوابة الرئيسية',
+                AppText.t('مثلاً: سأكون أمام البوابة الرئيسية'),
             hintStyle:
                 TextStyle(
               color:
@@ -2056,7 +2056,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
           ),
           const Expanded(
             child: Text(
-              'السعر التقديري',
+              AppText.t('السعر التقديري'),
               style:
                   TextStyle(
                 color:
