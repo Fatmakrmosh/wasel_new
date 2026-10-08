@@ -192,7 +192,7 @@ class _AccountScreenState extends State<AccountScreen> {
 
   void _showEditProfile() {
     final nameController = TextEditingController(
-      text: 'أحمد محمد',
+      text: 'Ahmed Mohamed',
     );
 
     final phoneController = TextEditingController(
@@ -231,8 +231,8 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                 ),
                 const SizedBox(height: 22),
-                const Text(
-                  'تعديل الملف الشخصي',
+                Text(
+                  AppStrings.editProfile,
                   textAlign: TextAlign.right,
                   style: TextStyle(
                     color: Colors.white,
@@ -243,13 +243,13 @@ class _AccountScreenState extends State<AccountScreen> {
                 const SizedBox(height: 20),
                 _buildTextField(
                   controller: nameController,
-                  label: 'الاسم',
+                  label: AppStrings.name,
                   icon: Icons.person_outline_rounded,
                 ),
                 const SizedBox(height: 14),
                 _buildTextField(
                   controller: phoneController,
-                  label: 'رقم الهاتف',
+                  label: AppStrings.phoneNumber,
                   icon: Icons.phone_outlined,
                   keyboardType: TextInputType.phone,
                 ),
@@ -259,7 +259,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
-                      _showMessage('تم حفظ بيانات الملف الشخصي');
+                      _showMessage(AppStrings.profileSaved);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.lime,
@@ -268,8 +268,8 @@ class _AccountScreenState extends State<AccountScreen> {
                         borderRadius: BorderRadius.circular(14),
                       ),
                     ),
-                    child: const Text(
-                      'حفظ التغييرات',
+                    child: Text(
+                      AppStrings.saveChanges,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
