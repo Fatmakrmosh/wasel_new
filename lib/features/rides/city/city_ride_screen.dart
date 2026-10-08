@@ -324,7 +324,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
 
   Future<void> _choosePickup() async {
     final selection = await _openLocationPicker(
-      title: 'تحديد نقطة الانطلاق',
+      title: AppText.t('تحديد نقطة الانطلاق'),
       initialCenter:
           _pickupPoint ?? _currentPointOrDefault,
       initialLabel: _pickupController.text.trim(),
@@ -346,7 +346,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
 
   Future<void> _chooseDestination() async {
     final selection = await _openLocationPicker(
-      title: 'تحديد الوجهة',
+      title: AppText.t('تحديد الوجهة'),
       initialCenter:
           _destinationPoint ?? _currentPointOrDefault,
       initialLabel:
@@ -653,7 +653,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
     if (_pickupPoint == null ||
         _pickupController.text.trim().isEmpty) {
       _showMessage(
-        'حدد نقطة الانطلاق أولاً',
+        AppText.t('حدد نقطة الانطلاق أولاً'),
       );
       return;
     }
@@ -661,7 +661,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
     if (_destinationPoint == null ||
         _destinationController.text.trim().isEmpty) {
       _showMessage(
-        'حدد الوجهة أولاً',
+        AppText.t('حدد الوجهة أولاً'),
       );
       return;
     }
@@ -671,7 +671,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
       _destinationPoint!,
     )) {
       _showMessage(
-        'نقطة الانطلاق والوجهة متطابقتان',
+        AppText.t('نقطة الانطلاق والوجهة متطابقتان'),
       );
       return;
     }
@@ -687,7 +687,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
 
     if (_distanceKm <= 0) {
       _showMessage(
-        'تعذر حساب مسافة الطريق. تحقق من الإنترنت وحاول مرة أخرى.',
+        AppText.t('تعذر حساب مسافة الطريق. تحقق من الإنترنت وحاول مرة أخرى.'),
       );
       return;
     }
