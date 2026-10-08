@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/network/supabase_service.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/localization/app_strings.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -506,8 +507,8 @@ class _AccountScreenState extends State<AccountScreen> {
         backgroundColor: AppColors.background,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          'حسابي',
+        title: Text(
+          AppStrings.account,
           style: TextStyle(
             color: Colors.white,
             fontSize: 21,
