@@ -652,8 +652,8 @@ class _AccountScreenState extends State<AccountScreen> {
                 Icons.logout_rounded,
                 color: Colors.redAccent,
               ),
-              label: const Text(
-                'تسجيل الخروج',
+              label: Text(
+                AppStrings.logout,
                 style: TextStyle(
                   color: Colors.redAccent,
                   fontSize: 15,
