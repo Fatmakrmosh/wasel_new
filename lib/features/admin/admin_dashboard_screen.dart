@@ -62,9 +62,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       }
     }
 
-    // Statistics are optional. A failure here must not hide management actions.
-    try {
-  }
 
   bool get _isAdmin => _role == 'admin';
 
