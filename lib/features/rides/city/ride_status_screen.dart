@@ -37,6 +37,8 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
   LatLng? _destinationPointFromRide;
   String _driverName = 'السائق';
   String _vehicleInfo = 'المركبة';
+  String _pickupAddress = '';
+  String _destinationAddress = '';
   double _rideFare = 0;
   double _driverHeading = 0;
   double _driverSpeed = 0;
@@ -129,7 +131,7 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
     try {
       final response = await client
           .from('rides')
-          .select('id, driver_id, status, pickup_lat, pickup_lng, destination_lat, destination_lng, suggested_fare, pickup_address, destination_address, driver:profiles(full_name, phone, vehicle_type, vehicle_model, vehicle_color)')
+          .select('id, driver_id, status, pickup_lat, pickup_lng, destination_lat, destination_lng, suggested_fare, accepted_fare, pickup_address, destination_address, driver:profiles(full_name, phone)')
           .eq('passenger_id', user.id)
           .inFilter('status', [
             'accepted',
@@ -158,15 +160,16 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
         _driverId = driverId;
         _pickupPointFromRide = _latLng(ride['pickup_lat'], ride['pickup_lng']);
         _destinationPointFromRide = _latLng(ride['destination_lat'], ride['destination_lng']);
-        _rideFare = _toDouble(ride['suggested_fare']) ?? 0;
+        _pickupAddress = ride['pickup_address']?.toString().trim() ?? '';
+        _destinationAddress = ride['destination_address']?.toString().trim() ?? '';
+        _rideFare = _toDouble(ride['accepted_fare']) ??
+            _toDouble(ride['suggested_fare']) ??
+            0;
         final driver = ride['driver'];
         if (driver is Map) {
           final name = driver['full_name']?.toString().trim();
-          final model = driver['vehicle_model']?.toString().trim();
-          final color = driver['vehicle_color']?.toString().trim();
           _driverName = (name?.isNotEmpty ?? false) ? name! : 'السائق';
-          final parts = <String>[if (model?.isNotEmpty ?? false) model!, if (color?.isNotEmpty ?? false) color!];
-          _vehicleInfo = parts.isEmpty ? 'المركبة' : parts.join(' • ');
+        }
         }
         _setStepFromStatus(status);
 
@@ -205,7 +208,7 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
   void _setStepFromStatus(String? status) {
     final step = switch (status) {
       'accepted' => 0,
-      'driver_arriving' => 0,
+      'driver_arriving' => 1,
       'in_progress' => 2,
       _ => 0,
     };
@@ -488,7 +491,9 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
                 PolylineLayer(
                   polylines: [
                     Polyline(
-                      points: _routePoints,
+                      points: _pickupPointFromRide != null && _destinationPointFromRide != null
+                          ? [_pickupPoint, _destinationPoint]
+                          : _routePoints,
                       strokeWidth: 6,
                       color: AppColors.lime,
                     ),
@@ -951,7 +956,7 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
             ),
           ),
           const SizedBox(width: 13),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment:
                   CrossAxisAlignment.start,
@@ -1160,8 +1165,11 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
     );
   }
 
-  String _pickupLabel() => _pickupPointFromRide == null ? 'نقطة الانطلاق' : 'موقع الراكب';
-  String _destinationLabel() => _destinationPointFromRide == null ? 'الوجهة' : 'الوجهة';
+  String _pickupLabel() =>
+      _pickupAddress.isNotEmpty ? _pickupAddress : 'موقع الراكب';
+
+  String _destinationLabel() =>
+      _destinationAddress.isNotEmpty ? _destinationAddress : 'الوجهة';
 
   Widget _buildNextStepButton() {
     return SizedBox(
@@ -1343,7 +1351,7 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'قيّم تجربتك مع محمد أحمد',
+                    'قيّم تجربتك مع $_driverName',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.grey.shade500,
@@ -1452,7 +1460,7 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
               const SizedBox(height: 15),
               _receiptRow(
                 'السائق',
-                'محمد أحمد',
+                _driverName,
               ),
               _receiptRow(
                 'المركبة',
