@@ -55,7 +55,7 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
     if (value.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(AppText.t('أدخل رقم التتبع أولاً'),
+          content: Text(AppText.t('أدخل رقم التتبع أولاً')),
           behavior: SnackBarBehavior.floating,
         ),
       );
