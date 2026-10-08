@@ -230,6 +230,12 @@ class AppText {
       'صلاحية الموقع مرفوضة': 'Location permission denied',
       'افتح إعدادات التطبيق واسمح له باستخدام الموقع.': 'Open app settings and allow location access.',
       'فتح الإعدادات': 'Open settings',
+      'تحديد نقطة الانطلاق': 'Set departure point',
+      'تحديد الوجهة': 'Set destination',
+      'حدد نقطة الانطلاق أولاً': 'Select the departure point first',
+      'حدد الوجهة أولاً': 'Select the destination first',
+      'نقطة الانطلاق والوجهة متطابقتان': 'Departure and destination are the same',
+      'تعذر حساب مسافة الطريق. تحقق من الإنترنت وحاول مرة أخرى.': 'Unable to calculate the route distance. Check your internet connection and try again.',
     };
 
     return translations[arabic] ?? arabic;
