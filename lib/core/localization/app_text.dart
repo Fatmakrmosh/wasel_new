@@ -274,4 +274,4 @@ class AppText {
 
     return translations[arabic] ?? arabic;
   }
-}\n    'تقريبًا': 'approximately',\n    'بانتظار المسافة': 'Waiting for distance',\n    'تعذر الحصول على موقعك الحالي.': 'Unable to get your current location.',
+}
