@@ -147,29 +147,13 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           children: [
             _header(),
             const SizedBox(height: 18),
-            _section('الإحصائيات'),
-            const SizedBox(height: 10),
-            GridView.count(
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              childAspectRatio: 1.55,
-              children: [
-                _stat('المستخدمون', _users, Icons.people_alt_outlined, () => context.push('/admin/users')),
-                _stat('السائقون', _drivers, Icons.drive_eta_outlined, () => context.push('/admin/users?filter=driver')),
-                _stat('الشركات', _companies, Icons.business_outlined, () => context.push('/admin/users?filter=company')),
-                _stat('المشرفون', _supervisors, Icons.admin_panel_settings_outlined, () => context.push('/admin/permissions')),
-              ],
-            ),
             const SizedBox(height: 24),
             _section('الإدارة'),
             const SizedBox(height: 10),
             if (_can('users'))
               _action(
-                'المستخدمون والحسابات',
-                'عرض الحسابات وتعيين المستخدمين كسائقين أو شركات أو مشرفين',
+                'المستخدمون',
+                'الأسماء المسجلة كمستخدمين',
                 Icons.people_alt_outlined,
                 () => context.push('/admin/users'),
               ),
@@ -182,8 +166,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               ),
             if (_can('drivers'))
               _action(
-              'مراجعة السائقين',
-              'عرض السائقين وتعيين المستخدمين كحسابات سائق',
+              'إدارة السائقين',
+              'الأسماء المسجلة كسائقين',
               Icons.fact_check_outlined,
               () => context.push('/admin/users?filter=driver'),
             ),
@@ -197,7 +181,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             if (_can('companies'))
               _action(
                 'إدارة الشركات',
-                'عرض الشركات وتعيين المستخدمين كحسابات شركات',
+                'الشركات المسجلة وبياناتها',
                 Icons.business_outlined,
                 () => context.push('/admin/users?filter=company'),
               ),
