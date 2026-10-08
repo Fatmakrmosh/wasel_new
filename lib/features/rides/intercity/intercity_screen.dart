@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_theme.dart';
+import '../../../core/localization/app_text.dart';
 
 class IntercityScreen extends StatefulWidget {
   const IntercityScreen({super.key});
@@ -434,8 +435,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                     const SizedBox(height: 18),
                     _routeSummaryCard(trip),
                     const SizedBox(height: 18),
-                    _sectionTitle(
-                      'نوع الخدمة',
+                    _sectionTitle(AppText.t('نوع الخدمة'),
                       Icons.miscellaneous_services_outlined,
                     ),
                     const SizedBox(height: 10),
@@ -443,8 +443,8 @@ class _IntercityScreenState extends State<IntercityScreen> {
                       children: [
                         Expanded(
                           child: _choiceCard(
-                            title: 'قطع تذكرة',
-                            subtitle: 'حجز مقعد',
+                            title: AppText.t('قطع تذكرة'),
+                            subtitle: AppText.t('حجز مقعد'),
                             icon: Icons.airline_seat_recline_normal,
                             selected: serviceType == 'قطع تذكرة',
                             onTap: () {
@@ -457,8 +457,8 @@ class _IntercityScreenState extends State<IntercityScreen> {
                         const SizedBox(width: 10),
                         Expanded(
                           child: _choiceCard(
-                            title: 'إيجار كامل',
-                            subtitle: 'المركبة كاملة',
+                            title: AppText.t('إيجار كامل'),
+                            subtitle: AppText.t('المركبة كاملة'),
                             icon: Icons.directions_car_filled_outlined,
                             selected: serviceType == 'إيجار كامل',
                             onTap: () {
@@ -472,25 +472,22 @@ class _IntercityScreenState extends State<IntercityScreen> {
                     ),
                     const SizedBox(height: 18),
                     if (serviceType == 'قطع تذكرة') ...[
-                      _summaryRow(
-                        'عدد المقاعد',
+                      _summaryRow(AppText.t('عدد المقاعد'),
                         '$_passengers',
                       ),
                       const SizedBox(height: 4),
                     ],
-                    _summaryRow(
-                      'المبلغ',
+                    _summaryRow(AppText.t('المبلغ'),
                       _formatMoney(amount),
                     ),
                     const SizedBox(height: 18),
-                    _sectionTitle(
-                      'طريقة الدفع',
+                    _sectionTitle(AppText.t('طريقة الدفع'),
                       Icons.payments_outlined,
                     ),
                     const SizedBox(height: 10),
                     _paymentCard(
-                      title: 'بنكك',
-                      subtitle: 'رقم الحساب: 9824691',
+                      title: AppText.t('بنكك'),
+                      subtitle: AppText.t('رقم الحساب: 9824691'),
                       icon: Icons.account_balance_wallet_outlined,
                       selected: paymentMethod == 'بنكك',
                       onTap: () {
@@ -501,8 +498,8 @@ class _IntercityScreenState extends State<IntercityScreen> {
                     ),
                     const SizedBox(height: 10),
                     _paymentCard(
-                      title: 'نقداً في المكتب',
-                      subtitle: 'الدفع نقداً لدى مكتب واصل',
+                      title: AppText.t('نقداً في المكتب'),
+                      subtitle: AppText.t('الدفع نقداً لدى مكتب واصل'),
                       icon: Icons.storefront_outlined,
                       selected: paymentMethod == 'نقداً في المكتب',
                       onTap: () {
@@ -788,14 +785,14 @@ class _IntercityScreenState extends State<IntercityScreen> {
                     const SizedBox(height: 18),
                     _formField(
                       controller: _cargoTypeController,
-                      label: 'نوع الحمولة',
+                      label: AppText.t('نوع الحمولة'),
                       hint: 'مثال: أثاث، مواد بناء، بضاعة',
                       icon: Icons.category_outlined,
                     ),
                     const SizedBox(height: 12),
                     _formField(
                       controller: _cargoDescriptionController,
-                      label: 'وصف العفش أو البضاعة',
+                      label: AppText.t('وصف العفش أو البضاعة'),
                       hint: 'اكتب وصفاً واضحاً للحمولة',
                       icon: Icons.description_outlined,
                       maxLines: 3,
@@ -803,7 +800,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                     const SizedBox(height: 12),
                     _formField(
                       controller: _quantityController,
-                      label: 'الكمية',
+                      label: AppText.t('الكمية'),
                       hint: 'عدد القطع أو الوحدات',
                       icon: Icons.numbers_outlined,
                       keyboardType: TextInputType.number,
@@ -811,7 +808,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                     const SizedBox(height: 12),
                     _formField(
                       controller: _weightController,
-                      label: 'الوزن التقريبي',
+                      label: AppText.t('الوزن التقريبي'),
                       hint: 'بالكيلوغرام',
                       icon: Icons.scale_outlined,
                       keyboardType: TextInputType.number,
@@ -819,28 +816,28 @@ class _IntercityScreenState extends State<IntercityScreen> {
                     const SizedBox(height: 12),
                     _formField(
                       controller: _volumeController,
-                      label: 'الحجم التقريبي',
+                      label: AppText.t('الحجم التقريبي'),
                       hint: 'متر مكعب أو وصف للحجم',
                       icon: Icons.view_in_ar_outlined,
                     ),
                     const SizedBox(height: 12),
                     _formField(
                       controller: _senderController,
-                      label: 'اسم المرسل',
+                      label: AppText.t('اسم المرسل'),
                       hint: 'اسم صاحب الحمولة',
                       icon: Icons.person_outline,
                     ),
                     const SizedBox(height: 12),
                     _formField(
                       controller: _recipientController,
-                      label: 'اسم المستلم',
+                      label: AppText.t('اسم المستلم'),
                       hint: 'اسم مستلم الحمولة',
                       icon: Icons.person_pin_outlined,
                     ),
                     const SizedBox(height: 12),
                     _formField(
                       controller: _notesController,
-                      label: 'ملاحظات',
+                      label: AppText.t('ملاحظات'),
                       hint: 'أي تفاصيل إضافية',
                       icon: Icons.notes_outlined,
                       maxLines: 3,
@@ -1173,7 +1170,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
           ),
           const SizedBox(height: 6),
           _citySelector(
-            title: 'من',
+            title: AppText.t('من'),
             value: _fromCity,
             icon: Icons.radio_button_checked,
             color: AppColors.lime,
@@ -1198,7 +1195,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
             ),
           ),
           _citySelector(
-            title: 'إلى',
+            title: AppText.t('إلى'),
             value: _toCity,
             icon: Icons.location_on,
             color: Colors.white70,
@@ -1639,24 +1636,19 @@ class _IntercityScreenState extends State<IntercityScreen> {
       ),
       child: Column(
         children: [
-          _summaryRow(
-            'المسار',
+          _summaryRow(AppText.t('المسار'),
             '$_fromCity ← $_toCity',
           ),
-          _summaryRow(
-            'المركبة',
+          _summaryRow(AppText.t('المركبة'),
             trip['vehicle'].toString(),
           ),
-          _summaryRow(
-            'التاريخ',
+          _summaryRow(AppText.t('التاريخ'),
             '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
           ),
-          _summaryRow(
-            'الانطلاق',
+          _summaryRow(AppText.t('الانطلاق'),
             trip['departure'].toString(),
           ),
-          _summaryRow(
-            'الوصول',
+          _summaryRow(AppText.t('الوصول'),
             trip['arrival'].toString(),
           ),
         ],
@@ -1971,7 +1963,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
 
     return _settingsCard(
       icon: Icons.calendar_month_outlined,
-      title: 'تاريخ السفر',
+      title: AppText.t('تاريخ السفر'),
       value: date,
       onTap: _selectDate,
     );
