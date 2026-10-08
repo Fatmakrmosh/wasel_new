@@ -258,7 +258,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
-                      _showMessage(AppText.t('تم حفظ بيانات الملف الشخصي');
+                      _showMessage(AppText.t('تم حفظ بيانات الملف الشخصي'));
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.lime,
@@ -728,7 +728,7 @@ class _AccountScreenState extends State<AccountScreen> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  AppText.t(AppText.t('أحمد محمد')),
+                  AppText.t('أحمد محمد'),
                   textAlign: TextAlign.right,
                   style: TextStyle(
                     color: Colors.white,
