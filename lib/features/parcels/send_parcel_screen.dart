@@ -362,7 +362,7 @@ Widget build(BuildContext context) {
                 borderSide: BorderSide.none,
               ),
             ),
-            items: const [
+            items: [
               DropdownMenuItem(
                 value: 'طرد عادي',
                 child: Text(AppText.t('طرد عادي')),
