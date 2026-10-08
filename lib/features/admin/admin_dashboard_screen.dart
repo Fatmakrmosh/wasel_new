@@ -64,20 +64,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
     // Statistics are optional. A failure here must not hide management actions.
     try {
-      final stats = await client.rpc('admin_get_profile_counts');
-      final data = Map<String, dynamic>.from(stats as Map);
-      final users = (data['passenger'] as num?)?.toInt() ?? 0;
-      final drivers = (data['driver'] as num?)?.toInt() ?? 0;
-      final companies = (data['company'] as num?)?.toInt() ?? 0;
-      final supervisors = (data['supervisor'] as num?)?.toInt() ?? 0;
-
-      if (!mounted) return;
-      setState(() {
-      });
-    } catch (error) {
-      debugPrint('WASEL admin statistics error: $error');
-      // Leave statistics at zero and keep all admin actions available.
-    }
   }
 
   bool get _isAdmin => _role == 'admin';
