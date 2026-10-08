@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/localization/app_text.dart';
 
 class TrackParcelScreen extends StatefulWidget {
   const TrackParcelScreen({super.key});
@@ -53,8 +54,8 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
 
     if (value.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('أدخل رقم التتبع أولاً'),
+        SnackBar(
+          content: Text(AppText.t('أدخل رقم التتبع أولاً'),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -74,8 +75,8 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
         backgroundColor: AppColors.background,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          'تتبع طرد',
+        title: Text(
+          AppText.t('تتبع طرد'),
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -133,12 +134,12 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
             ),
           ),
           const SizedBox(width: 15),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'تتبع شحنتك',
+                  AppText.t('تتبع شحنتك'),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -147,7 +148,7 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
                 ),
                 SizedBox(height: 6),
                 Text(
-                  'أدخل رقم التتبع لمعرفة حالة طردك ومكانه.',
+                  AppText.t('أدخل رقم التتبع لمعرفة حالة طردك ومكانه.'),
                   style: TextStyle(
                     color: Colors.white70,
                     fontSize: 13,
@@ -172,8 +173,8 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text(
-            'رقم التتبع',
+          Text(
+            AppText.t('رقم التتبع'),
             style: TextStyle(
               color: Colors.white,
               fontSize: 15,
@@ -188,8 +189,8 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
               color: Colors.white,
               fontWeight: FontWeight.w600,
             ),
-            decoration: const InputDecoration(
-              hintText: 'مثال: WAS-102548',
+            decoration: InputDecoration(
+              hintText: AppText.t('مثال: WAS-102548'),
               hintStyle: TextStyle(color: Colors.white38),
               prefixIcon: Icon(
                 Icons.qr_code_2,
@@ -209,8 +210,8 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
             child: ElevatedButton.icon(
               onPressed: _searchParcel,
               icon: const Icon(Icons.search),
-              label: const Text(
-                'تتبع الطرد',
+              label: Text(
+                AppText.t('تتبع الطرد'),
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
