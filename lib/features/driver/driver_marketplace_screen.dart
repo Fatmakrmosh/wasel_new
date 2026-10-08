@@ -237,14 +237,15 @@ class _DriverMarketplaceScreenState extends State<DriverMarketplaceScreen> {
                       Navigator.pop(sheetContext);
                       _showMessage(_isEnglish ? 'Your offer was sent successfully.' : 'تم إرسال عرضك السعري بنجاح.');
                       await _refreshAll();
-                    } catch (_) {
+                    } catch (error) {
                       if (mounted) {
-      _showMessage(
-        _isEnglish
-            ? 'This request is no longer available.'
-            : 'هذا الطلب لم يعد متاحاً.',
-      );
-    }
+                        final message = error.toString().replaceFirst('Exception: ', '');
+                        _showMessage(
+                          _isEnglish
+                              ? 'Could not send the offer: $message'
+                              : message,
+                        );
+                      }
                     } finally {
                       if (mounted) {
       setState(() {
