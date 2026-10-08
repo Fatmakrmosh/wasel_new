@@ -622,7 +622,7 @@ class _AccountScreenState extends State<AccountScreen> {
             subtitle: AppStrings.privacyDataPolicy,
             onTap: () => _showInfoDialog(
               AppStrings.privacy,
-              'تحرص واصل على حماية بيانات المستخدمين وعدم استخدامها إلا لتقديم الخدمات وتحسين تجربة الاستخدام.\n\nسيتم إضافة سياسة الخصوصية الكاملة قبل الإطلاق النهائي.',
+              AppStrings.privacyMessage,
             ),
           ),
           _buildAccountItem(
@@ -631,7 +631,7 @@ class _AccountScreenState extends State<AccountScreen> {
             subtitle: AppStrings.termsServices,
             onTap: () => _showInfoDialog(
               AppStrings.termsConditions,
-              'تخضع جميع خدمات واصل لشروط الاستخدام وسياسات السلامة والدفع المعتمدة من إدارة المنصة.\n\nسيتم إضافة الشروط النهائية قبل الإطلاق.',
+              AppStrings.termsMessage,
             ),
           ),
           _buildAccountItem(
@@ -640,7 +640,7 @@ class _AccountScreenState extends State<AccountScreen> {
             subtitle: AppStrings.appVersion,
             onTap: () => _showInfoDialog(
               AppStrings.aboutWasel,
-              'واصل WASEL\n\nمنصة سودانية للنقل والرحلات وإرسال الطرود، تهدف إلى تسهيل التنقل وربط الركاب بالسائقين وشركات النقل.',
+              AppStrings.aboutWaselMessage,
             ),
           ),
           const SizedBox(height: 24),
