@@ -60,8 +60,8 @@ class _AccountScreenState extends State<AccountScreen> {
       builder: (context) {
         return AlertDialog(
           backgroundColor: AppColors.surface,
-          title: const Text(
-            'لغة التطبيق',
+          title: Text(
+            AppStrings.language,
             textAlign: TextAlign.right,
             style: TextStyle(
               color: Colors.white,
@@ -71,7 +71,7 @@ class _AccountScreenState extends State<AccountScreen> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _languageOption('العربية', true),
+              _languageOption(AppStrings.arabic, true),
               _languageOption('English', false),
             ],
           ),
@@ -85,7 +85,7 @@ class _AccountScreenState extends State<AccountScreen> {
       onTap: () {
         Navigator.pop(context);
         if (!selected) {
-          _showMessage('اللغة الإنجليزية ستكون متاحة قريبًا');
+          _showMessage(AppStrings.englishLater);
         }
       },
       title: Text(
@@ -554,7 +554,7 @@ class _AccountScreenState extends State<AccountScreen> {
           const SizedBox(height: 8),
           _buildSwitchItem(
             icon: Icons.notifications_none_rounded,
-            title: 'الإشعارات',
+            title: AppStrings.notifications,
             subtitle: AppStrings.tripParcelAlerts,
             value: notificationsEnabled,
             onChanged: (value) {
