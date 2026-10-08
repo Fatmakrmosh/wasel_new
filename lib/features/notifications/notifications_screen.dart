@@ -67,7 +67,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
+      SnackBar(
         content: Text(
           AppText.t('تم تعليم جميع الإشعارات كمقروءة'),
           textAlign: TextAlign.right,
