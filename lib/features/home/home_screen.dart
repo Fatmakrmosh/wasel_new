@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/localization/app_locale.dart';
 import '../../core/localization/app_strings.dart';
+import '../../core/network/supabase_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,6 +15,41 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
+  String _announcementTitle = AppStrings.alwaysWithYou;
+  String _announcementBody = AppStrings.allInOne;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAnnouncement();
+  }
+
+  Future<void> _loadAnnouncement() async {
+    final client = SupabaseService.client;
+    if (client == null) return;
+    try {
+      final rows = await client
+          .from('app_settings')
+          .select('key,value_text')
+          .inFilter('key', ['announcement_title_ar', 'announcement_body_ar']);
+      var title = _announcementTitle;
+      var body = _announcementBody;
+      for (final row in rows as List) {
+        final key = row['key']?.toString();
+        final value = row['value_text']?.toString().trim() ?? '';
+        if (value.isEmpty) continue;
+        if (key == 'announcement_title_ar') title = value;
+        if (key == 'announcement_body_ar') body = value;
+      }
+      if (!mounted) return;
+      setState(() {
+        _announcementTitle = title;
+        _announcementBody = body;
+      });
+    } catch (error) {
+      debugPrint('WASEL announcement load error: $error');
+    }
+  }
   List<({IconData icon, String title, String subtitle, String route})> get services => [
     (
       icon: Icons.location_on_outlined,
@@ -231,7 +267,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  AppStrings.alwaysWithYou,
+                  _announcementTitle,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 18,
@@ -240,7 +276,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  AppStrings.allInOne,
+                  _announcementBody,
                   style: TextStyle(
                     color: Colors.black87,
                     fontSize: 13,
