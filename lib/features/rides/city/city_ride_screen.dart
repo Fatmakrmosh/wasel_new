@@ -2100,7 +2100,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
               AppColors.background,
           elevation: 0,
           title:
-              const Text(
+              Text(
             AppText.t('رحلة داخل المدينة'),
             style:
                 TextStyle(
@@ -2133,7 +2133,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
                             CrossAxisAlignment
                                 .start,
                         children: [
-                          const Text(
+                          Text(
                             AppText.t('اطلب رحلتك داخل المدينة'),
                             style:
                                 TextStyle(
@@ -2244,7 +2244,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
                       ),
                     ),
                     child:
-                        const Text(
+                        Text(
                       AppText.t('طلب الرحلة'),
                       style:
                           TextStyle(
@@ -2325,7 +2325,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
                   context,
                 ),
                 child:
-                    const Text(
+                    Text(
                   'إلغاء',
                 ),
               ),
@@ -2861,7 +2861,7 @@ class _LocationPickerSheetState
                   context,
                 ),
                 child:
-                    const Text(
+                    Text(
                   AppText.t('حسنًا'),
                 ),
               ),
@@ -3180,7 +3180,7 @@ class _LocationPickerSheetState
                   ),
                 ),
                 child:
-                    const Text(
+                    Text(
                   AppText.t('حرّك الخريطة وضع النقطة المطلوبة في الوسط'),
                   textAlign:
                       TextAlign.center,
@@ -3424,7 +3424,7 @@ class _LocationPickerSheetState
                         ),
                       ),
                       child:
-                          const Text(
+                          Text(
                         'إلغاء',
                       ),
                     ),
@@ -3466,7 +3466,7 @@ class _LocationPickerSheetState
                         ),
                       ),
                       child:
-                          const Text(
+                          Text(
                         AppText.t('تأكيد الموقع'),
                         style:
                             TextStyle(
