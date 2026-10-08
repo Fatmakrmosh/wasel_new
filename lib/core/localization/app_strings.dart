@@ -38,7 +38,7 @@ class AppStrings {
   static String get services => en ? 'WASEL Services' : 'خدمات واصل';
   static String get cityRides => en ? 'City rides' : 'رحلات داخل المدينة';
   static String get requestRide => en ? 'Request a ride now' : 'اطلب رحلة الآن';
-  static String get intercity => en ? 'Intercity limousine' : 'ليموزين بين المدن';
+  static String get intercity => en ? 'Intercity travel' : 'رحلات بين المدن';
   static String get travelComfortably => en ? 'Travel comfortably' : 'سافر براحة';
   static String get buses => en ? 'Buses' : 'باصات وحافلات';
   static String get bookSeat => en ? 'Book your seat' : 'احجز مقعدك';
