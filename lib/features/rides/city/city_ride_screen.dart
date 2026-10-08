@@ -177,7 +177,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
     } catch (_) {
       if (showMessage && mounted) {
         _showMessage(
-          'تعذر الحصول على موقعك الحالي',
+          AppText.t('تعذر الحصول على موقعك الحالي'),
         );
       }
     } finally {
@@ -198,10 +198,10 @@ class _CityRideScreenState extends State<CityRideScreen> {
     if (!serviceEnabled) {
       if (showMessage && mounted) {
         await _showActionDialog(
-          title: 'خدمة الموقع مغلقة',
+          title: AppText.t('خدمة الموقع مغلقة'),
           message:
-              'فعّل خدمة الموقع حتى يتمكن واصل من تحديد موقعك.',
-          actionText: 'فتح الموقع',
+              AppText.t('فعّل خدمة الموقع حتى يتمكن واصل من تحديد موقعك.'),
+          actionText: AppText.t('فتح الموقع'),
           action: () async {
             await Geolocator.openLocationSettings();
           },
@@ -222,7 +222,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
     if (permission == LocationPermission.denied) {
       if (showMessage && mounted) {
         _showMessage(
-          'تم رفض صلاحية الموقع',
+          AppText.t('تم رفض صلاحية الموقع'),
         );
       }
 
@@ -233,10 +233,10 @@ class _CityRideScreenState extends State<CityRideScreen> {
         LocationPermission.deniedForever) {
       if (showMessage && mounted) {
         await _showActionDialog(
-          title: 'صلاحية الموقع مرفوضة',
+          title: AppText.t('صلاحية الموقع مرفوضة'),
           message:
-              'افتح إعدادات التطبيق واسمح له باستخدام الموقع.',
-          actionText: 'فتح الإعدادات',
+              AppText.t('افتح إعدادات التطبيق واسمح له باستخدام الموقع.'),
+          actionText: AppText.t('فتح الإعدادات'),
           action: () async {
             await Geolocator.openAppSettings();
           },
