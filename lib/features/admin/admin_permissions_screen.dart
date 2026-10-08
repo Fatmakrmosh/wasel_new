@@ -160,7 +160,6 @@ class _AdminPermissionsScreenState extends State<AdminPermissionsScreen> {
       (s) => s['id'].toString() == supervisor,
       orElse: () => <String, dynamic>{},
     );
-    final name = selected['full_name']?.toString().trim();
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
