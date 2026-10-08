@@ -486,8 +486,8 @@ class _AccountScreenState extends State<AccountScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text(
-                'إغلاق',
+              child: Text(
+                AppStrings.close,
                 style: TextStyle(
                   color: AppColors.lime,
                 ),
