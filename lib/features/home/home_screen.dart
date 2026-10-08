@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/theme/app_theme.dart';
 import '../../core/localization/app_locale.dart';
 import '../../core/localization/app_strings.dart';
 import '../../core/network/supabase_service.dart';
