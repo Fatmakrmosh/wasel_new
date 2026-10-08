@@ -350,8 +350,8 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                 ),
                 const SizedBox(height: 22),
-                const Text(
-                  'تغيير كلمة المرور',
+                Text(
+                  AppStrings.changePasswordTitle,
                   textAlign: TextAlign.right,
                   style: TextStyle(
                     color: Colors.white,
@@ -360,18 +360,18 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                _buildPasswordField('كلمة المرور الحالية'),
+                _buildPasswordField(AppStrings.currentPassword),
                 const SizedBox(height: 14),
-                _buildPasswordField('كلمة المرور الجديدة'),
+                _buildPasswordField(AppStrings.newPassword),
                 const SizedBox(height: 14),
-                _buildPasswordField('تأكيد كلمة المرور الجديدة'),
+                _buildPasswordField(AppStrings.confirmNewPassword),
                 const SizedBox(height: 22),
                 SizedBox(
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
-                      _showMessage('تم تحديث كلمة المرور');
+                      _showMessage(AppStrings.passwordUpdated);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.lime,
@@ -380,8 +380,8 @@ class _AccountScreenState extends State<AccountScreen> {
                         borderRadius: BorderRadius.circular(14),
                       ),
                     ),
-                    child: const Text(
-                      'تحديث كلمة المرور',
+                    child: Text(
+                      AppStrings.updatePassword,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
