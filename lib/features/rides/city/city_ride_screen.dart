@@ -169,7 +169,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
         setState(() {
           _pickupPoint = point;
           _pickupController.text =
-              address ?? 'موقعي الحالي';
+              address ?? AppText.t('موقعي الحالي');
         });
 
         await _updateRoute();
@@ -1302,7 +1302,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
                         width: 8,
                       ),
                       Text(
-                        'نحسب المسار...',
+                        AppText.t('نحسب المسار...'),
                         style:
                             TextStyle(
                           fontSize: 11,
@@ -1352,8 +1352,8 @@ class _CityRideScreenState extends State<CityRideScreen> {
                         _distanceKm > 0
                             ? '${_distanceKm.toStringAsFixed(1)} كم • ${_durationMinutes.round()} دقيقة تقريبًا'
                             : _routeFailed
-                                ? 'تعذر تحميل مسار الطريق'
-                                : 'حدد الانطلاق والوجهة لحساب المسافة',
+                                ? AppText.t('تعذر تحميل مسار الطريق')
+                                : AppText.t('حدد الانطلاق والوجهة لحساب المسافة'),
                         maxLines: 2,
                         overflow:
                             TextOverflow.ellipsis,
@@ -2101,7 +2101,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
           elevation: 0,
           title:
               const Text(
-            'رحلة داخل المدينة',
+            AppText.t('رحلة داخل المدينة'),
             style:
                 TextStyle(
               fontWeight:
@@ -2134,7 +2134,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
                                 .start,
                         children: [
                           const Text(
-                            'اطلب رحلتك داخل المدينة',
+                            AppText.t('اطلب رحلتك داخل المدينة'),
                             style:
                                 TextStyle(
                               fontSize:
@@ -2148,7 +2148,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
                             height: 5,
                           ),
                           Text(
-                            'حدد الانطلاق والوجهة وسنحسب المسافة والسعر التقديري.',
+                            AppText.t('حدد الانطلاق والوجهة وسنحسب المسافة والسعر التقديري.'),
                             style:
                                 TextStyle(
                               color: Colors
@@ -2245,7 +2245,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
                     ),
                     child:
                         const Text(
-                      'طلب الرحلة',
+                      AppText.t('طلب الرحلة'),
                       style:
                           TextStyle(
                         fontSize: 17,
@@ -2633,7 +2633,7 @@ class _LocationPickerSheetState
 
       if (!serviceEnabled) {
         await _showSimpleMessage(
-          'فعّل خدمة الموقع أولاً.',
+          AppText.t('فعّل خدمة الموقع أولاً.'),
         );
         return;
       }
@@ -2653,7 +2653,7 @@ class _LocationPickerSheetState
       if (permission ==
           LocationPermission.denied) {
         await _showSimpleMessage(
-          'تم رفض صلاحية الموقع.',
+          AppText.t('تم رفض صلاحية الموقع.'),
         );
         return;
       }
@@ -2661,7 +2661,7 @@ class _LocationPickerSheetState
       if (permission ==
           LocationPermission.deniedForever) {
         await _showSimpleMessage(
-          'صلاحية الموقع مرفوضة بشكل دائم. افتح إعدادات التطبيق.',
+          AppText.t('صلاحية الموقع مرفوضة بشكل دائم. افتح إعدادات التطبيق.'),
         );
         return;
       }
@@ -2699,13 +2699,13 @@ class _LocationPickerSheetState
       setState(() {
         _mapCenter = point;
         _selectedLabel =
-            label ?? 'موقعي الحالي';
+            label ?? AppText.t('موقعي الحالي');
         _results =
             <_PlaceResult>[];
       });
 
       _searchController.text =
-          label ?? 'موقعي الحالي';
+          label ?? AppText.t('موقعي الحالي');
 
       FocusScope.of(context)
           .unfocus();
@@ -2821,7 +2821,7 @@ class _LocationPickerSheetState
     final finalLabel =
         (label == null ||
                 label.isEmpty)
-            ? 'الموقع المحدد على الخريطة'
+            ? AppText.t('الموقع المحدد على الخريطة')
             : label;
 
     Navigator.pop(
@@ -2862,7 +2862,7 @@ class _LocationPickerSheetState
                 ),
                 child:
                     const Text(
-                  'حسنًا',
+                  AppText.t('حسنًا'),
                 ),
               ),
             ],
@@ -2886,7 +2886,7 @@ class _LocationPickerSheetState
       decoration:
           InputDecoration(
         hintText:
-            'ابحث عن حي أو شارع أو مكان...',
+            AppText.t('ابحث عن حي أو شارع أو مكان...'),
         hintStyle:
             TextStyle(
           color:
@@ -3181,7 +3181,7 @@ class _LocationPickerSheetState
                 ),
                 child:
                     const Text(
-                  'حرّك الخريطة وضع النقطة المطلوبة في الوسط',
+                  AppText.t('حرّك الخريطة وضع النقطة المطلوبة في الوسط'),
                   textAlign:
                       TextAlign.center,
                   style:
@@ -3289,7 +3289,7 @@ class _LocationPickerSheetState
                       child:
                           Text(
                         _selectedLabel ??
-                            'حرك الخريطة لاختيار الموقع',
+                            AppText.t('حرك الخريطة لاختيار الموقع'),
                         maxLines: 2,
                         overflow:
                             TextOverflow
@@ -3467,7 +3467,7 @@ class _LocationPickerSheetState
                       ),
                       child:
                           const Text(
-                        'تأكيد الموقع',
+                        AppText.t('تأكيد الموقع'),
                         style:
                             TextStyle(
                           fontSize: 16,
