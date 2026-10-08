@@ -173,7 +173,7 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
 
         if (rideId != null) {
           try {
-            final offers = await RideMarketService.listOffers(rideId);
+            final offers = await RideMarketService.listOffers(rideId: rideId);
             final matchingOffers = offers.where((offer) {
               final sameDriver =
                   offer['driver_id']?.toString() == driverId;
