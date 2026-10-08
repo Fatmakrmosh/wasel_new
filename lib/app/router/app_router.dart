@@ -17,7 +17,6 @@ import '../../features/rides/chat/ride_chat_screen.dart';
 import '../../features/rides/city/ride_status_screen.dart';
 import '../../features/rides/history/my_rides_screen.dart';
 import '../../features/rides/intercity/intercity_screen.dart';
-import '../../features/rides/bus/bus_screen.dart';
 
 import '../../features/parcels/send_parcel_screen.dart';
 import '../../features/parcels/track_parcel_screen.dart';
