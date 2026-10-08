@@ -95,10 +95,10 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     switch (index) {
-      case 3:
+      case 1:
         context.push('/notifications');
         break;
-      case 4:
+      case 2:
         context.push('/account');
         break;
     }
