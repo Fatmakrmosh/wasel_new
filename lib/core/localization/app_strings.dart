@@ -57,6 +57,12 @@ class AppStrings {
   static String get admin => en ? 'Admin' : 'الإدارة';
   static String get notifications => en ? 'Notifications' : 'الإشعارات';
   static String get account => en ? 'Account' : 'الحساب';
+
+  static String get profile => en ? 'Profile' : 'الملف الشخصي';
+  static String get editNamePhone => en ? 'Edit name and phone number' : 'تعديل الاسم ورقم الهاتف';
+  static String get passwordSettings => en ? 'Password' : 'كلمة المرور';
+  static String get changePassword => en ? 'Change password' : 'تغيير كلمة المرور';
+  static String get language => en ? 'Language' : 'اللغة';
   static String get home => en ? 'Home' : 'الرئيسية';
 }
 
