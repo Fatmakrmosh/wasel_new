@@ -118,7 +118,7 @@ class _AccountScreenState extends State<AccountScreen> {
       await client.auth.signOut(scope: SignOutScope.local);
     } catch (_) {
       if (mounted) {
-        _showMessage('تعذر تسجيل الخروج. حاول مرة أخرى.');
+        _showMessage(AppStrings.logoutFailed);
       }
       return;
     }
@@ -126,7 +126,7 @@ class _AccountScreenState extends State<AccountScreen> {
     // Make sure the router no longer sees an active session.
     if (client.auth.currentSession != null) {
       if (mounted) {
-        _showMessage('لم يتم إنهاء الجلسة. حاول مرة أخرى.');
+        _showMessage(AppStrings.sessionNotEnded);
       }
       return;
     }
@@ -716,12 +716,12 @@ class _AccountScreenState extends State<AccountScreen> {
             ),
           ),
           const SizedBox(width: 15),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  'أحمد محمد',
+                  'Ahmed Mohamed',
                   textAlign: TextAlign.right,
                   style: TextStyle(
                     color: Colors.white,
@@ -749,7 +749,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     ),
                     SizedBox(width: 5),
                     Text(
-                      'حساب موثوق',
+                      AppStrings.trustedAccount,
                       style: TextStyle(
                         color: AppColors.lime,
                         fontSize: 12,
