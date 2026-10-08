@@ -1811,7 +1811,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
       crossAxisAlignment:
           CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           AppText.t('عدد الركاب'),
           style: TextStyle(
             fontSize: 18,
@@ -1959,7 +1959,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
       crossAxisAlignment:
           CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           AppText.t('ملاحظات للسائق'),
           style: TextStyle(
             fontSize: 18,
