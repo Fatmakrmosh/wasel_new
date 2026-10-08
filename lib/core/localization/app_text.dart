@@ -236,6 +236,16 @@ class AppText {
       'حدد الوجهة أولاً': 'Select the destination first',
       'نقطة الانطلاق والوجهة متطابقتان': 'Departure and destination are the same',
       'تعذر حساب مسافة الطريق. تحقق من الإنترنت وحاول مرة أخرى.': 'Unable to calculate the route distance. Check your internet connection and try again.',
+      'تأكيد طلب الرحلة': 'Confirm ride request',
+      'من': 'From',
+      'إلى': 'To',
+      'المركبة': 'Vehicle',
+      'الركاب': 'Passengers',
+      'المسافة': 'Distance',
+      'كم': 'km',
+      'الوقت المتوقع': 'Estimated time',
+      'دقيقة': 'min',
+      'تأكيد وإرسال الطلب': 'Confirm and send request',
     };
 
     return translations[arabic] ?? arabic;
