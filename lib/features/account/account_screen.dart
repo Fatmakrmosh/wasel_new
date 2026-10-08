@@ -62,7 +62,7 @@ class _AccountScreenState extends State<AccountScreen> {
         return AlertDialog(
           backgroundColor: AppColors.surface,
           title: Text(
-            AppText.t(AppText.t('لغة التطبيق')),
+            AppText.t('لغة التطبيق'),
             textAlign: TextAlign.right,
             style: TextStyle(
               color: Colors.white,
@@ -117,7 +117,7 @@ class _AccountScreenState extends State<AccountScreen> {
       await client.auth.signOut(scope: SignOutScope.local);
     } catch (_) {
       if (mounted) {
-        _showMessage('تعذر تسجيل الخروج. حاول مرة أخرى.');
+        _showMessage(AppText.t('تعذر تسجيل الخروج. حاول مرة أخرى.'));
       }
       return;
     }
@@ -125,7 +125,7 @@ class _AccountScreenState extends State<AccountScreen> {
     // Make sure the router no longer sees an active session.
     if (client.auth.currentSession != null) {
       if (mounted) {
-        _showMessage('لم يتم إنهاء الجلسة. حاول مرة أخرى.');
+        _showMessage(AppText.t('لم يتم إنهاء الجلسة. حاول مرة أخرى.'));
       }
       return;
     }
@@ -141,14 +141,16 @@ class _AccountScreenState extends State<AccountScreen> {
       builder: (context) {
         return AlertDialog(
           backgroundColor: AppColors.surface,
-          title: Text(\n            AppText.t(AppText.t('تسجيل الخروج')),
+          title: Text(
+            AppText.t('تسجيل الخروج'),
             textAlign: TextAlign.right,
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
           ),
-          content: Text(\n            AppText.t(AppText.t('هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟')),
+          content: Text(
+            AppText.t('هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟'),
             textAlign: TextAlign.right,
             style: TextStyle(
               color: Colors.white70,
@@ -158,7 +160,8 @@ class _AccountScreenState extends State<AccountScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text(\n                AppText.t(AppText.t('إلغاء')),
+              child: Text(
+                AppText.t('إلغاء'),
                 style: TextStyle(
                   color: Colors.white70,
                 ),
@@ -173,7 +176,8 @@ class _AccountScreenState extends State<AccountScreen> {
                 backgroundColor: AppColors.lime,
                 foregroundColor: Colors.black,
               ),
-              child: Text(\n                AppText.t('تسجيل الخروج'),
+              child: Text(
+                AppText.t('تسجيل الخروج'),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
@@ -187,7 +191,7 @@ class _AccountScreenState extends State<AccountScreen> {
 
   void _showEditProfile() {
     final nameController = TextEditingController(
-      text: 'أحمد محمد',
+      text: AppText.t('أحمد محمد'),
     );
 
     final phoneController = TextEditingController(
@@ -226,7 +230,8 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                 ),
                 const SizedBox(height: 22),
-                Text(\n                  AppText.t(AppText.t('تعديل الملف الشخصي')),
+                Text(
+                  AppText.t('تعديل الملف الشخصي'),
                   textAlign: TextAlign.right,
                   style: TextStyle(
                     color: Colors.white,
@@ -253,7 +258,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
-                      _showMessage(AppText.t('تم حفظ بيانات الملف الشخصي'));
+                      _showMessage(AppText.t('تم حفظ بيانات الملف الشخصي');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.lime,
@@ -262,7 +267,8 @@ class _AccountScreenState extends State<AccountScreen> {
                         borderRadius: BorderRadius.circular(14),
                       ),
                     ),
-                    child: Text(\n                      AppText.t(AppText.t('حفظ التغييرات')),
+                    child: Text(
+                      AppText.t('حفظ التغييرات'),
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -343,7 +349,8 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                 ),
                 const SizedBox(height: 22),
-                Text(\n                  AppText.t(AppText.t('تغيير كلمة المرور')),
+                Text(
+                  AppText.t('تغيير كلمة المرور'),
                   textAlign: TextAlign.right,
                   style: TextStyle(
                     color: Colors.white,
@@ -352,18 +359,18 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                _buildPasswordField(AppText.t('كلمة المرور الحالية')),
+                _buildPasswordField(AppText.t('كلمة المرور الحالية'),
                 const SizedBox(height: 14),
-                _buildPasswordField(AppText.t('كلمة المرور الجديدة')),
+                _buildPasswordField(AppText.t('كلمة المرور الجديدة'),
                 const SizedBox(height: 14),
-                _buildPasswordField(AppText.t('تأكيد كلمة المرور الجديدة')),
+                _buildPasswordField(AppText.t('تأكيد كلمة المرور الجديدة'),
                 const SizedBox(height: 22),
                 SizedBox(
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
-                      _showMessage(AppText.t('تم تحديث كلمة المرور'));
+                      _showMessage(AppText.t('تم تحديث كلمة المرور');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.lime,
@@ -372,7 +379,8 @@ class _AccountScreenState extends State<AccountScreen> {
                         borderRadius: BorderRadius.circular(14),
                       ),
                     ),
-                    child: Text(\n                      AppText.t(AppText.t('تحديث كلمة المرور')),
+                    child: Text(
+                      AppText.t('تحديث كلمة المرور'),
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -420,15 +428,18 @@ class _AccountScreenState extends State<AccountScreen> {
       builder: (context) {
         return AlertDialog(
           backgroundColor: AppColors.surface,
-          title: Text(\n            AppText.t(AppText.t('مركز المساعدة')),
+          title: Text(
+            AppText.t('مركز المساعدة'),
             textAlign: TextAlign.right,
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
           ),
-          content: const Text(
-            AppText.t('يمكنك التواصل مع دعم واصل للحصول على المساعدة في الرحلات والطرود والحسابات.\n\nسيتم ربط مركز الدعم بخدمة العملاء لاحقًا.'),
+          content: Text(
+            AppText.t('يمكنك التواصل مع دعم واصل للحصول على المساعدة في الرحلات والطرود والحسابات.
+
+سيتم ربط مركز الدعم بخدمة العملاء لاحقًا.'),
             textAlign: TextAlign.right,
             style: TextStyle(
               color: Colors.white70,
@@ -438,7 +449,8 @@ class _AccountScreenState extends State<AccountScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text(\n                AppText.t(AppText.t('إغلاق')),
+              child: Text(
+                AppText.t('إغلاق'),
                 style: TextStyle(
                   color: AppColors.lime,
                 ),
@@ -475,7 +487,8 @@ class _AccountScreenState extends State<AccountScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text(\n                AppText.t('إغلاق'),
+              child: Text(
+                AppText.t('إغلاق'),
                 style: TextStyle(
                   color: AppColors.lime,
                 ),
@@ -495,7 +508,8 @@ class _AccountScreenState extends State<AccountScreen> {
         backgroundColor: AppColors.background,
         elevation: 0,
         centerTitle: true,
-        title: Text(\n          AppText.t(AppText.t('حسابي')),
+        title: Text(
+          AppText.t('حسابي'),
           style: TextStyle(
             color: Colors.white,
             fontSize: 21,
@@ -516,7 +530,7 @@ class _AccountScreenState extends State<AccountScreen> {
         children: [
           _buildProfileHeader(),
           const SizedBox(height: 22),
-          _buildSectionTitle(AppText.t('الحساب')),
+          _buildSectionTitle(AppText.t('الحساب'),
           const SizedBox(height: 8),
           _buildAccountItem(
             icon: Icons.person_outline_rounded,
@@ -533,11 +547,11 @@ class _AccountScreenState extends State<AccountScreen> {
           _buildAccountItem(
             icon: Icons.language_rounded,
             title: AppText.t('اللغة'),
-            subtitle: 'العربية',
+            subtitle: AppLocale.isEnglish ? 'English' : 'العربية',
             onTap: _showLanguageDialog,
           ),
           const SizedBox(height: 20),
-          _buildSectionTitle(AppText.t('الإعدادات')),
+          _buildSectionTitle(AppText.t('الإعدادات'),
           const SizedBox(height: 8),
           _buildSwitchItem(
             icon: Icons.notifications_none_rounded,
@@ -568,7 +582,7 @@ class _AccountScreenState extends State<AccountScreen> {
           ),
           if (_isAdminAccount) ...[
             const SizedBox(height: 20),
-            _buildSectionTitle(AppText.t('الإدارة')),
+            _buildSectionTitle(AppText.t('الإدارة'),
             const SizedBox(height: 8),
             _buildAccountItem(
               icon: Icons.admin_panel_settings_outlined,
@@ -580,7 +594,7 @@ class _AccountScreenState extends State<AccountScreen> {
             ),
           ],
           const SizedBox(height: 20),
-          _buildSectionTitle(AppText.t('خدمات واصل')),
+          _buildSectionTitle(AppText.t('خدمات واصل'),
           const SizedBox(height: 8),
           _buildAccountItem(
             icon: Icons.drive_eta_outlined,
@@ -595,11 +609,11 @@ class _AccountScreenState extends State<AccountScreen> {
             onTap: () => context.push('/company-register'),
           ),
           const SizedBox(height: 20),
-          _buildSectionTitle(AppText.t('المساعدة والمعلومات')),
+          _buildSectionTitle(AppText.t('المساعدة والمعلومات'),
           const SizedBox(height: 8),
           _buildAccountItem(
             icon: Icons.help_outline_rounded,
-            title: 'مركز المساعدة',
+            title: AppText.t('مركز المساعدة'),
             subtitle: AppText.t('الأسئلة والدعم'),
             onTap: _showHelpDialog,
           ),
@@ -608,8 +622,10 @@ class _AccountScreenState extends State<AccountScreen> {
             title: AppText.t('الخصوصية'),
             subtitle: AppText.t('سياسة الخصوصية وحماية البيانات'),
             onTap: () => _showInfoDialog(
-              'الخصوصية',
-              AppText.t('تحرص واصل على حماية بيانات المستخدمين وعدم استخدامها إلا لتقديم الخدمات وتحسين تجربة الاستخدام.\n\nسيتم إضافة سياسة الخصوصية الكاملة قبل الإطلاق النهائي.'),
+              AppText.t('الخصوصية'),
+              AppText.t('تحرص واصل على حماية بيانات المستخدمين وعدم استخدامها إلا لتقديم الخدمات وتحسين تجربة الاستخدام.
+
+سيتم إضافة سياسة الخصوصية الكاملة قبل الإطلاق النهائي.'),
             ),
           ),
           _buildAccountItem(
@@ -617,8 +633,10 @@ class _AccountScreenState extends State<AccountScreen> {
             title: AppText.t('الشروط والأحكام'),
             subtitle: AppText.t('شروط استخدام خدمات واصل'),
             onTap: () => _showInfoDialog(
-              'الشروط والأحكام',
-              AppText.t('تخضع جميع خدمات واصل لشروط الاستخدام وسياسات السلامة والدفع المعتمدة من إدارة المنصة.\n\nسيتم إضافة الشروط النهائية قبل الإطلاق.'),
+              AppText.t('الشروط والأحكام'),
+              AppText.t('تخضع جميع خدمات واصل لشروط الاستخدام وسياسات السلامة والدفع المعتمدة من إدارة المنصة.
+
+سيتم إضافة الشروط النهائية قبل الإطلاق.'),
             ),
           ),
           _buildAccountItem(
@@ -626,8 +644,10 @@ class _AccountScreenState extends State<AccountScreen> {
             title: AppText.t('عن واصل'),
             subtitle: AppText.t('إصدار التطبيق 1.0.0'),
             onTap: () => _showInfoDialog(
-              'عن واصل',
-              AppText.t('واصل WASEL\n\nمنصة سودانية للنقل والرحلات وإرسال الطرود، تهدف إلى تسهيل التنقل وربط الركاب بالسائقين وشركات النقل.'),
+              AppText.t('عن واصل'),
+              AppText.t('واصل WASEL
+
+منصة سودانية للنقل والرحلات وإرسال الطرود، تهدف إلى تسهيل التنقل وربط الركاب بالسائقين وشركات النقل.'),
             ),
           ),
           const SizedBox(height: 24),
@@ -639,7 +659,8 @@ class _AccountScreenState extends State<AccountScreen> {
                 Icons.logout_rounded,
                 color: Colors.redAccent,
               ),
-              label: Text(\n                AppText.t('تسجيل الخروج'),
+              label: Text(
+                AppText.t('تسجيل الخروج'),
                 style: TextStyle(
                   color: Colors.redAccent,
                   fontSize: 15,
@@ -657,7 +678,7 @@ class _AccountScreenState extends State<AccountScreen> {
             ),
           ),
           const SizedBox(height: 15),
-          const Text(
+          Text(
             'WASEL • واصل',
             textAlign: TextAlign.center,
             style: TextStyle(
@@ -702,12 +723,12 @@ class _AccountScreenState extends State<AccountScreen> {
             ),
           ),
           const SizedBox(width: 15),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  'أحمد محمد',
+                  AppText.t(AppText.t('أحمد محمد')),
                   textAlign: TextAlign.right,
                   style: TextStyle(
                     color: Colors.white,
