@@ -160,6 +160,13 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 Icons.business_outlined,
                 () => context.push('/admin/users?filter=company'),
               ),
+            if (_isAdmin)
+              _action(
+                'إدارة الإعلان',
+                'تغيير الإعلان الظاهر للمستخدمين',
+                Icons.campaign_outlined,
+                () => context.push('/admin/announcement'),
+              ),
             if (_isAdmin || _can('settings'))
               _action(
                 'إعدادات النظام',
