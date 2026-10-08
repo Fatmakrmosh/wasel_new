@@ -996,7 +996,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
                     AppColors.lime,
               ),
               const SizedBox(width: 10),
-              const Expanded(
+              Expanded(
                 child: Text(
                   AppText.t('السعر التقديري'),
                   style: TextStyle(
@@ -1848,7 +1848,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
               const SizedBox(
                 width: 14,
               ),
-              const Expanded(
+              Expanded(
                 child: Text(
                   AppText.t('عدد الركاب'),
                   style:
@@ -2054,7 +2054,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
           const SizedBox(
             width: 10,
           ),
-          const Expanded(
+          Expanded(
             child: Text(
               AppText.t('السعر التقديري'),
               style:
