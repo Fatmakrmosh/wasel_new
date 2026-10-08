@@ -189,6 +189,12 @@ class AppText {
       'التكلفة': 'Cost',
       'تاريخ الإرسال': 'Shipping date',
       'اليوم': 'Today',
+      'رحلاتي': 'My rides',
+      'رحلاتك': 'Your rides',
+      'تابع رحلاتك السابقة والقادمة بسهولة': 'Easily track your past and upcoming rides',
+      'الكل': 'All',
+      'القادمة': 'Upcoming',
+      'مكتملة': 'Completed',
       'الخرطوم': 'Khartoum',
       'شندي': 'Shendi',
     };
