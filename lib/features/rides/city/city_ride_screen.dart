@@ -755,7 +755,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
                   ),
                   const SizedBox(height: 20),
                   const Text(
-                    'تأكيد طلب الرحلة',
+                    AppText.t('تأكيد طلب الرحلة'),
                     textAlign:
                         TextAlign.center,
                     style: TextStyle(
@@ -767,7 +767,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
                   const SizedBox(height: 20),
                   _summaryRow(
                     Icons.my_location,
-                    'من',
+                    AppText.t('من'),
                     _pickupController.text
                         .trim(),
                     AppColors.lime,
@@ -775,7 +775,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
                   const SizedBox(height: 12),
                   _summaryRow(
                     Icons.location_on,
-                    'إلى',
+                    AppText.t('إلى'),
                     _destinationController
                         .text
                         .trim(),
@@ -784,28 +784,28 @@ class _CityRideScreenState extends State<CityRideScreen> {
                   const SizedBox(height: 12),
                   _summaryRow(
                     Icons.directions_car,
-                    'المركبة',
+                    AppText.t('المركبة'),
                     _selectedVehicle,
                     AppColors.lime,
                   ),
                   const SizedBox(height: 12),
                   _summaryRow(
                     Icons.people_outline,
-                    'الركاب',
+                    AppText.t('الركاب'),
                     '$_passengers',
                     AppColors.lime,
                   ),
                   const SizedBox(height: 12),
                   _summaryRow(
                     Icons.route_outlined,
-                    'المسافة',
+                    AppText.t('المسافة'),
                     '${_distanceKm.toStringAsFixed(1)} كم',
                     AppColors.lime,
                   ),
                   const SizedBox(height: 12),
                   _summaryRow(
                     Icons.access_time,
-                    'الوقت المتوقع',
+                    AppText.t('الوقت المتوقع'),
                     '${_durationMinutes.round()} دقيقة',
                     AppColors.lime,
                   ),
@@ -909,7 +909,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
                       ),
                       child:
                           const Text(
-                        'تأكيد وإرسال الطلب',
+                        AppText.t('تأكيد وإرسال الطلب'),
                         style:
                             TextStyle(
                           fontSize: 16,
@@ -1034,7 +1034,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
           ),
           const SizedBox(height: 8),
           _fareLine(
-            'المسافة',
+            AppText.t('المسافة'),
             '${_distanceFare.round()} جنيه',
           ),
           const SizedBox(height: 8),
