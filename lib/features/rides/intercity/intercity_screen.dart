@@ -259,7 +259,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
               controller: scrollController,
               children: [
                 _sheetHandle(),
-                const SizedBox(height: 18),
+                SizedBox(height: 18),
                 Text(AppText.t('اختر نوع المركبة'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -268,7 +268,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 6),
+                SizedBox(height: 6),
                 Text(
                   '${_localizedCityName(_fromCity)} ← ${_localizedCityName(_toCity)}',
                   textAlign: TextAlign.center,
@@ -278,7 +278,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
                 ..._vehicleTypes.map(
                   (vehicle) => Padding(
                     padding: const EdgeInsets.only(bottom: 11),
@@ -341,7 +341,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
               controller: scrollController,
               children: [
                 _sheetHandle(),
-                const SizedBox(height: 18),
+                SizedBox(height: 18),
                 Text(
                   _localizedVehicleName(vehicleType),
                   textAlign: TextAlign.center,
@@ -351,7 +351,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 6),
+                SizedBox(height: 6),
                 Text(
                   '${_localizedCityName(_fromCity)} ← ${_localizedCityName(_toCity)}',
                   textAlign: TextAlign.center,
@@ -361,7 +361,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 Text(AppText.t('اختر رحلة قائمة للحجز، وسيتم تحديث المقاعد المتبقية تلقائياً.'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -369,7 +369,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                     fontSize: 12,
                   ),
                 ),
-                const SizedBox(height: 18),
+                SizedBox(height: 18),
                 if (trips.isEmpty)
                   _emptyTripsCard()
                 else
@@ -421,7 +421,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                   controller: scrollController,
                   children: [
                     _sheetHandle(),
-                    const SizedBox(height: 18),
+                    SizedBox(height: 18),
                     Text(AppText.t('إتمام الحجز'),
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -430,13 +430,13 @@ class _IntercityScreenState extends State<IntercityScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 18),
+                    SizedBox(height: 18),
                     _routeSummaryCard(trip),
-                    const SizedBox(height: 18),
+                    SizedBox(height: 18),
                     _sectionTitle(AppText.t('نوع الخدمة'),
                       Icons.miscellaneous_services_outlined,
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10),
                     Row(
                       children: [
                         Expanded(
@@ -452,7 +452,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                             },
                           ),
                         ),
-                        const SizedBox(width: 10),
+                        SizedBox(width: 10),
                         Expanded(
                           child: _choiceCard(
                             title: AppText.t('إيجار كامل'),
@@ -468,21 +468,21 @@ class _IntercityScreenState extends State<IntercityScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 18),
+                    SizedBox(height: 18),
                     if (serviceType == 'قطع تذكرة') ...[
                       _summaryRow(AppText.t('عدد المقاعد'),
                         '$_passengers',
                       ),
-                      const SizedBox(height: 4),
+                      SizedBox(height: 4),
                     ],
                     _summaryRow(AppText.t('المبلغ'),
                       _formatMoney(amount),
                     ),
-                    const SizedBox(height: 18),
+                    SizedBox(height: 18),
                     _sectionTitle(AppText.t('طريقة الدفع'),
                       Icons.payments_outlined,
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10),
                     _paymentCard(
                       title: AppText.t('بنكك'),
                       subtitle: AppText.t('رقم الحساب: 9824691'),
@@ -494,7 +494,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                         });
                       },
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10),
                     _paymentCard(
                       title: AppText.t('نقداً في المكتب'),
                       subtitle: AppText.t('الدفع نقداً لدى مكتب واصل'),
@@ -506,7 +506,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                         });
                       },
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     SizedBox(
                       width: double.infinity,
                       height: 54,
@@ -587,13 +587,13 @@ class _IntercityScreenState extends State<IntercityScreen> {
                     ),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.confirmation_number_outlined,
                     color: AppColors.lime,
                     size: 32,
                   ),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 Text(AppText.t('التذكرة الإلكترونية'),
                   style: TextStyle(
                     color: Colors.white,
@@ -601,16 +601,16 @@ class _IntercityScreenState extends State<IntercityScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4),
                 Text(AppText.t('تم تأكيد الحجز وإصدار التذكرة'),
                   style: TextStyle(
                     color: AppColors.lime,
                     fontSize: 12,
                   ),
                 ),
-                const SizedBox(height: 18),
+                SizedBox(height: 18),
                 _ticketLogo(),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 Container(
                   padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
@@ -682,7 +682,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 15),
+                SizedBox(height: 15),
                 Container(
                   width: 105,
                   height: 105,
@@ -690,20 +690,20 @@ class _IntercityScreenState extends State<IntercityScreen> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(14),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.qr_code_2,
                     color: Colors.black,
                     size: 78,
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 Text(AppText.t('رمز التحقق الإلكتروني'),
                   style: TextStyle(
                     color: Colors.white54,
                     fontSize: 10,
                   ),
                 ),
-                const SizedBox(height: 18),
+                SizedBox(height: 18),
                 SizedBox(
                   width: double.infinity,
                   height: 48,
@@ -755,7 +755,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                   controller: scrollController,
                   children: [
                     _sheetHandle(),
-                    const SizedBox(height: 18),
+                    SizedBox(height: 18),
                     Text(AppText.t('نقل حمولة بالدفار'),
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -764,7 +764,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    SizedBox(height: 6),
                     Text(
                       '${_localizedCityName(_fromCity)} ← ${_localizedCityName(_toCity)}',
                       textAlign: TextAlign.center,
@@ -774,14 +774,14 @@ class _IntercityScreenState extends State<IntercityScreen> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const SizedBox(height: 18),
+                    SizedBox(height: 18),
                     _formField(
                       controller: _cargoTypeController,
                       label: AppText.t('نوع الحمولة'),
                       hint: 'مثال: أثاث، مواد بناء، بضاعة',
                       icon: Icons.category_outlined,
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     _formField(
                       controller: _cargoDescriptionController,
                       label: AppText.t('وصف العفش أو البضاعة'),
@@ -789,7 +789,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                       icon: Icons.description_outlined,
                       maxLines: 3,
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     _formField(
                       controller: _quantityController,
                       label: AppText.t('الكمية'),
@@ -797,7 +797,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                       icon: Icons.numbers_outlined,
                       keyboardType: TextInputType.number,
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     _formField(
                       controller: _weightController,
                       label: AppText.t('الوزن التقريبي'),
@@ -805,28 +805,28 @@ class _IntercityScreenState extends State<IntercityScreen> {
                       icon: Icons.scale_outlined,
                       keyboardType: TextInputType.number,
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     _formField(
                       controller: _volumeController,
                       label: AppText.t('الحجم التقريبي'),
                       hint: 'متر مكعب أو وصف للحجم',
                       icon: Icons.view_in_ar_outlined,
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     _formField(
                       controller: _senderController,
                       label: AppText.t('اسم المرسل'),
                       hint: 'اسم صاحب الحمولة',
                       icon: Icons.person_outline,
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     _formField(
                       controller: _recipientController,
                       label: AppText.t('اسم المستلم'),
                       hint: 'اسم مستلم الحمولة',
                       icon: Icons.person_pin_outlined,
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     _formField(
                       controller: _notesController,
                       label: AppText.t('ملاحظات'),
@@ -834,7 +834,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                       icon: Icons.notes_outlined,
                       maxLines: 3,
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     Container(
                       padding: const EdgeInsets.all(15),
                       decoration: BoxDecoration(
@@ -849,7 +849,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Row(
+                          Row(
                             children: [
                               Icon(
                                 Icons.warning_amber_rounded,
@@ -868,7 +868,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: 10),
                           Text(AppText.t('أقر بأن جميع البيانات المتعلقة بالحمولة صحيحة، وأنني أتحمل المسؤولية الكاملة عن أي مخالفة أو مواد ممنوعة أو غير نظامية أو أضرار ناتجة عن محتويات الحمولة. كما ألتزم بتحمل جميع الرسوم والجبايات ومصاريف الطريق وأي تكاليف نظامية متعلقة بالبضاعة أو نقلها.'),
                             style: TextStyle(
                               color: Colors.white70,
@@ -876,7 +876,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                               height: 1.6,
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: 8),
                           CheckboxListTile(
                             value: _acceptedCargoUndertaking,
                             onChanged: (value) {
@@ -900,7 +900,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 18),
+                    SizedBox(height: 18),
                     SizedBox(
                       width: double.infinity,
                       height: 54,
@@ -963,13 +963,13 @@ class _IntercityScreenState extends State<IntercityScreen> {
                   color: AppColors.lime,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.local_shipping_outlined,
                   color: Colors.black,
                   size: 34,
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               Text(AppText.t('تم تسجيل طلب النقل'),
                 style: TextStyle(
                   color: Colors.white,
@@ -977,7 +977,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               Text(AppText.t('رقم الطلب: $requestNumber'),
                 style: const TextStyle(
                   color: AppColors.lime,
@@ -985,7 +985,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                   fontSize: 13,
                 ),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: 10),
               Text(AppText.t('سيتم مراجعة بيانات الحمولة وتنسيق وسيلة النقل المناسبة وإرسال تفاصيل السعر والتأكيد.'),
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -994,7 +994,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                   height: 1.6,
                 ),
               ),
-              const SizedBox(height: 18),
+              SizedBox(height: 18),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -1046,18 +1046,18 @@ class _IntercityScreenState extends State<IntercityScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildHeader(),
-              const SizedBox(height: 18),
+              SizedBox(height: 18),
               _buildRouteCard(),
-              const SizedBox(height: 14),
+              SizedBox(height: 14),
               _buildVehicleTypesSection(),
-              const SizedBox(height: 14),
+              SizedBox(height: 14),
               _buildDateCard(),
-              const SizedBox(height: 14),
+              SizedBox(height: 14),
               _buildPassengersCard(),
-              const SizedBox(height: 14),
-              const SizedBox(height: 20),
+              SizedBox(height: 14),
+              SizedBox(height: 20),
               _buildSearchButton(),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               _buildInfoCard(),
             ],
           ),
@@ -1085,14 +1085,14 @@ class _IntercityScreenState extends State<IntercityScreen> {
               color: AppColors.lime.withValues(alpha: 0.12),
               shape: BoxShape.circle,
             ),
-            child: const Icon(
+            child: Icon(
               Icons.route_outlined,
               color: AppColors.lime,
               size: 31,
             ),
           ),
-          const SizedBox(width: 14),
-          const Expanded(
+          SizedBox(width: 14),
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -1140,7 +1140,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
               const Spacer(),
               IconButton(
                 onPressed: _swapCities,
-                icon: const Icon(
+                icon: Icon(
                   Icons.swap_vert,
                   color: AppColors.lime,
                 ),
@@ -1148,7 +1148,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 6),
+          SizedBox(height: 6),
           _citySelector(
             title: AppText.t('من'),
             value: _fromCity,
@@ -1207,7 +1207,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
           color: color,
           size: 19,
         ),
-        const SizedBox(width: 12),
+        SizedBox(width: 12),
         SizedBox(
           width: 35,
           child: Text(
@@ -1218,7 +1218,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
             ),
           ),
         ),
-        const SizedBox(width: 8),
+        SizedBox(width: 8),
         Expanded(
           child: DropdownButtonFormField<String>(
             initialValue: value,
@@ -1229,7 +1229,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
               fontWeight: FontWeight.w600,
             ),
             iconEnabledColor: AppColors.lime,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               border: InputBorder.none,
               isDense: true,
               contentPadding: EdgeInsets.zero,
@@ -1257,7 +1257,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
               Icon(
                 Icons.directions_car_outlined,
@@ -1274,14 +1274,14 @@ class _IntercityScreenState extends State<IntercityScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 6),
+          SizedBox(height: 6),
           Text(AppText.t('المركبات المتاحة لهذا المسار'),
             style: TextStyle(
               color: Colors.white38,
               fontSize: 11,
             ),
           ),
-          const SizedBox(height: 14),
+          SizedBox(height: 14),
           ..._vehicleTypes.map(
             (vehicle) => Padding(
               padding: const EdgeInsets.only(bottom: 9),
@@ -1350,7 +1350,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                 size: compact ? 23 : 26,
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1363,7 +1363,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4),
                   Text(
                     AppText.t(vehicle['subtitle'] as String),
                     style: const TextStyle(
@@ -1414,13 +1414,13 @@ class _IntercityScreenState extends State<IntercityScreen> {
                     color: AppColors.lime.withValues(alpha: 0.10),
                     borderRadius: BorderRadius.circular(13),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.directions_car_outlined,
                     color: AppColors.lime,
                     size: 24,
                   ),
                 ),
-                const SizedBox(width: 11),
+                SizedBox(width: 11),
                 Expanded(
                   child: Column(
                     crossAxisAlignment:
@@ -1434,7 +1434,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      SizedBox(height: 4),
                       Text(AppText.t('رحلة قائمة'),
                         style: const TextStyle(
                           color: Colors.white54,
@@ -1446,12 +1446,12 @@ class _IntercityScreenState extends State<IntercityScreen> {
                 ),
                 Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.star,
                       color: Colors.amber,
                       size: 16,
                     ),
-                    const SizedBox(width: 4),
+                    SizedBox(width: 4),
                     Text(
                       trip['rating'].toString(),
                       style: const TextStyle(
@@ -1464,14 +1464,14 @@ class _IntercityScreenState extends State<IntercityScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 15),
+            SizedBox(height: 15),
             Row(
               children: [
                 _timeColumn(
                   _localizedTime(trip['departure'].toString()),
                   'الانطلاق',
                 ),
-                const Expanded(
+                Expanded(
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     child: Row(
@@ -1506,20 +1506,20 @@ class _IntercityScreenState extends State<IntercityScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 14),
+            SizedBox(height: 14),
             const Divider(
               color: Colors.white10,
               height: 1,
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.event_seat_outlined,
                   color: Colors.white54,
                   size: 17,
                 ),
-                const SizedBox(width: 6),
+                SizedBox(width: 6),
                 Text(AppText.t('$remaining مقاعد متبقية من $capacity'),
                   style: const TextStyle(
                     color: Colors.white70,
@@ -1538,7 +1538,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(
@@ -1570,7 +1570,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
         color: const Color(0xFF252525),
         borderRadius: BorderRadius.circular(18),
       ),
-      child: const Column(
+      child: Column(
         children: [
           Icon(
             Icons.event_busy_outlined,
@@ -1661,7 +1661,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                   : Colors.white54,
               size: 25,
             ),
-            const SizedBox(height: 7),
+            SizedBox(height: 7),
             Text(
               title,
               style: TextStyle(
@@ -1672,7 +1672,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 3),
+            SizedBox(height: 3),
             Text(
               subtitle,
               style: const TextStyle(
@@ -1724,7 +1724,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                 size: 22,
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment:
@@ -1738,7 +1738,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4),
                   Text(
                     subtitle,
                     style: const TextStyle(
@@ -1821,15 +1821,15 @@ class _IntercityScreenState extends State<IntercityScreen> {
           width: 44,
           height: 44,
           errorBuilder: (_, _, _) {
-            return const Icon(
+            return Icon(
               Icons.route,
               color: AppColors.lime,
               size: 38,
             );
           },
         ),
-        const SizedBox(width: 9),
-        const Text(
+        SizedBox(width: 9),
+        Text(
           'WASEL',
           style: TextStyle(
             color: AppColors.lime,
@@ -1855,7 +1855,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
               fontSize: 11,
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12),
           Expanded(
             child: Text(
               value,
@@ -1917,7 +1917,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
           color: AppColors.lime,
           size: 21,
         ),
-        const SizedBox(width: 9),
+        SizedBox(width: 9),
         Text(
           title,
           style: const TextStyle(
@@ -1961,14 +1961,14 @@ class _IntercityScreenState extends State<IntercityScreen> {
               color: AppColors.lime.withValues(alpha: 0.10),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(
+            child: Icon(
               Icons.people_outline,
               color: AppColors.lime,
               size: 23,
             ),
           ),
-          const SizedBox(width: 13),
-          const Expanded(
+          SizedBox(width: 13),
+          Expanded(
             child: Column(
               crossAxisAlignment:
                   CrossAxisAlignment.start,
@@ -2061,7 +2061,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
       height: 54,
       child: ElevatedButton.icon(
         onPressed: _showRouteTrips,
-        icon: const Icon(Icons.search),
+        icon: Icon(Icons.search),
         label: Text(
           _selectedVehicleType == null
               ? 'عرض أنواع المركبات'
@@ -2092,7 +2092,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(18),
       ),
-      child: const Row(
+      child: Row(
         crossAxisAlignment:
             CrossAxisAlignment.start,
         children: [
@@ -2151,7 +2151,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                 size: 23,
               ),
             ),
-            const SizedBox(width: 13),
+            SizedBox(width: 13),
             Expanded(
               child: Column(
                 crossAxisAlignment:
@@ -2165,7 +2165,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4),
                   Text(
                     _localizedCityName(value),
                     style: const TextStyle(
@@ -2177,7 +2177,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                 ],
               ),
             ),
-            const Icon(
+            Icon(
               Icons.chevron_left,
               color: Colors.white38,
               size: 22,
@@ -2206,7 +2206,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: 4),
         Text(
           label,
           style: const TextStyle(
