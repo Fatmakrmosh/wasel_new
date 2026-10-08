@@ -550,12 +550,12 @@ class _AccountScreenState extends State<AccountScreen> {
             onTap: _showLanguageDialog,
           ),
           const SizedBox(height: 20),
-          _buildSectionTitle('الإعدادات'),
+          _buildSectionTitle(AppStrings.settings),
           const SizedBox(height: 8),
           _buildSwitchItem(
             icon: Icons.notifications_none_rounded,
             title: 'الإشعارات',
-            subtitle: 'تنبيهات الرحلات والطرود',
+            subtitle: AppStrings.tripParcelAlerts,
             value: notificationsEnabled,
             onChanged: (value) {
               setState(() {
@@ -565,8 +565,8 @@ class _AccountScreenState extends State<AccountScreen> {
           ),
           _buildSwitchItem(
             icon: Icons.dark_mode_outlined,
-            title: 'الوضع الداكن',
-            subtitle: 'مظهر التطبيق',
+            title: AppStrings.darkMode,
+            subtitle: AppStrings.appAppearance,
             value: darkModeEnabled,
             onChanged: (value) {
               setState(() {
@@ -574,8 +574,8 @@ class _AccountScreenState extends State<AccountScreen> {
               });
               _showMessage(
                 value
-                    ? 'تم تفعيل الوضع الداكن'
-                    : 'سيتم تطبيق الوضع الفاتح لاحقًا',
+                    ? AppStrings.darkModeEnabled
+                    : AppStrings.lightModeLater,
               );
             },
           ),
