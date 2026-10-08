@@ -222,6 +222,14 @@ class AppText {
       'عرض أنواع المركبات': 'Show vehicle types',
       'متابعة طلب نقل الحمولة': 'Continue cargo transport request',
       'عرض الرحلات المتاحة': 'Show available trips',
+      'تعذر الحصول على موقعك الحالي': 'Unable to get your current location',
+      'خدمة الموقع مغلقة': 'Location service is off',
+      'فعّل خدمة الموقع حتى يتمكن واصل من تحديد موقعك.': 'Enable location services so WASEL can determine your location.',
+      'فتح الموقع': 'Open location settings',
+      'تم رفض صلاحية الموقع': 'Location permission denied',
+      'صلاحية الموقع مرفوضة': 'Location permission denied',
+      'افتح إعدادات التطبيق واسمح له باستخدام الموقع.': 'Open app settings and allow location access.',
+      'فتح الإعدادات': 'Open settings',
     };
 
     return translations[arabic] ?? arabic;
