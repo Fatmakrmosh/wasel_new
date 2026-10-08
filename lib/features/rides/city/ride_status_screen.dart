@@ -382,7 +382,7 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
         'status': status,
         'updated_at': DateTime.now().toUtc().toIso8601String(),
       }).eq('id', rideId);
-      if (!mounted) return;
+      if (!mounted) return false;
       _setStepFromStatus(status);
       setState(() {});
       return true;
