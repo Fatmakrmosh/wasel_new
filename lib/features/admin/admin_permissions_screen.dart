@@ -69,6 +69,88 @@ class _AdminPermissionsScreenState extends State<AdminPermissionsScreen> {
     }
   }
 
+  Future<void> _addSupervisor() async {
+    final client = SupabaseService.client;
+    if (client == null) return;
+
+    try {
+      final raw = await client.rpc('admin_list_profiles');
+      final profiles = List<Map<String, dynamic>>.from(
+        (raw as List).map((r) => Map<String, dynamic>.from(r)),
+      ).where((user) {
+        final role = user['role']?.toString().trim().toLowerCase();
+        return role != 'admin' && role != 'supervisor';
+      }).toList();
+
+      if (!mounted) return;
+      if (profiles.isEmpty) {
+        _message('لا يوجد مستخدم متاح لإضافته كمشرف');
+        return;
+      }
+
+      String? selectedId;
+      await showDialog<void>(
+        context: context,
+        builder: (dialogContext) => StatefulBuilder(
+          builder: (context, setDialogState) => AlertDialog(
+            backgroundColor: AppColors.surface,
+            title: const Text('إضافة مشرف',
+                textAlign: TextAlign.right,
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            content: DropdownButtonFormField<String>(
+              initialValue: selectedId,
+              dropdownColor: const Color(0xFF252525),
+              style: const TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                labelText: 'اختر المستخدم',
+                labelStyle: TextStyle(color: Colors.white54),
+              ),
+              items: profiles.map((user) {
+                final name = user['full_name']?.toString().trim();
+                final phone = user['phone']?.toString() ?? '';
+                return DropdownMenuItem<String>(
+                  value: user['id'].toString(),
+                  child: Text(
+                    (name?.isNotEmpty == true ? name! : 'بدون اسم') + (phone.isEmpty ? '' : ' - $phone'),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                );
+              }).toList(),
+              onChanged: (value) => setDialogState(() => selectedId = value),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(dialogContext),
+                child: const Text('إلغاء'),
+              ),
+              FilledButton(
+                onPressed: selectedId == null
+                    ? null
+                    : () => Navigator.pop(dialogContext),
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppColors.lime,
+                  foregroundColor: Colors.black,
+                ),
+                child: const Text('إضافة مشرف'),
+              ),
+            ],
+          ),
+        ),
+      );
+
+      if (selectedId == null) return;
+      await client.rpc('admin_set_profile_role', params: {
+        'target_user': selectedId,
+        'target_role': 'supervisor',
+      });
+      _message('تمت إضافة المشرف');
+      await _load();
+    } catch (error) {
+      debugPrint('WASEL add supervisor error: $error');
+      _message('تعذر إضافة المشرف');
+    }
+  }
+
   Future<void> _selectSupervisor(String id) async {
     setState(() { _selectedSupervisor = id; _loading = true; });
     final client = SupabaseService.client;
@@ -152,6 +234,22 @@ class _AdminPermissionsScreenState extends State<AdminPermissionsScreen> {
                 const Text('اختر المشرف', textAlign: TextAlign.right,
                     style: TextStyle(color: AppColors.lime, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
+                SizedBox(
+                  height: 48,
+                  child: FilledButton.icon(
+                    onPressed: _addSupervisor,
+                    icon: const Icon(Icons.person_add_alt_1_rounded),
+                    label: const Text('إضافة مشرف'),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: AppColors.lime,
+                      foregroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
                 if (_supervisors.isEmpty)
                   _emptyCard('لا يوجد مشرفون حالياً. عيّن مستخدماً كمشرف أولاً.')
                 else
