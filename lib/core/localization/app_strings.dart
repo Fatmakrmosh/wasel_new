@@ -100,6 +100,9 @@ class AppStrings {
   static String get logoutConfirm => en ? 'Are you sure you want to log out of your account?' : 'هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟';
   static String get cancel => en ? 'Cancel' : 'إلغاء';
   static String get englishLater => en ? 'English language will be available soon' : 'اللغة الإنجليزية ستكون متاحة قريبًا';
+  static String get logoutFailed => en ? 'Unable to log out. Please try again.' : 'تعذر تسجيل الخروج. حاول مرة أخرى.';
+  static String get sessionNotEnded => en ? 'The session was not ended. Please try again.' : 'لم يتم إنهاء الجلسة. حاول مرة أخرى.';
+  static String get trustedAccount => en ? 'Trusted account' : 'حساب موثوق';
   static String get editProfile => en ? 'Edit Profile' : 'تعديل الملف الشخصي';
   static String get name => en ? 'Name' : 'الاسم';
   static String get saveChanges => en ? 'Save Changes' : 'حفظ التغييرات';
