@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../../../core/localization/app_text.dart';
+import '../../../core/localization/app_locale.dart';
 
 class IntercityScreen extends StatefulWidget {
   const IntercityScreen({super.key});
@@ -269,7 +270,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  '$_fromCity ← $_toCity',
+                  '${_localizedCityName(_fromCity)} ← ${_localizedCityName(_toCity)}',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: AppColors.lime,
@@ -352,7 +353,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  '$_fromCity ← $_toCity',
+                  '${_localizedCityName(_fromCity)} ← ${_localizedCityName(_toCity)}',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: AppColors.lime,
@@ -649,11 +650,11 @@ class _IntercityScreenState extends State<IntercityScreen> {
                       ),
                       _ticketRow(
                         'الانطلاق',
-                        trip['departure'].toString(),
+                        _localizedTime(trip['departure'].toString()),
                       ),
                       _ticketRow(
                         'المركبة',
-                        trip['vehicle'].toString(),
+                        _localizedVehicleName(trip['vehicle'].toString()),
                       ),
                       _ticketRow(
                         'نوع الخدمة',
@@ -765,7 +766,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      '$_fromCity ← $_toCity',
+                      '${_localizedCityName(_fromCity)} ← ${_localizedCityName(_toCity)}',
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: AppColors.lime,
@@ -1426,7 +1427,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                         CrossAxisAlignment.start,
                     children: [
                       Text(
-                        trip['vehicle'].toString(),
+                        _localizedVehicleName(trip['vehicle'].toString()),
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14,
@@ -1467,7 +1468,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
             Row(
               children: [
                 _timeColumn(
-                  trip['departure'].toString(),
+                  _localizedTime(trip['departure'].toString()),
                   'الانطلاق',
                 ),
                 const Expanded(
@@ -1499,7 +1500,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                   ),
                 ),
                 _timeColumn(
-                  trip['arrival'].toString(),
+                  _localizedTime(trip['arrival'].toString()),
                   'الوصول',
                   alignEnd: true,
                 ),
@@ -1609,19 +1610,19 @@ class _IntercityScreenState extends State<IntercityScreen> {
       child: Column(
         children: [
           _summaryRow(AppText.t('المسار'),
-            '$_fromCity ← $_toCity',
+            '${_localizedCityName(_fromCity)} ← ${_localizedCityName(_toCity)}',
           ),
           _summaryRow(AppText.t('المركبة'),
-            trip['vehicle'].toString(),
+            _localizedVehicleName(trip['vehicle'].toString()),
           ),
           _summaryRow(AppText.t('التاريخ'),
             '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
           ),
           _summaryRow(AppText.t('الانطلاق'),
-            trip['departure'].toString(),
+            _localizedTime(trip['departure'].toString()),
           ),
           _summaryRow(AppText.t('الوصول'),
-            trip['arrival'].toString(),
+            _localizedTime(trip['arrival'].toString()),
           ),
         ],
       ),
@@ -2251,6 +2252,46 @@ class _IntercityScreenState extends State<IntercityScreen> {
     );
   }
 
+  String _localizedCityName(String city) {
+    if (!AppLocale.isEnglish) return city;
+    const names = {
+      'الخرطوم': 'Khartoum',
+      'بحري': 'Bahri',
+      'أم درمان': 'Omdurman',
+      'شندي': 'Shendi',
+      'عطبرة': 'Atbara',
+      'بورتسودان': 'Port Sudan',
+      'مروي': 'Merowe',
+      'كريمة': 'Karima',
+      'مدني': 'Wad Madani',
+      'القضارف': 'Gedaref',
+      'كسلا': 'Kassala',
+      'سنار': 'Sennar',
+      'ربك': 'Rabak',
+      'الدويم': 'Ed Dueim',
+    };
+    return names[city] ?? city;
+  }
+
+  String _localizedVehicleName(String vehicle) {
+    if (!AppLocale.isEnglish) return vehicle;
+    const names = {
+      'ليموزين': 'Limousine',
+      'ليموزين فاخر': 'Luxury limousine',
+      'بوكسي سنقل': 'Single-cab pickup',
+      'بوكسي دبل كاب': 'Double-cab pickup',
+      'شريحة': 'Minibus',
+      'باص': 'Bus',
+      'دفار': 'Cargo truck',
+    };
+    return names[vehicle] ?? vehicle;
+  }
+
+  String _localizedTime(String time) {
+    if (!AppLocale.isEnglish) return time;
+    return time.replaceAll(' ص', ' AM').replaceAll(' م', ' PM');
+  }
+
   String _formatMoney(int amount) {
     final String value = amount.toString();
     final StringBuffer result = StringBuffer();
@@ -2263,6 +2304,6 @@ class _IntercityScreenState extends State<IntercityScreen> {
       result.write(value[i]);
     }
 
-    return '${result.toString()} جنيه';
+    return AppLocale.isEnglish ? '${result.toString()} SDG' : '${result.toString()} جنيه';
   }
 }
