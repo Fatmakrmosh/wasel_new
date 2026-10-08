@@ -170,6 +170,21 @@ class AppText {
       'عدد المسافرين': 'Passengers',
       'اختر عدد المقاعد': 'Choose number of seats',
       'اختر المسار أولاً. بعد ذلك تظهر أنواع المركبات المتاحة، ثم الرحلات القائمة والمقاعد المتبقية. لا يتم عرض شركات النقل للمسافر؛ إدارة واصل تتولى تنسيق الناقل عند الحاجة.': 'Choose the route first. Then available vehicle types, trips, and remaining seats will appear. Transport companies are not shown to passengers; WASEL coordinates the carrier when needed.',
+      'حالة الطرد الحالية': 'Current parcel status',
+      'الطرد في الطريق': 'Parcel is on the way',
+      'آخر تحديث: اليوم، 01:20 م': 'Last updated: Today, 01:20 PM',
+      'رحلة الطرد': 'Parcel journey',
+      'تم إنشاء الشحنة': 'Shipment created',
+      'تم تسجيل الطرد في نظام واصل': 'Parcel registered in the WASEL system',
+      'تم استلام الطرد': 'Parcel received',
+      'تم استلام الطرد من المرسل': 'Parcel received from the sender',
+      'في الطريق': 'On the way',
+      'الطرد في طريقه إلى وجهته': 'Parcel is on its way to its destination',
+      'وصل إلى نقطة التوزيع': 'Arrived at distribution point',
+      'بانتظار التسليم إلى المستلم': 'Waiting for delivery to the recipient',
+      'متوقع اليوم': 'Expected today',
+      'تم التسليم': 'Delivered',
+      'سيظهر هنا عند اكتمال التسليم': 'It will appear here when delivery is completed',
     };
 
     return translations[arabic] ?? arabic;
