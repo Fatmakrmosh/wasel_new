@@ -152,41 +152,6 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     }
   }
 
-  Widget _chip(String value, String label) {
-    final selected = _filter == value;
-    return ChoiceChip(
-      label: Text(label),
-      selected: selected,
-      onSelected: (_) => setState(() => _filter = value),
-      selectedColor: AppColors.lime,
-      backgroundColor: AppColors.surface,
-      labelStyle: TextStyle(color: selected ? Colors.black : Colors.white70, fontWeight: FontWeight.w600),
-    );
-  }
-
-  String get _screenTitle {
-    switch (_filter) {
-      case 'driver':
-        return 'إدارة السائقين';
-      case 'company':
-        return 'الشركات المسجلة';
-      case 'supervisor':
-        return 'المشرفون';
-      case 'admin':
-        return 'المديرون';
-      case 'passenger':
-        return 'المستخدمون';
-      default:
-        return 'المستخدمون المسجلون';
-    }
-  }
-
-  void _message(String message) {
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message, textAlign: TextAlign.right)));
-  }
-
-  @override
   Widget build(BuildContext context) {
     final users = _filteredUsers;
     return Scaffold(
