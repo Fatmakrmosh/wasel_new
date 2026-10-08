@@ -428,8 +428,8 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'تفاصيل الشحنة',
+          Text(
+            AppText.t('تفاصيل الشحنة'),
             style: TextStyle(
               color: Colors.white,
               fontSize: 17,
@@ -445,27 +445,27 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
           _detailRow(
             Icons.location_on_outlined,
             'من',
-            'الخرطوم',
+            AppText.t('الخرطوم'),
           ),
           _detailRow(
             Icons.flag_outlined,
             'إلى',
-            'شندي',
+            AppText.t('شندي'),
           ),
           _detailRow(
             Icons.inventory_2_outlined,
             'نوع الطرد',
-            'طرد عادي',
+            AppText.t('طرد عادي'),
           ),
           _detailRow(
             Icons.payments_outlined,
-            'التكلفة',
-            '3,500 جنيه',
+            AppText.t('التكلفة'),
+            '3,500 ${AppText.t('جنيه')}',
           ),
           _detailRow(
             Icons.calendar_today_outlined,
-            'تاريخ الإرسال',
-            'اليوم',
+            AppText.t('تاريخ الإرسال'),
+            AppText.t('اليوم'),
             showDivider: false,
           ),
         ],
