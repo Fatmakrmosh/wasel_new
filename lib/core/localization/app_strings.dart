@@ -105,5 +105,11 @@ class AppStrings {
   static String get saveChanges => en ? 'Save Changes' : 'حفظ التغييرات';
   static String get profileSaved => en ? 'Profile information saved' : 'تم حفظ بيانات الملف الشخصي';
   static String get phoneNumber => en ? 'Phone number' : 'رقم الهاتف';
+  static String get changePasswordTitle => en ? 'Change Password' : 'تغيير كلمة المرور';
+  static String get currentPassword => en ? 'Current password' : 'كلمة المرور الحالية';
+  static String get newPassword => en ? 'New password' : 'كلمة المرور الجديدة';
+  static String get confirmNewPassword => en ? 'Confirm new password' : 'تأكيد كلمة المرور الجديدة';
+  static String get updatePassword => en ? 'Update Password' : 'تحديث كلمة المرور';
+  static String get passwordUpdated => en ? 'Password updated successfully' : 'تم تحديث كلمة المرور';
 
 }
