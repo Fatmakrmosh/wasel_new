@@ -155,11 +155,6 @@ final GoRouter appRouter = GoRouter(
       builder: (_, _) => const IntercityScreen(),
     ),
 
-    GoRoute(
-      path: '/bus',
-      builder: (_, _) => const BusScreen(),
-    ),
-
     // =========================
     // الطرود
     // =========================
