@@ -156,10 +156,6 @@ class _AdminPermissionsScreenState extends State<AdminPermissionsScreen> {
     final supervisor = _selectedSupervisor;
     if (client == null || supervisor == null) return;
 
-    final selected = _supervisors.firstWhere(
-      (s) => s['id'].toString() == supervisor,
-      orElse: () => <String, dynamic>{},
-    );
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
