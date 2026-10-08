@@ -59,12 +59,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     switch (index) {
-      case 1:
-        context.push('/my-rides');
-        break;
-      case 2:
-        context.push('/send-parcel');
-        break;
       case 3:
         context.push('/notifications');
         break;
@@ -386,16 +380,6 @@ class _HomeScreenState extends State<HomeScreen> {
           icon: Icon(Icons.home_outlined),
           selectedIcon: Icon(Icons.home),
           label: AppStrings.home,
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.directions_car_outlined),
-          selectedIcon: Icon(Icons.directions_car),
-          label: AppStrings.myRides,
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.inventory_2_outlined),
-          selectedIcon: Icon(Icons.inventory_2),
-          label: AppStrings.sendParcel,
         ),
         NavigationDestination(
           icon: Icon(Icons.notifications_none),
