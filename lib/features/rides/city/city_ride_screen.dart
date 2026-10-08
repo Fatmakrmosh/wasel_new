@@ -1620,8 +1620,8 @@ class _CityRideScreenState extends State<CityRideScreen> {
       crossAxisAlignment:
           CrossAxisAlignment.start,
       children: [
-        const Text(
-          'نوع المركبة',
+        Text(
+          AppText.t('نوع المركبة'),
           style: TextStyle(
             fontSize: 18,
             fontWeight:
@@ -1749,7 +1749,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
                                   .start,
                           children: [
                             Text(
-                              name,
+                              AppText.t(name),
                               style:
                                   TextStyle(
                                 fontSize:
@@ -1768,7 +1768,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
                               height: 4,
                             ),
                             Text(
-                              '${option.description} • حتى ${option.capacity} ركاب',
+                              '${AppText.t(option.description)} • ${AppText.t('حتى')} ${option.capacity} ${AppText.t('ركاب')}',
                               style:
                                   TextStyle(
                                 color: Colors
