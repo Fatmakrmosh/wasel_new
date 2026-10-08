@@ -754,7 +754,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  const Text(
+                  Text(
                     AppText.t('تأكيد طلب الرحلة'),
                     textAlign:
                         TextAlign.center,
@@ -908,7 +908,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
                         ),
                       ),
                       child:
-                          const Text(
+                          Text(
                         AppText.t('تأكيد وإرسال الطلب'),
                         style:
                             TextStyle(
