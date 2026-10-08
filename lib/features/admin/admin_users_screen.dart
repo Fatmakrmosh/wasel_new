@@ -134,6 +134,24 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     );
   }
 
+  void _message(String message) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message, textAlign: TextAlign.right)),
+    );
+  }
+
+  String get _screenTitle {
+    switch (_filter) {
+      case 'driver': return 'إدارة السائقين';
+      case 'company': return 'الشركات المسجلة';
+      case 'supervisor': return 'المشرفون';
+      case 'admin': return 'المديرون';
+      case 'passenger': return 'المستخدمون';
+      default: return 'المستخدمون المسجلون';
+    }
+  }
+
   Widget _infoRow(String title, String value) => Padding(
     padding: const EdgeInsets.symmetric(vertical: 5),
     child: Row(children: [
@@ -152,6 +170,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     final users = _filteredUsers;
     return Scaffold(
