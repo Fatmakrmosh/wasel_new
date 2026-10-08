@@ -1284,7 +1284,7 @@ class _CityRideScreenState extends State<CityRideScreen> {
                       18,
                     ),
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisSize:
                         MainAxisSize.min,
                     children: [
