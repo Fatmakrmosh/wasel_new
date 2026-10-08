@@ -6,7 +6,6 @@ import '../../core/network/supabase_service.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/localization/app_locale.dart';
 import '../../core/localization/app_strings.dart';
-import '../../core/widgets/wasel_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key, this.message});
@@ -28,6 +27,10 @@ class _LoginScreenState extends State<LoginScreen> {
     skipTraversal: true,
     canRequestFocus: false,
   );
+
+  static const _blue = Color(0xFF1769D2);
+  static const _text = Color(0xFF172033);
+  static const _muted = Color(0xFF737B8C);
 
   void _togglePasswordVisibility() {
     final selection = passwordController.selection;
@@ -112,15 +115,22 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    final message = result.message ?? (AppLocale.isEnglish ? 'Unable to log in right now' : 'تعذر تسجيل الدخول حالياً');
+    final message = result.message ??
+        (AppLocale.isEnglish
+            ? 'Unable to log in right now'
+            : 'تعذر تسجيل الدخول حالياً');
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
         behavior: SnackBarBehavior.floating,
-        action: message.contains('إنشاء حساب') || message.contains('Create an account')
+        action: message.contains('إنشاء حساب') ||
+                message.contains('Create an account')
             ? SnackBarAction(
-                label: AppStrings.createAccount.replaceFirst('Create a new account', 'Create account'),
+                label: AppStrings.createAccount.replaceFirst(
+                  'Create a new account',
+                  'Create account',
+                ),
                 onPressed: () => context.go('/register'),
               )
             : null,
@@ -131,128 +141,181 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: AppLocale.isEnglish ? TextDirection.ltr : TextDirection.rtl,
+      textDirection:
+          AppLocale.isEnglish ? TextDirection.ltr : TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(AppStrings.login),
-        ),
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: ListView(
-            padding: const EdgeInsets.fromLTRB(24, 20, 24, 32),
+            padding: const EdgeInsets.fromLTRB(24, 28, 24, 28),
             children: [
-              const SizedBox(height: 12),
+              Align(
+                alignment: AlignmentDirectional.topEnd,
+                child: IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.language_outlined, color: _muted),
+                ),
+              ),
+              const SizedBox(height: 4),
               Center(
                 child: Image.asset(
                   'assets/images/wasel-logo.png',
-                  width: 110,
-                  height: 110,
+                  width: 94,
+                  height: 94,
                   fit: BoxFit.contain,
-                ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                AppStrings.welcome,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w800,
                 ),
               ),
               const SizedBox(height: 10),
               Text(
-                AppStrings.loginSubtitle,
+                AppLocale.isEnglish ? 'Welcome!' : 'مرحباً بك!',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: AppColors.muted,
-                  fontSize: 15,
+                style: const TextStyle(
+                  color: _text,
+                  fontSize: 27,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
-              const SizedBox(height: 36),
-              TextField(
+              const SizedBox(height: 4),
+              Text(
+                AppStrings.login,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: _text,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 30),
+              _buildField(
                 controller: phoneController,
+                label: AppStrings.phone,
+                hint: AppStrings.phoneHint,
+                icon: Icons.phone_outlined,
                 keyboardType: TextInputType.phone,
                 textInputAction: TextInputAction.next,
-                decoration: InputDecoration(
-                  labelText: AppStrings.phone,
-                  hintText: AppStrings.phoneHint,
-                  prefixIcon: Icon(Icons.phone_outlined),
-                ),
               ),
-              const SizedBox(height: 16),
-              TextField(
+              const SizedBox(height: 14),
+              _buildField(
                 controller: passwordController,
+                label: AppStrings.password,
+                icon: Icons.lock_outline,
                 focusNode: passwordFocusNode,
                 obscureText: obscurePassword,
                 textInputAction: TextInputAction.done,
                 onSubmitted: (_) => _login(),
-                decoration: InputDecoration(
-                  labelText: AppStrings.password,
-                  prefixIcon: const Icon(Icons.lock_outline),
-                  suffixIcon: IconButton(
-                    onPressed: _togglePasswordVisibility,
-                    focusNode: passwordVisibilityFocusNode,
-                    icon: Icon(
-                      obscurePassword
-                          ? Icons.visibility_outlined
-                          : Icons.visibility_off_outlined,
-                    ),
+                suffix: IconButton(
+                  onPressed: _togglePasswordVisibility,
+                  focusNode: passwordVisibilityFocusNode,
+                  icon: Icon(
+                    obscurePassword
+                        ? Icons.visibility_outlined
+                        : Icons.visibility_off_outlined,
+                    color: _muted,
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
               Align(
-                alignment: Alignment.centerLeft,
+                alignment: AlignmentDirectional.centerEnd,
                 child: TextButton(
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(
-                          AppStrings.passwordRecoveryLater,
-                        ),
+                        content: Text(AppStrings.passwordRecoveryLater),
                       ),
                     );
                   },
-                  child: Text(AppStrings.forgotPassword),
+                  child: Text(
+                    AppStrings.forgotPassword,
+                    style: const TextStyle(
+                      color: _blue,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
               ),
-              const SizedBox(height: 16),
-              WaselButton(
-                text: isLoading ? AppStrings.loggingIn : AppStrings.enter,
-                onPressed: isLoading ? () {} : _login,
+              const SizedBox(height: 6),
+              SizedBox(
+                height: 52,
+                child: FilledButton(
+                  onPressed: isLoading ? null : _login,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: _blue,
+                    disabledBackgroundColor: _blue.withValues(alpha: 0.55),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(13),
+                    ),
+                  ),
+                  child: Text(
+                    isLoading ? AppStrings.loggingIn : AppStrings.enter,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 20),
               Row(
                 children: [
-                  const Expanded(child: Divider()),
+                  const Expanded(
+                    child: Divider(color: Color(0xFFE1E5EB)),
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Text(
                       AppStrings.or,
-                      style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.5),
+                      style: const TextStyle(
+                        color: _muted,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
-                  const Expanded(child: Divider()),
+                  const Expanded(
+                    child: Divider(color: Color(0xFFE1E5EB)),
+                  ),
                 ],
               ),
               const SizedBox(height: 16),
               SizedBox(
                 height: 52,
-                width: double.infinity,
                 child: OutlinedButton(
                   onPressed:
                       isLoading ? null : () => context.go('/register'),
-                  child: Text(AppStrings.createAccount),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: _blue,
+                    side: const BorderSide(color: Color(0xFFD4DCE8)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(13),
+                    ),
+                  ),
+                  child: Text(
+                    AppStrings.createAccount,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
                 ),
               ),
+              if (widget.message != null) ...[
+                const SizedBox(height: 14),
+                Text(
+                  widget.message!,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: _muted,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
               const SizedBox(height: 24),
               Text(
                 AppStrings.terms,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: AppColors.muted,
-                  fontSize: 12,
+                style: const TextStyle(
+                  color: _muted,
+                  fontSize: 11,
+                  height: 1.5,
                 ),
               ),
             ],
@@ -261,4 +324,49 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-}
+
+  Widget _buildField({
+    required TextEditingController controller,
+    required String label,
+    String? hint,
+    required IconData icon,
+    FocusNode? focusNode,
+    bool obscureText = false,
+    TextInputType? keyboardType,
+    TextInputAction? textInputAction,
+    ValueChanged<String>? onSubmitted,
+    Widget? suffix,
+  }) {
+    return TextField(
+      controller: controller,
+      focusNode: focusNode,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      textInputAction: textInputAction,
+      onSubmitted: onSubmitted,
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: hint,
+        prefixIcon: Icon(icon, color: _muted),
+        suffixIcon: suffix,
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 15,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(13),
+          borderSide: const BorderSide(color: Color(0xFFDDE3EC)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(13),
+          borderSide: const BorderSide(color: Color(0xFFDDE3EC)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(13),
+          borderSide: const BorderSide(color: _blue, width: 1.5),
+        ),
+      ),
+    );
+  }
