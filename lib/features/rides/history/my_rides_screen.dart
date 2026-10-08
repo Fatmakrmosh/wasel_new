@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_theme.dart';
+import '../../../core/localization/app_text.dart';
 
 class MyRidesScreen extends StatefulWidget {
   const MyRidesScreen({super.key});
@@ -83,8 +84,8 @@ class _MyRidesScreenState extends State<MyRidesScreen> {
           iconTheme: const IconThemeData(
             color: Colors.white,
           ),
-          title: const Text(
-            'رحلاتي',
+          title: Text(
+            AppText.t('رحلاتي'),
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -144,12 +145,12 @@ class _MyRidesScreenState extends State<MyRidesScreen> {
             ),
           ),
           const SizedBox(width: 14),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'رحلاتك',
+                  AppText.t('رحلاتك'),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -158,7 +159,7 @@ class _MyRidesScreenState extends State<MyRidesScreen> {
                 ),
                 SizedBox(height: 5),
                 Text(
-                  'تابع رحلاتك السابقة والقادمة بسهولة',
+                  AppText.t('تابع رحلاتك السابقة والقادمة بسهولة'),
                   style: TextStyle(
                     color: Colors.white54,
                     fontSize: 13,
@@ -204,7 +205,7 @@ class _MyRidesScreenState extends State<MyRidesScreen> {
                   ),
                   alignment: Alignment.center,
                   child: Text(
-                    tabs[index],
+                    AppText.t(tabs[index]),
                     style: TextStyle(
                       color: _selectedTab == index
                           ? Colors.black
