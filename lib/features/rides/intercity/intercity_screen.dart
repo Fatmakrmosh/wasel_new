@@ -343,7 +343,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                 _sheetHandle(),
                 const SizedBox(height: 18),
                 Text(
-                  vehicleType,
+                  _localizedVehicleName(vehicleType),
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: Colors.white,
@@ -1144,7 +1144,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                   Icons.swap_vert,
                   color: AppColors.lime,
                 ),
-                tooltip: 'تبديل المدن',
+                tooltip: AppText.t('تبديل المدن'),
               ),
             ],
           ),
@@ -1356,7 +1356,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    name,
+                    _localizedVehicleName(name),
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: compact ? 13 : 15,
@@ -1365,7 +1365,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    vehicle['subtitle'] as String,
+                    AppText.t(vehicle['subtitle'] as String),
                     style: const TextStyle(
                       color: Colors.white54,
                       fontSize: 10,
@@ -2167,7 +2167,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    value,
+                    _localizedCityName(value),
                     style: const TextStyle(
                       color: AppColors.lime,
                       fontSize: 12,
