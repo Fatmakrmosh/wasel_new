@@ -619,7 +619,7 @@ class _BusScreenState extends State<BusScreen> {
                                     .trim()
                                     .isEmpty) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
+                                SnackBar(
                                   content: Text(
                                     AppText.t('أدخل رقم عملية بنكك أولاً'),
                                   ),
