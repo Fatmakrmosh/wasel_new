@@ -111,5 +111,9 @@ class AppStrings {
   static String get confirmNewPassword => en ? 'Confirm new password' : 'تأكيد كلمة المرور الجديدة';
   static String get updatePassword => en ? 'Update Password' : 'تحديث كلمة المرور';
   static String get passwordUpdated => en ? 'Password updated successfully' : 'تم تحديث كلمة المرور';
+  static String get close => en ? 'Close' : 'إغلاق';
+  static String get helpCenterMessage => en
+      ? 'You can contact WASEL support for help with rides, parcels and accounts.\n\nThe support center will be connected to customer service later.'
+      : 'يمكنك التواصل مع دعم واصل للحصول على المساعدة في الرحلات والطرود والحسابات.\n\nسيتم ربط مركز الدعم بخدمة العملاء لاحقًا.';
 
 }
