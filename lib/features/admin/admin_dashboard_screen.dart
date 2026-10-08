@@ -73,10 +73,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
       if (!mounted) return;
       setState(() {
-        _users = users;
-        _drivers = drivers;
-        _companies = companies;
-        _supervisors = supervisors;
       });
     } catch (error) {
       debugPrint('WASEL admin statistics error: $error');
