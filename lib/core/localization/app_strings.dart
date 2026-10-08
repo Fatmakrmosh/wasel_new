@@ -96,5 +96,8 @@ class AppStrings {
   static String get manageTasksPermissions => en
       ? 'Manage tasks according to granted permissions'
       : 'إدارة المهام حسب الصلاحيات الممنوحة';
-}
+  static String get logout => en ? 'Log out' : 'تسجيل الخروج';
+  static String get logoutConfirm => en ? 'Are you sure you want to log out of your account?' : 'هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟';
+  static String get cancel => en ? 'Cancel' : 'إلغاء';
 
+}
