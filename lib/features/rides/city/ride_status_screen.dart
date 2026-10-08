@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../../core/network/driver_location_service.dart';
+import '../../../core/network/ride_market_service.dart';
 import '../../../core/network/supabase_service.dart';
 import '../../../core/theme/app_theme.dart';
 
@@ -131,7 +132,7 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
     try {
       final response = await client
           .from('rides')
-          .select('id, driver_id, status, pickup_lat, pickup_lng, destination_lat, destination_lng, suggested_fare, accepted_fare, pickup_address, destination_address, driver:profiles(full_name, phone)')
+          .select('id, driver_id, status, pickup_lat, pickup_lng, destination_lat, destination_lng, suggested_fare, accepted_fare, pickup_address, destination_address, vehicle_type')
           .eq('passenger_id', user.id)
           .inFilter('status', [
             'accepted',
@@ -165,12 +166,34 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
         _rideFare = _toDouble(ride['accepted_fare']) ??
             _toDouble(ride['suggested_fare']) ??
             0;
-        final driver = ride['driver'];
-        if (driver is Map) {
-          final name = driver['full_name']?.toString().trim();
-          _driverName = (name?.isNotEmpty ?? false) ? name! : 'السائق';
+        final requestedVehicleType = ride['vehicle_type']?.toString().trim();
+        _vehicleInfo = (requestedVehicleType?.isNotEmpty ?? false)
+            ? requestedVehicleType!
+            : 'المركبة';
+
+        if (rideId != null) {
+          try {
+            final offers = await RideMarketService.listOffers(rideId);
+            final acceptedOffer = offers.where((offer) {
+              final sameDriver =
+                  offer['driver_id']?.toString() == driverId;
+              final isAccepted =
+                  offer['status']?.toString() == 'accepted';
+              return sameDriver && isAccepted;
+            }).firstOrNull;
+
+            if (acceptedOffer != null) {
+              final name =
+                  acceptedOffer['driver_name']?.toString().trim();
+              if (name != null && name.isNotEmpty) {
+                _driverName = name;
+              }
+            }
+          } catch (_) {
+            // Keep the ride screen usable if offer details are unavailable.
+          }
         }
-        }
+
         _setStepFromStatus(status);
 
         if (_activeRideId != null) {
