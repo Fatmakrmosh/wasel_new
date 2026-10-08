@@ -243,6 +243,17 @@ class AppText {
       'الوقت المتوقع': 'Estimated time',
       'دقيقة': 'min',
       'تأكيد وإرسال الطلب': 'Confirm and send request',
+      'رسوم فتح الرحلة': 'Ride base fee',
+      'الانتظار': 'Waiting',
+      'يُحسب أثناء الرحلة': 'Calculated during the ride',
+      'المعادلة: 5,000 + 6,000 لكل كم + 500 لكل دقيقة انتظار': 'Formula: 5,000 + 6,000 per km + 500 per minute of waiting',
+      'نقطة الانطلاق': 'Departure point',
+      'حدد مكان التقاطك': 'Set your pickup location',
+      'الوجهة': 'Destination',
+      'حدد المكان الذي تريد الوصول إليه': 'Set your destination',
+      'عدد الركاب': 'Number of passengers',
+      'ملاحظات للسائق': 'Notes for the driver',
+      'مثلاً: سأكون أمام البوابة الرئيسية': 'Example: I will be in front of the main gate',
     };
 
     return translations[arabic] ?? arabic;
