@@ -72,5 +72,13 @@ class AppStrings {
   static String get lightModeLater => en
       ? 'Light mode will be applied later'
       : 'سيتم تطبيق الوضع الفاتح لاحقًا';
+  static String get systemManagement => en ? 'System management' : 'إدارة النظام';
+  static String get supervisorPanel => en ? 'Supervisor panel' : 'لوحة المشرف';
+  static String get manageUsersTripsPermissions => en
+      ? 'Manage users, supervisors, trips and permissions'
+      : 'إدارة المستخدمين والمشرفين والرحلات والصلاحيات';
+  static String get manageTasksPermissions => en
+      ? 'Manage tasks according to granted permissions'
+      : 'إدارة المهام حسب الصلاحيات الممنوحة';
 }
 
