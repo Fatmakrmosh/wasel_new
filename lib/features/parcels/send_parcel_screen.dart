@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/localization/app_text.dart';
 
 class SendParcelScreen extends StatefulWidget {
   const SendParcelScreen({super.key});
@@ -20,8 +21,8 @@ class _SendParcelScreenState extends State<SendParcelScreen> {
 
   String fromCity = 'الخرطوم';
   String toCity = 'شندي';
-  String parcelType = 'طرد عادي';
-  String deliveryType = 'مع رحلة مسافر';
+  String parcelType = AppText.t('طرد عادي');
+  String deliveryType = AppText.t('مع رحلة مسافر');
 
   @override
   void dispose() {
@@ -39,8 +40,8 @@ Widget build(BuildContext context) {
     appBar: AppBar(
       backgroundColor: AppColors.background,
       elevation: 0,
-      title: const Text(
-        'إرسال طرد',
+      title: Text(
+        AppText.t('إرسال طرد'),
         style: TextStyle(
           fontWeight: FontWeight.bold,
         ),
@@ -54,19 +55,19 @@ Widget build(BuildContext context) {
           children: [
             _buildHeader(),
             const SizedBox(height: 22),
-            _sectionTitle('مسار الطرد'),
+            _sectionTitle(AppText.t('مسار الطرد')),
             const SizedBox(height: 12),
             _buildRouteCard(),
             const SizedBox(height: 22),
-            _sectionTitle('بيانات المستلم'),
+            _sectionTitle(AppText.t('بيانات المستلم')),
             const SizedBox(height: 12),
             _buildReceiverCard(),
             const SizedBox(height: 22),
-            _sectionTitle('تفاصيل الطرد'),
+            _sectionTitle(AppText.t('تفاصيل الطرد')),
             const SizedBox(height: 12),
             _buildParcelDetails(),
             const SizedBox(height: 22),
-            _sectionTitle('طريقة التوصيل'),
+            _sectionTitle(AppText.t('طريقة التوصيل')),
             const SizedBox(height: 12),
             _buildDeliveryOptions(),
             const SizedBox(height: 24),
@@ -85,8 +86,8 @@ Widget build(BuildContext context) {
                     borderRadius: BorderRadius.circular(17),
                   ),
                 ),
-                child: const Text(
-                  'متابعة وإرسال الطلب',
+                child: Text(
+                  AppText.t('متابعة وإرسال الطلب'),
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -125,12 +126,12 @@ Widget build(BuildContext context) {
             ),
           ),
           const SizedBox(width: 14),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'أرسل طردك بأمان',
+                  AppText.t('أرسل طردك بأمان'),
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 18,
@@ -139,7 +140,7 @@ Widget build(BuildContext context) {
                 ),
                 SizedBox(height: 5),
                 Text(
-                  'نوصله مع الرحلات المتجهة إلى مدينتك',
+                  AppText.t('نوصله مع الرحلات المتجهة إلى مدينتك'),
                   style: TextStyle(
                     color: Colors.black87,
                     fontSize: 12,
@@ -251,7 +252,7 @@ Widget build(BuildContext context) {
                 .map(
                   (city) => DropdownMenuItem<String>(
                     value: city,
-                    child: Text(city),
+                    child: Text(AppText.t(city)),
                   ),
                 )
                 .toList(),
@@ -273,22 +274,22 @@ Widget build(BuildContext context) {
         children: [
           _textField(
             controller: senderController,
-            label: 'اسم المرسل',
-            hint: 'اكتب اسم المرسل',
+            label: AppText.t('اسم المرسل'),
+            hint: AppText.t('اكتب اسم المرسل'),
             icon: Icons.person_outline,
           ),
           const SizedBox(height: 12),
           _textField(
             controller: receiverController,
-            label: 'اسم المستلم',
-            hint: 'اكتب اسم المستلم',
+            label: AppText.t('اسم المستلم'),
+            hint: AppText.t('اكتب اسم المستلم'),
             icon: Icons.person,
           ),
           const SizedBox(height: 12),
           _textField(
             controller: phoneController,
-            label: 'رقم هاتف المستلم',
-            hint: 'مثال: 09xxxxxxxx',
+            label: AppText.t('رقم هاتف المستلم'),
+            hint: AppText.t('مثال: 09xxxxxxxx'),
             icon: Icons.phone_outlined,
             keyboardType: TextInputType.phone,
           ),
@@ -350,7 +351,7 @@ Widget build(BuildContext context) {
                 Icons.inventory_2_outlined,
                 color: lime,
               ),
-              labelText: 'نوع الطرد',
+              labelText: AppText.t('نوع الطرد'),
               labelStyle: TextStyle(
                 color: Colors.grey.shade500,
               ),
@@ -363,24 +364,24 @@ Widget build(BuildContext context) {
             ),
             items: const [
               DropdownMenuItem(
-                value: 'طرد عادي',
-                child: Text('طرد عادي'),
+                value: AppText.t('طرد عادي'),
+                child: Text(AppText.t('طرد عادي')),
               ),
               DropdownMenuItem(
-                value: 'مستندات',
-                child: Text('مستندات'),
+                value: AppText.t('مستندات'),
+                child: Text(AppText.t('مستندات')),
               ),
               DropdownMenuItem(
-                value: 'ملابس',
-                child: Text('ملابس'),
+                value: AppText.t('ملابس'),
+                child: Text(AppText.t('ملابس')),
               ),
               DropdownMenuItem(
-                value: 'مواد غذائية',
-                child: Text('مواد غذائية'),
+                value: AppText.t('مواد غذائية'),
+                child: Text(AppText.t('مواد غذائية')),
               ),
               DropdownMenuItem(
-                value: 'أخرى',
-                child: Text('أخرى'),
+                value: AppText.t('أخرى'),
+                child: Text(AppText.t('أخرى')),
               ),
             ],
             onChanged: (value) {
@@ -407,11 +408,11 @@ Widget build(BuildContext context) {
                 ),
               ),
               prefixIconColor: lime,
-              labelText: 'وصف الطرد',
+              labelText: AppText.t('وصف الطرد'),
               labelStyle: TextStyle(
                 color: Colors.grey.shade500,
               ),
-              hintText: 'مثلاً: صندوق ملابس صغير',
+              hintText: AppText.t('مثلاً: صندوق ملابس صغير'),
               hintStyle: TextStyle(
                 color: Colors.grey.shade700,
               ),
@@ -431,13 +432,13 @@ Widget build(BuildContext context) {
   Widget _buildDeliveryOptions() {
     final options = [
       {
-        'title': 'مع رحلة مسافر',
-        'subtitle': 'أوفر وأسرع عند توفر رحلة',
+        'title': AppText.t('مع رحلة مسافر'),
+        'subtitle': AppText.t('أوفر وأسرع عند توفر رحلة'),
         'icon': Icons.directions_car_outlined,
       },
       {
-        'title': 'توصيل مخصص',
-        'subtitle': 'إرسال مباشر للطرد',
+        'title': AppText.t('توصيل مخصص'),
+        'subtitle': AppText.t('إرسال مباشر للطرد'),
         'icon': Icons.local_shipping_outlined,
       },
     ];
@@ -484,7 +485,7 @@ Widget build(BuildContext context) {
                           CrossAxisAlignment.start,
                       children: [
                         Text(
-                          title,
+                          AppText.t(title),
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: selected
@@ -494,7 +495,7 @@ Widget build(BuildContext context) {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          option['subtitle'] as String,
+                          AppText.t(option['subtitle'] as String),
                           style: TextStyle(
                             color: Colors.grey.shade600,
                             fontSize: 11,
@@ -521,7 +522,7 @@ Widget build(BuildContext context) {
   }
 
   Widget _buildPriceCard() {
-    final price = deliveryType == 'مع رحلة مسافر'
+    final price = deliveryType == AppText.t('مع رحلة مسافر')
         ? 3500
         : 6500;
 
@@ -539,9 +540,9 @@ Widget build(BuildContext context) {
             size: 27,
           ),
           const SizedBox(width: 12),
-          const Expanded(
+          Expanded(
             child: Text(
-              'السعر التقديري',
+              AppText.t('السعر التقديري'),
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -566,9 +567,9 @@ Widget build(BuildContext context) {
         receiverController.text.trim().isEmpty ||
         phoneController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(
-            'يرجى إكمال بيانات المرسل والمستلم',
+            AppText.t('يرجى إكمال بيانات المرسل والمستلم'),
           ),
         ),
       );
@@ -604,8 +605,8 @@ Widget build(BuildContext context) {
                   size: 60,
                 ),
                 const SizedBox(height: 14),
-                const Text(
-                  'تم إنشاء طلب الطرد',
+                Text(
+                  AppText.t('تم إنشاء طلب الطرد'),
                   style: TextStyle(
                     fontSize: 21,
                     fontWeight: FontWeight.bold,
@@ -613,7 +614,7 @@ Widget build(BuildContext context) {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'احتفظ برقم التتبع لمتابعة طردك',
+                  AppText.t('احتفظ برقم التتبع لمتابعة طردك'),
                   style: TextStyle(
                     color: Colors.grey.shade500,
                   ),
@@ -629,7 +630,7 @@ Widget build(BuildContext context) {
                   child: Column(
                     children: [
                       Text(
-                        'رقم التتبع',
+                        AppText.t('رقم التتبع'),
                         style: TextStyle(
                           color: Colors.grey.shade400,
                           fontSize: 12,
@@ -665,8 +666,8 @@ Widget build(BuildContext context) {
                         borderRadius: BorderRadius.circular(16),
                       ),
                     ),
-                    child: const Text(
-                      'متابعة وتتبع الطرد',
+                    child: Text(
+                      AppText.t('متابعة وتتبع الطرد'),
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
