@@ -625,16 +625,16 @@ class _IntercityScreenState extends State<IntercityScreen> {
                   child: Column(
                     children: [
                       _ticketRow(
-                        'رقم التذكرة',
+                        AppText.t('رقم التذكرة'),
                         ticketNumber,
                       ),
                       _ticketRow(
-                        'رقم الحجز',
+                        AppText.t('رقم الحجز'),
                         bookingNumber,
                       ),
                       _ticketRow(
-                        'المسافر',
-                        'مسافر واصل',
+                        AppText.t('المسافر'),
+                        AppText.t('مسافر واصل'),
                       ),
                       _ticketRow(
                         'من',
@@ -645,39 +645,39 @@ class _IntercityScreenState extends State<IntercityScreen> {
                         _toCity,
                       ),
                       _ticketRow(
-                        'التاريخ',
+                        AppText.t('التاريخ'),
                         '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
                       ),
                       _ticketRow(
-                        'الانطلاق',
+                        AppText.t('الانطلاق'),
                         _localizedTime(trip['departure'].toString()),
                       ),
                       _ticketRow(
-                        'المركبة',
+                        AppText.t('المركبة'),
                         _localizedVehicleName(trip['vehicle'].toString()),
                       ),
                       _ticketRow(
-                        'نوع الخدمة',
+                        AppText.t('نوع الخدمة'),
                         serviceType,
                       ),
                       if (serviceType == 'قطع تذكرة')
                         _ticketRow(
-                          'عدد المقاعد',
+                          AppText.t('عدد المقاعد'),
                           '$_passengers',
                         ),
                       _ticketRow(
-                        'المبلغ',
+                        AppText.t('المبلغ'),
                         _formatMoney(amount),
                       ),
                       _ticketRow(
-                        'طريقة الدفع',
+                        AppText.t('طريقة الدفع'),
                         paymentMethod,
                       ),
                       _ticketRow(
-                        'حالة الدفع',
+                        AppText.t('حالة الدفع'),
                         paymentMethod == 'بنكك'
-                            ? 'تم اختيار الدفع عبر بنكك'
-                            : 'الدفع نقداً في المكتب',
+                            ? AppText.t('تم اختيار الدفع عبر بنكك')
+                            : AppText.t('الدفع نقداً في المكتب'),
                       ),
                     ],
                   ),
@@ -1237,7 +1237,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
             items: _cities.map((city) {
               return DropdownMenuItem<String>(
                 value: city,
-                child: Text(city),
+                child: Text(_localizedCityName(city)),
               );
             }).toList(),
             onChanged: onChanged,
@@ -1501,7 +1501,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                 ),
                 _timeColumn(
                   _localizedTime(trip['arrival'].toString()),
-                  'الوصول',
+                  AppText.t('الوصول'),
                   alignEnd: true,
                 ),
               ],
@@ -1529,7 +1529,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                 ),
                 const Spacer(),
                 Text(
-                  '${_formatMoney(trip['ticketPrice'] as int)} / مقعد',
+                  '${_formatMoney(trip['ticketPrice'] as int)} / ${AppText.t('مقعد')}',
                   style: const TextStyle(
                     color: AppColors.lime,
                     fontSize: 13,
@@ -2064,10 +2064,10 @@ class _IntercityScreenState extends State<IntercityScreen> {
         icon: Icon(Icons.search),
         label: Text(
           _selectedVehicleType == null
-              ? 'عرض أنواع المركبات'
+              ? AppText.t('عرض أنواع المركبات')
               : _selectedVehicleType == 'دفار'
-                  ? 'متابعة طلب نقل الحمولة'
-                  : 'عرض الرحلات المتاحة',
+                  ? AppText.t('متابعة طلب نقل الحمولة')
+                  : AppText.t('عرض الرحلات المتاحة'),
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
