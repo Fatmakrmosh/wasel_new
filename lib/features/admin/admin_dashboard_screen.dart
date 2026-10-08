@@ -14,10 +14,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   bool _loading = true;
   String _role = 'supervisor';
   Set<String> _permissionCodes = {};
-  int _users = 0;
-  int _drivers = 0;
-  int _companies = 0;
-  int _supervisors = 0;
 
   @override
   void initState() { super.initState(); _load(); }
@@ -256,40 +252,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     title,
     textAlign: TextAlign.right,
     style: const TextStyle(color: AppColors.lime, fontSize: 16, fontWeight: FontWeight.bold),
-  );
-
-  Widget _stat(String title, int value, IconData icon, VoidCallback onTap) => Container(
-    decoration: BoxDecoration(
-      color: AppColors.surface,
-      borderRadius: BorderRadius.circular(18),
-      border: Border.all(color: Colors.white10),
-    ),
-    child: Material(
-      color: Colors.transparent,
-      borderRadius: BorderRadius.circular(18),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(18),
-        child: Padding(
-          padding: const EdgeInsets.all(14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(icon, color: AppColors.lime, size: 22),
-              const Spacer(),
-              Text(value.toString(), style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
-              Row(
-                children: [
-                  const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white30, size: 12),
-                  const SizedBox(width: 5),
-                  Expanded(child: Text(title, style: const TextStyle(color: Colors.white54, fontSize: 11))),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
   );
 
   Widget _action(String title, String subtitle, IconData icon, VoidCallback onTap) => Container(
