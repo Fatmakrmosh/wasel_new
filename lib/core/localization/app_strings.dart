@@ -69,6 +69,16 @@ class AppStrings {
   static String get transportCompanyRegistration => en ? 'Transport company registration' : 'التسجيل كشركة نقل';
   static String get addCompanyServices => en ? 'Add your company and services to WASEL' : 'أضف شركتك وخدماتك إلى واصل';
 
+  static String get helpInfo => en ? 'Help & Information' : 'المساعدة والمعلومات';
+  static String get helpCenter => en ? 'Help Center' : 'مركز المساعدة';
+  static String get questionsSupport => en ? 'Questions and support' : 'الأسئلة والدعم';
+  static String get privacy => en ? 'Privacy' : 'الخصوصية';
+  static String get privacyDataPolicy => en ? 'Privacy policy and data protection' : 'سياسة الخصوصية وحماية البيانات';
+  static String get termsConditions => en ? 'Terms & Conditions' : 'الشروط والأحكام';
+  static String get termsServices => en ? 'Terms of use for WASEL services' : 'شروط استخدام خدمات واصل';
+  static String get aboutWasel => en ? 'About WASEL' : 'عن واصل';
+  static String get appVersion => en ? 'App version 1.0.0' : 'إصدار التطبيق 1.0.0';
+
   static String get home => en ? 'Home' : 'الرئيسية';
   static String get settings => en ? 'Settings' : 'الإعدادات';
   static String get tripParcelAlerts => en ? 'Trip and parcel alerts' : 'تنبيهات الرحلات والطرود';
