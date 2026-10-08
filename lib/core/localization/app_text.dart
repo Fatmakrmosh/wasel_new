@@ -185,6 +185,12 @@ class AppText {
       'متوقع اليوم': 'Expected today',
       'تم التسليم': 'Delivered',
       'سيظهر هنا عند اكتمال التسليم': 'It will appear here when delivery is completed',
+      'تفاصيل الشحنة': 'Shipment details',
+      'التكلفة': 'Cost',
+      'تاريخ الإرسال': 'Shipping date',
+      'اليوم': 'Today',
+      'الخرطوم': 'Khartoum',
+      'شندي': 'Shendi',
     };
 
     return translations[arabic] ?? arabic;
