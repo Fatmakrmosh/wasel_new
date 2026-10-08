@@ -63,6 +63,12 @@ class AppStrings {
   static String get passwordSettings => en ? 'Password' : 'كلمة المرور';
   static String get changePassword => en ? 'Change password' : 'تغيير كلمة المرور';
   static String get language => en ? 'Language' : 'اللغة';
+  static String get waselServices => en ? 'WASEL Services' : 'خدمات واصل';
+  static String get driverRegistration => en ? 'Driver registration' : 'التسجيل كسائق';
+  static String get joinWaselDrivers => en ? 'Join the WASEL driver network' : 'انضم إلى شبكة سائقي واصل';
+  static String get transportCompanyRegistration => en ? 'Transport company registration' : 'التسجيل كشركة نقل';
+  static String get addCompanyServices => en ? 'Add your company and services to WASEL' : 'أضف شركتك وخدماتك إلى واصل';
+
   static String get home => en ? 'Home' : 'الرئيسية';
   static String get settings => en ? 'Settings' : 'الإعدادات';
   static String get tripParcelAlerts => en ? 'Trip and parcel alerts' : 'تنبيهات الرحلات والطرود';
