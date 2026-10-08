@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/localization/app_locale.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -13,23 +14,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController controller = PageController();
   int index = 0;
 
-  final List<_OnboardingPage> pages = const [
+  List<_OnboardingPage> get pages => [
     _OnboardingPage(
-      title: 'رحلات أسهل',
-      description:
-          'اطلب رحلتك داخل المدينة بسهولة، واستقبل عروض السائقين واختر العرض المناسب لك.',
+      title: AppLocale.isEnglish ? 'Easier rides' : 'رحلات أسهل',
+      description: AppLocale.isEnglish ? 'Request a city ride, receive driver offers, and choose the offer that suits you.' : 'اطلب رحلتك داخل المدينة بسهولة، واستقبل عروض السائقين واختر العرض المناسب لك.',
       icon: Icons.directions_car_filled_rounded,
     ),
     _OnboardingPage(
-      title: 'إرسال الطرود',
-      description:
-          'أرسل طرودك بين المدن بأمان وتابع حالة شحنتك باستخدام رقم تتبع WASEL.',
+      title: AppLocale.isEnglish ? 'Send parcels' : 'إرسال الطرود',
+      description: AppLocale.isEnglish ? 'Send parcels between cities safely and track your shipment with a WASEL tracking number.' : 'أرسل طرودك بين المدن بأمان وتابع حالة شحنتك باستخدام رقم تتبع WASEL.',
       icon: Icons.inventory_2_rounded,
     ),
     _OnboardingPage(
-      title: 'رحلات بين المدن',
-      description:
-          'احجز ليموزين أو باصًا بين المدن واستمتع بتجربة سفر منظمة مع WASEL.',
+      title: AppLocale.isEnglish ? 'Intercity travel' : 'رحلات بين المدن',
+      description: AppLocale.isEnglish ? 'Book a limousine or bus between cities and enjoy an organized WASEL travel experience.' : 'احجز ليموزين أو باصًا بين المدن واستمتع بتجربة سفر منظمة مع WASEL.',
       icon: Icons.directions_bus_filled_rounded,
     ),
   ];
@@ -69,8 +67,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
                 child: TextButton(
                   onPressed: _goToLanguage,
-                  child: const Text(
-                    'تخطي',
+                  child: Text(
+                    AppLocale.isEnglish ? 'Skip' : 'تخطي',
                     style: TextStyle(
                       color: AppColors.muted,
                       fontSize: 14,
@@ -179,7 +177,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: ElevatedButton(
                   onPressed: _nextPage,
                   child: Text(
-                    index == pages.length - 1 ? 'ابدأ الآن' : 'التالي',
+                    index == pages.length - 1 ? (AppLocale.isEnglish ? 'Get started' : 'ابدأ الآن') : (AppLocale.isEnglish ? 'Next' : 'التالي'),
                   ),
                 ),
               ),
