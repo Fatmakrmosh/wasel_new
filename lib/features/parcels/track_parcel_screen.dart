@@ -258,7 +258,7 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
             ),
           ),
           const SizedBox(width: 15),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
