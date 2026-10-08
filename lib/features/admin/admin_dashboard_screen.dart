@@ -61,7 +61,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         // Keep the dashboard usable even if permission details cannot be read.
       }
     }
-
+  }
 
   bool get _isAdmin => _role == 'admin';
 
