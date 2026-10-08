@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/theme/app_theme.dart';
+import '../../core/localization/app_text.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -68,7 +69,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text(
-          'تم تعليم جميع الإشعارات كمقروءة',
+          AppText.t('تم تعليم جميع الإشعارات كمقروءة'),
           textAlign: TextAlign.right,
         ),
       ),
@@ -119,7 +120,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               ),
               const SizedBox(height: 18),
               Text(
-                notification['title'] as String,
+                AppText.t(notification['title'] as String),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.white,
@@ -129,7 +130,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               ),
               const SizedBox(height: 12),
               Text(
-                notification['message'] as String,
+                AppText.t(notification['message'] as String),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.white70,
@@ -139,7 +140,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               ),
               const SizedBox(height: 12),
               Text(
-                notification['time'] as String,
+                AppText.t(notification['time'] as String),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.white54,
@@ -158,8 +159,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       borderRadius: BorderRadius.circular(14),
                     ),
                   ),
-                  child: const Text(
-                    'حسنًا',
+                  child: Text(
+                    AppText.t('حسنًا'),
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -182,8 +183,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         backgroundColor: AppColors.background,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          'الإشعارات',
+        title: Text(
+          AppText.t('الإشعارات'),
           style: TextStyle(
             color: Colors.white,
             fontSize: 21,
@@ -202,8 +203,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           if (_unreadCount > 0)
             TextButton(
               onPressed: _markAllAsRead,
-              child: const Text(
-                'قراءة الكل',
+              child: Text(
+                AppText.t('قراءة الكل'),
                 style: TextStyle(
                   color: AppColors.lime,
                   fontSize: 13,
@@ -241,7 +242,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
-                            'لديك $_unreadCount إشعار${_unreadCount == 1 ? '' : 'ات'} جديد',
+                            '${AppText.t('لديك')} $_unreadCount ${AppText.t('إشعار')}${_unreadCount == 1 ? '' : AppText.t('ات')} ${AppText.t('جديد')}',
                             textAlign: TextAlign.right,
                             style: const TextStyle(
                               color: Colors.white,
@@ -380,8 +381,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               ),
             ),
             const SizedBox(height: 25),
-            const Text(
-              'لا توجد إشعارات',
+            Text(
+              AppText.t('لا توجد إشعارات'),
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 20,
