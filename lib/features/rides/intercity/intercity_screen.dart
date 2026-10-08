@@ -637,12 +637,12 @@ class _IntercityScreenState extends State<IntercityScreen> {
                         AppText.t('مسافر واصل'),
                       ),
                       _ticketRow(
-                        'من',
-                        _fromCity,
+                        AppText.t('من'),
+                        _localizedCityName(_fromCity),
                       ),
                       _ticketRow(
-                        'إلى',
-                        _toCity,
+                        AppText.t('إلى'),
+                        _localizedCityName(_toCity),
                       ),
                       _ticketRow(
                         AppText.t('التاريخ'),
