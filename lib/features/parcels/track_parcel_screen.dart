@@ -263,7 +263,7 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'حالة الطرد الحالية',
+                  AppText.t('حالة الطرد الحالية'),
                   style: TextStyle(
                     color: Colors.white54,
                     fontSize: 12,
@@ -271,7 +271,7 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
                 ),
                 SizedBox(height: 5),
                 Text(
-                  'الطرد في الطريق',
+                  AppText.t('الطرد في الطريق'),
                   style: TextStyle(
                     color: AppColors.lime,
                     fontSize: 19,
@@ -280,7 +280,7 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  'آخر تحديث: اليوم، 01:20 م',
+                  AppText.t('آخر تحديث: اليوم، 01:20 م'),
                   style: TextStyle(
                     color: Colors.white60,
                     fontSize: 12,
@@ -304,8 +304,8 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'رحلة الطرد',
+          Text(
+            AppText.t('رحلة الطرد'),
             style: TextStyle(
               color: Colors.white,
               fontSize: 17,
@@ -382,7 +382,7 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  step['title'] ?? '',
+                  AppText.t(step['title'] ?? ''),
                   style: TextStyle(
                     color: completed ? Colors.white : Colors.white54,
                     fontSize: 14,
@@ -392,7 +392,7 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  step['subtitle'] ?? '',
+                  AppText.t(step['subtitle'] ?? ''),
                   style: const TextStyle(
                     color: Colors.white54,
                     fontSize: 12,
@@ -402,7 +402,7 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
                 if ((step['time'] ?? '').isNotEmpty) ...[
                   const SizedBox(height: 4),
                   Text(
-                    step['time']!,
+                    AppText.t(step['time']!),
                     style: TextStyle(
                       color: completed ? AppColors.lime : Colors.white38,
                       fontSize: 11,
