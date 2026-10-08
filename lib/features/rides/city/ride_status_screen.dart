@@ -33,6 +33,11 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
   String? get driverId => _driverId;
 
   LatLng? _liveDriverPosition;
+  LatLng? _pickupPointFromRide;
+  LatLng? _destinationPointFromRide;
+  String _driverName = 'السائق';
+  String _vehicleInfo = 'المركبة';
+  double _rideFare = 0;
   double _driverHeading = 0;
   double _driverSpeed = 0;
 
@@ -88,9 +93,9 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
   LatLng get _driverPosition =>
       _liveDriverPosition ?? _fallbackDriverPosition;
 
-  LatLng get _pickupPoint => _routePoints.first;
+  LatLng get _pickupPoint => _pickupPointFromRide ?? _routePoints.first;
 
-  LatLng get _destinationPoint => _routePoints.last;
+  LatLng get _destinationPoint => _destinationPointFromRide ?? _routePoints.last;
 
   @override
   void initState() {
@@ -124,7 +129,7 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
     try {
       final response = await client
           .from('rides')
-          .select('id, driver_id, status')
+          .select('id, driver_id, status, pickup_lat, pickup_lng, destination_lat, destination_lng, suggested_fare, pickup_address, destination_address, driver:profiles(full_name, phone, vehicle_type, vehicle_model, vehicle_color)')
           .eq('passenger_id', user.id)
           .inFilter('status', [
             'accepted',
@@ -151,6 +156,18 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
 
         _activeRideId = rideId;
         _driverId = driverId;
+        _pickupPointFromRide = _latLng(ride['pickup_lat'], ride['pickup_lng']);
+        _destinationPointFromRide = _latLng(ride['destination_lat'], ride['destination_lng']);
+        _rideFare = _toDouble(ride['suggested_fare']) ?? 0;
+        final driver = ride['driver'];
+        if (driver is Map) {
+          final name = driver['full_name']?.toString().trim();
+          final model = driver['vehicle_model']?.toString().trim();
+          final color = driver['vehicle_color']?.toString().trim();
+          _driverName = (name?.isNotEmpty ?? false) ? name! : 'السائق';
+          final parts = <String>[if (model?.isNotEmpty ?? false) model!, if (color?.isNotEmpty ?? false) color!];
+          _vehicleInfo = parts.isEmpty ? 'المركبة' : parts.join(' • ');
+        }
         _setStepFromStatus(status);
 
         if (_activeRideId != null) {
@@ -306,6 +323,13 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
     }
   }
 
+  LatLng? _latLng(dynamic lat, dynamic lng) {
+    final a = _toDouble(lat);
+    final b = _toDouble(lng);
+    if (a == null || b == null) return null;
+    return LatLng(a, b);
+  }
+
   double? _toDouble(dynamic value) {
     if (value == null) {
       return null;
@@ -336,6 +360,27 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
       _driverPosition,
       15.5,
     );
+  }
+
+  Future<void> _updateRideStatus(String status) async {
+    final client = SupabaseService.client;
+    final rideId = _activeRideId;
+    if (client == null || rideId == null) return;
+    try {
+      await client.from('rides').update({
+        'status': status,
+        'updated_at': DateTime.now().toUtc().toIso8601String(),
+      }).eq('id', rideId);
+      if (!mounted) return;
+      _setStepFromStatus(status);
+      setState(() {});
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('تعذر تحديث حالة الرحلة')),
+        );
+      }
+    }
   }
 
   void _centerOnDestination() {
@@ -912,7 +957,7 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
                   CrossAxisAlignment.start,
               children: [
                 Text(
-                  'محمد أحمد',
+                  _driverName,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -920,7 +965,7 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  'Toyota Corolla • أبيض',
+                  _vehicleInfo,
                   style: TextStyle(
                     color: Colors.grey,
                     fontSize: 12,
@@ -928,7 +973,7 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
                 ),
                 SizedBox(height: 3),
                 Text(
-                  '⭐ 4.9 • 328 رحلة',
+                  'السائق المعتمد',
                   style: TextStyle(
                     color: Colors.grey,
                     fontSize: 11,
@@ -1050,13 +1095,13 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
           _detailRow(
             Icons.my_location,
             'نقطة الانطلاق',
-            'الخرطوم بحري',
+            _pickupLabel(),
           ),
           const SizedBox(height: 12),
           _detailRow(
             Icons.location_on,
             'الوجهة',
-            'الخرطوم',
+            _destinationLabel(),
           ),
           const SizedBox(height: 12),
           _detailRow(
@@ -1076,7 +1121,7 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
           _detailRow(
             Icons.payments_outlined,
             'السعر',
-            '4,000 جنيه',
+            '${_rideFare.round()} جنيه',
           ),
         ],
       ),
@@ -1115,23 +1160,25 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
     );
   }
 
+  String _pickupLabel() => _pickupPointFromRide == null ? 'نقطة الانطلاق' : 'موقع الراكب';
+  String _destinationLabel() => _destinationPointFromRide == null ? 'الوجهة' : 'الوجهة';
+
   Widget _buildNextStepButton() {
     return SizedBox(
       width: double.infinity,
       height: 54,
       child: ElevatedButton(
         onPressed: () {
-          if (currentStep < 3) {
+          if (currentStep == 0) {
+            _updateRideStatus('driver_arriving');
+          } else if (currentStep == 1) {
+            _updateRideStatus('in_progress');
+          } else if (currentStep == 2) {
+            _updateRideStatus('completed');
             setState(() {
-              currentStep++;
-            });
-          }
-
-          if (currentStep == 3) {
-            setState(() {
+              currentStep = 3;
               _isTracking = false;
             });
-
             _locationSubscription?.cancel();
           }
         },
@@ -1409,7 +1456,7 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
               ),
               _receiptRow(
                 'المركبة',
-                'Toyota Corolla',
+                _vehicleInfo,
               ),
               _receiptRow(
                 'التقييم',
@@ -1417,7 +1464,7 @@ class _RideStatusScreenState extends State<RideStatusScreen> {
               ),
               _receiptRow(
                 'السعر',
-                '4,000 جنيه',
+                '${_rideFare.round()} جنيه',
               ),
               _receiptRow(
                 'رقم الرحلة',
