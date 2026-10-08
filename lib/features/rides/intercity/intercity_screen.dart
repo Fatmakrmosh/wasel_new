@@ -1237,7 +1237,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
             items: _cities.map((city) {
               return DropdownMenuItem<String>(
                 value: city,
-                child: Text(AppText.t(city)),
+                child: Text(_localizedCityName(city)),
               );
             }).toList(),
             onChanged: onChanged,
