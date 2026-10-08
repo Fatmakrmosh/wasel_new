@@ -259,8 +259,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
               children: [
                 _sheetHandle(),
                 const SizedBox(height: 18),
-                const Text(
-                  'اختر نوع المركبة',
+                Text(AppText.t('اختر نوع المركبة'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
@@ -362,8 +361,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  'اختر رحلة قائمة للحجز، وسيتم تحديث المقاعد المتبقية تلقائياً.',
+                Text(AppText.t('اختر رحلة قائمة للحجز، وسيتم تحديث المقاعد المتبقية تلقائياً.'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white54,
@@ -423,8 +421,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                   children: [
                     _sheetHandle(),
                     const SizedBox(height: 18),
-                    const Text(
-                      'إتمام الحجز',
+                    Text(AppText.t('إتمام الحجز'),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
@@ -531,8 +528,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                             borderRadius: BorderRadius.circular(15),
                           ),
                         ),
-                        child: const Text(
-                          'تأكيد وإصدار التذكرة الإلكترونية',
+                        child: Text(AppText.t('تأكيد وإصدار التذكرة الإلكترونية'),
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
@@ -597,8 +593,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                const Text(
-                  'التذكرة الإلكترونية',
+                Text(AppText.t('التذكرة الإلكترونية'),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -606,8 +601,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                   ),
                 ),
                 const SizedBox(height: 4),
-                const Text(
-                  'تم تأكيد الحجز وإصدار التذكرة',
+                Text(AppText.t('تم تأكيد الحجز وإصدار التذكرة'),
                   style: TextStyle(
                     color: AppColors.lime,
                     fontSize: 12,
@@ -702,8 +696,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  'رمز التحقق الإلكتروني',
+                Text(AppText.t('رمز التحقق الإلكتروني'),
                   style: TextStyle(
                     color: Colors.white54,
                     fontSize: 10,
@@ -723,8 +716,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                         borderRadius: BorderRadius.circular(13),
                       ),
                     ),
-                    child: const Text(
-                      'تم',
+                    child: Text(AppText.t('تم'),
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -763,8 +755,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                   children: [
                     _sheetHandle(),
                     const SizedBox(height: 18),
-                    const Text(
-                      'نقل حمولة بالدفار',
+                    Text(AppText.t('نقل حمولة بالدفار'),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
@@ -866,8 +857,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                               ),
                               SizedBox(width: 8),
                               Expanded(
-                                child: Text(
-                                  'تعهد ومسؤولية صاحب الحمولة',
+                                child: Text(AppText.t('تعهد ومسؤولية صاحب الحمولة'),
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -878,8 +868,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                             ],
                           ),
                           const SizedBox(height: 10),
-                          const Text(
-                            'أقر بأن جميع البيانات المتعلقة بالحمولة صحيحة، وأنني أتحمل المسؤولية الكاملة عن أي مخالفة أو مواد ممنوعة أو غير نظامية أو أضرار ناتجة عن محتويات الحمولة. كما ألتزم بتحمل جميع الرسوم والجبايات ومصاريف الطريق وأي تكاليف نظامية متعلقة بالبضاعة أو نقلها.',
+                          Text(AppText.t('أقر بأن جميع البيانات المتعلقة بالحمولة صحيحة، وأنني أتحمل المسؤولية الكاملة عن أي مخالفة أو مواد ممنوعة أو غير نظامية أو أضرار ناتجة عن محتويات الحمولة. كما ألتزم بتحمل جميع الرسوم والجبايات ومصاريف الطريق وأي تكاليف نظامية متعلقة بالبضاعة أو نقلها.'),
                             style: TextStyle(
                               color: Colors.white70,
                               fontSize: 12,
@@ -900,8 +889,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                             contentPadding: EdgeInsets.zero,
                             controlAffinity:
                                 ListTileControlAffinity.leading,
-                            title: const Text(
-                              'أوافق على التعهد والمسؤولية المذكورة أعلاه',
+                            title: Text(AppText.t('أوافق على التعهد والمسؤولية المذكورة أعلاه'),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 12,
@@ -934,8 +922,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                             borderRadius: BorderRadius.circular(15),
                           ),
                         ),
-                        child: const Text(
-                          'متابعة طلب النقل',
+                        child: Text(AppText.t('متابعة طلب النقل'),
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
@@ -982,8 +969,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              const Text(
-                'تم تسجيل طلب النقل',
+              Text(AppText.t('تم تسجيل طلب النقل'),
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 19,
@@ -991,8 +977,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                 ),
               ),
               const SizedBox(height: 8),
-              Text(
-                'رقم الطلب: $requestNumber',
+              Text(AppText.t('رقم الطلب: $requestNumber'),
                 style: const TextStyle(
                   color: AppColors.lime,
                   fontWeight: FontWeight.bold,
@@ -1000,8 +985,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
-                'سيتم مراجعة بيانات الحمولة وتنسيق وسيلة النقل المناسبة وإرسال تفاصيل السعر والتأكيد.',
+              Text(AppText.t('سيتم مراجعة بيانات الحمولة وتنسيق وسيلة النقل المناسبة وإرسال تفاصيل السعر والتأكيد.'),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white54,
@@ -1022,8 +1006,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                       borderRadius: BorderRadius.circular(13),
                     ),
                   ),
-                  child: const Text(
-                    'تم',
+                  child: Text(AppText.t('تم'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -1048,8 +1031,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
         iconTheme: const IconThemeData(
           color: Colors.white,
         ),
-        title: const Text(
-          'الرحلات بين المدن',
+        title: Text(AppText.t('الرحلات بين المدن'),
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -1113,8 +1095,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'سافر بين المدن بسهولة',
+                Text(AppText.t('سافر بين المدن بسهولة'),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 19,
@@ -1122,8 +1103,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                   ),
                 ),
                 SizedBox(height: 6),
-                Text(
-                  'اختر مسارك أولاً، ثم اختر المركبة والرحلة المناسبة لك.',
+                Text(AppText.t('اختر مسارك أولاً، ثم اختر المركبة والرحلة المناسبة لك.'),
                   style: TextStyle(
                     color: Colors.white54,
                     fontSize: 12,
@@ -1149,8 +1129,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
         children: [
           Row(
             children: [
-              const Text(
-                'مسار الرحلة',
+              Text(AppText.t('مسار الرحلة'),
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 15,
@@ -1285,8 +1264,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                 size: 22,
               ),
               SizedBox(width: 10),
-              Text(
-                'اختر نوع المركبة',
+              Text(AppText.t('اختر نوع المركبة'),
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 15,
@@ -1296,8 +1274,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
             ],
           ),
           const SizedBox(height: 6),
-          const Text(
-            'المركبات المتاحة لهذا المسار',
+          Text(AppText.t('المركبات المتاحة لهذا المسار'),
             style: TextStyle(
               color: Colors.white38,
               fontSize: 11,
@@ -1457,8 +1434,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      Text(
-                        'رحلة قائمة',
+                      Text(AppText.t('رحلة قائمة'),
                         style: const TextStyle(
                           color: Colors.white54,
                           fontSize: 11,
@@ -1543,8 +1519,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                   size: 17,
                 ),
                 const SizedBox(width: 6),
-                Text(
-                  '$remaining مقاعد متبقية من $capacity',
+                Text(AppText.t('$remaining مقاعد متبقية من $capacity'),
                   style: const TextStyle(
                     color: Colors.white70,
                     fontSize: 11,
@@ -1572,8 +1547,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                 color: AppColors.lime.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(11),
               ),
-              child: const Text(
-                'اختيار الرحلة',
+              child: Text(AppText.t('اختيار الرحلة'),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: AppColors.lime,
@@ -1603,8 +1577,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
             size: 42,
           ),
           SizedBox(height: 12),
-          Text(
-            'لا توجد رحلة قائمة بهذا النوع حالياً',
+          Text(AppText.t('لا توجد رحلة قائمة بهذا النوع حالياً'),
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
@@ -1613,8 +1586,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
             ),
           ),
           SizedBox(height: 6),
-          Text(
-            'يمكنك العودة واختيار نوع مركبة آخر أو المحاولة لاحقاً.',
+          Text(AppText.t('يمكنك العودة واختيار نوع مركبة آخر أو المحاولة لاحقاً.'),
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white54,
@@ -2000,8 +1972,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
               crossAxisAlignment:
                   CrossAxisAlignment.start,
               children: [
-                Text(
-                  'عدد المسافرين',
+                Text(AppText.t('عدد المسافرين'),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 14,
@@ -2009,8 +1980,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
                   ),
                 ),
                 SizedBox(height: 4),
-                Text(
-                  'اختر عدد المقاعد',
+                Text(AppText.t('اختر عدد المقاعد'),
                   style: TextStyle(
                     color: Colors.white38,
                     fontSize: 11,
@@ -2132,8 +2102,7 @@ class _IntercityScreenState extends State<IntercityScreen> {
           ),
           SizedBox(width: 10),
           Expanded(
-            child: Text(
-              'اختر المسار أولاً. بعد ذلك تظهر أنواع المركبات المتاحة، ثم الرحلات القائمة والمقاعد المتبقية. لا يتم عرض شركات النقل للمسافر؛ إدارة واصل تتولى تنسيق الناقل عند الحاجة.',
+            child: Text(AppText.t('اختر المسار أولاً. بعد ذلك تظهر أنواع المركبات المتاحة، ثم الرحلات القائمة والمقاعد المتبقية. لا يتم عرض شركات النقل للمسافر؛ إدارة واصل تتولى تنسيق الناقل عند الحاجة.'),
               style: TextStyle(
                 color: Colors.white54,
                 fontSize: 12,
