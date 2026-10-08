@@ -58,5 +58,6 @@ class AppStrings {
   static String get notifications => en ? 'Notifications' : 'الإشعارات';
   static String get account => en ? 'Account' : 'الحساب';
   static String get home => en ? 'Home' : 'الرئيسية';
+  static String get language => en ? 'App language' : 'لغة التطبيق';
 }
 
