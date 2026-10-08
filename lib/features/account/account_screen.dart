@@ -142,7 +142,7 @@ class _AccountScreenState extends State<AccountScreen> {
       builder: (context) {
         return AlertDialog(
           backgroundColor: AppColors.surface,
-          title: const Text(
+          title: Text(
             AppStrings.logout,
             textAlign: TextAlign.right,
             style: TextStyle(
@@ -150,7 +150,7 @@ class _AccountScreenState extends State<AccountScreen> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          content: const Text(
+          content: Text(
             AppStrings.logoutConfirm,
             textAlign: TextAlign.right,
             style: TextStyle(
@@ -161,7 +161,7 @@ class _AccountScreenState extends State<AccountScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text(
+              child: Text(
                 AppStrings.cancel,
                 style: TextStyle(
                   color: Colors.white70,
@@ -177,7 +177,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 backgroundColor: AppColors.lime,
                 foregroundColor: Colors.black,
               ),
-              child: const Text(
+              child: Text(
                 AppStrings.logout,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
